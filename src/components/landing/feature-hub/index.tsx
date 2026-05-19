@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import { gsap, ScrollTrigger, prefersReducedMotion } from "@/lib/gsap";
 import { SectionHeader } from "@/components/ui/section-header";
 import { Reveal } from "@/components/ui/reveal";
 import { CalcShell, RangeField, ResultBox, ResultRow } from "../calculator-ui";
@@ -371,9 +373,39 @@ const COPY: Record<TabId, { title: string; bullets: string[] }> = {
 
 export function FeatureHub() {
   const [tab, setTab] = useState<TabId>("spot");
+  const sectionRef = useRef<HTMLElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const copy = COPY[tab];
+
+  const switchTab = (newTab: TabId) => {
+    if (newTab === tab) return;
+    const out = panelRef.current;
+    if (!prefersReducedMotion() && out) {
+      gsap.timeline()
+        .to(out, { opacity: 0, scale: 0.97, y: -10, duration: 0.2 })
+        .call(() => setTab(newTab))
+        .fromTo(out, { opacity: 0, scale: 0.97, y: 10 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "power2.out" });
+    } else {
+      setTab(newTab);
+    }
+  };
+
+  useGSAP(
+    () => {
+      if (prefersReducedMotion()) return;
+      ScrollTrigger.create({
+        trigger: "#features",
+        start: "top top",
+        end: "+=80%",
+        pin: true,
+        pinSpacing: true
+      });
+    },
+    { scope: sectionRef }
+  );
+
   return (
-    <section id="features" className="scroll-mt-20 px-6 py-20">
+    <section id="features" ref={sectionRef} className="feature-hub-section scroll-mt-20 px-6 py-20">
       <div className="container-zeb">
         <SectionHeader
           chip="Tools & Calculators"
@@ -389,7 +421,7 @@ export function FeatureHub() {
                   type="button"
                   role="tab"
                   aria-selected={tab === t.id}
-                  onClick={() => setTab(t.id)}
+                  onClick={() => switchTab(t.id)}
                   className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap border-b-2 px-4 py-4 text-sm font-semibold transition ${
                     tab === t.id ? "border-[var(--cyan)] text-[var(--text)]" : "border-transparent text-[var(--text-muted)]"
                   }`}
@@ -423,11 +455,9 @@ export function FeatureHub() {
                   ))}
                 </ul>
               </div>
-              <AnimatePresence mode="wait">
-                <motion.div key={tab} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
-                  <Panel tab={tab} />
-                </motion.div>
-              </AnimatePresence>
+              <div ref={panelRef} className="tab-panel active" data-tab={tab}>
+                <Panel tab={tab} />
+              </div>
             </div>
           </div>
         </Reveal>

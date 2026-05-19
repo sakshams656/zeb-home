@@ -19,31 +19,25 @@ export const metadata: Metadata = {
     template: "%s | ZebPay"
   },
   description:
-    "400+ crypto assets, institutional-grade security, and up to 8.5% earn yields on India's most trusted crypto exchange since 2014. 6M+ users.",
-  keywords: [
-    "ZebPay",
-    "crypto exchange India",
-    "Bitcoin INR",
-    "crypto futures India",
-    "crypto SIP",
-    "AI insights crypto"
-  ],
+    "Buy, sell, and earn crypto on ZebPay. 6M+ users. Spot, Futures, SIP, CryptoPacks, AI Insights. FIU-IND registered. ISO & SOC 2 certified.",
+  keywords: ["crypto exchange india", "buy bitcoin india", "zebpay", "crypto sip", "btc inr"],
   openGraph: {
     type: "website",
     locale: "en_IN",
     url: siteUrl,
     siteName: "ZebPay",
     title: "ZebPay — India's Pro-Grade Crypto Exchange",
-    description:
-      "Spot, futures up to 25x, earn, APIs, AI insights, RMS, sub accounts — built for India's traders and investors."
+    description: "Trade smarter with pro-grade tools, RMS, and FIU-IND compliance.",
+    images: [{ url: "/og-image.png", width: 1200, height: 630 }]
   },
   twitter: {
     card: "summary_large_image",
+    site: "@ZebPay",
     title: "ZebPay — India's Pro-Grade Crypto Exchange",
     description: "Trade smarter with pro-grade tools, RMS, and FIU-IND compliance."
   },
   robots: { index: true, follow: true },
-  alternates: { canonical: siteUrl }
+  alternates: { canonical: "/" }
 };
 
 export const viewport: Viewport = {
@@ -60,7 +54,13 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={lato.variable} suppressHydrationWarning>
-      <body className="min-h-screen antialiased">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://apps.apple.com" />
+        <link rel="dns-prefetch" href="https://play.google.com" />
+      </head>
+      <body className="min-h-screen antialiased font-sans">
         <Providers>{children}</Providers>
       </body>
     </html>

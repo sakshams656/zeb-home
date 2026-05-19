@@ -1,4 +1,4 @@
-export type DemoMode = "qt" | "cp" | "ft";
+export type DemoMode = "qt" | "cp" | "ft" | "sip" | "exchange" | "ai";
 
 export type QtCoin = {
   sym: string;

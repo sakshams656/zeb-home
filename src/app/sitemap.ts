@@ -3,9 +3,17 @@ import { getAllPageSlugs, isWordPressConfigured } from "@/lib/wordpress";
 
 const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://zebpay.com";
 
+const PRODUCT_PATHS = ["/earn", "/futures", "/sip", "/cryptopacks"];
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [
-    { url: base, lastModified: new Date(), changeFrequency: "daily", priority: 1 }
+    { url: base, lastModified: new Date(), changeFrequency: "daily", priority: 1 },
+    ...PRODUCT_PATHS.map((path) => ({
+      url: `${base}${path}`,
+      lastModified: new Date(),
+      changeFrequency: "weekly" as const,
+      priority: 0.85
+    }))
   ];
 
   if (!isWordPressConfigured()) return staticRoutes;
