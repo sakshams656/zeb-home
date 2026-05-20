@@ -2,26 +2,29 @@
 
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
-import { SectionHeader } from "@/components/ui/section-header";
-import { gsap, prefersReducedMotion } from "@/lib/gsap";
+import { gsap, ZEB_EASE, prefersReducedMotion } from "@/lib/gsap";
 
-type Cell = string | boolean;
-
-const ROWS: { feature: string; zeb: Cell; w: Cell; d: Cell; hl?: boolean }[] = [
-  { feature: "Maker / Taker fees", zeb: "0.10% / 0.15%", w: "0.20% / 0.20%", d: "0.10% / 0.20%", hl: true },
-  { feature: "Max futures leverage", zeb: "25x", w: "—", d: "20x" },
-  { feature: "INR withdrawal", zeb: "< 30 min", w: "1–2 hrs", d: "~1 hr", hl: true },
-  { feature: "AI Insights", zeb: true, w: false, d: false, hl: true },
-  { feature: "RMS", zeb: true, w: false, d: false },
-  { feature: "Expert Trades", zeb: true, w: false, d: "Partial", hl: true },
-  { feature: "CryptoPacks", zeb: true, w: false, d: true },
-  { feature: "FIU-IND registered", zeb: true, w: true, d: true }
+const FEATURES = [
+  "SIP investing",
+  "AI insights",
+  "Cold storage",
+  "Sub accounts",
+  "Options trading",
+  "FIU-IND registered",
+  "ISO certified",
+  "SOC 2",
+  "0% maker fee",
+  "200+ assets",
+  "Earn rewards",
+  "Expert copy trade"
 ];
 
-function CellContent({ v }: { v: Cell }) {
-  if (v === true) return <span className="check-icon text-[var(--success)] font-bold">✓</span>;
-  if (v === false) return <span className="text-[var(--text-muted)]">—</span>;
-  return <>{v}</>;
+const ZEB = [true, true, true, true, false, true, true, true, true, true, true, true];
+const WAZ = [false, false, true, false, false, true, true, false, false, true, false, false];
+const DCX = [true, false, true, false, false, true, true, true, false, true, true, false];
+
+function Cell({ v }: { v: boolean }) {
+  return v ? <span className="check-mark text-[var(--success)]">✓</span> : <span className="text-[var(--text-muted-dark)]">—</span>;
 }
 
 export function Comparison() {
@@ -30,58 +33,58 @@ export function Comparison() {
   useGSAP(
     () => {
       if (prefersReducedMotion() || !ref.current) return;
-      gsap.from(".zebpay-col-highlight", {
-        scaleY: 0,
-        transformOrigin: "top center",
-        duration: 0.8,
-        ease: "power3.out",
+      gsap.from(ref.current.querySelectorAll(".compare-row"), {
+        opacity: 0,
+        y: 12,
+        stagger: 0.04,
+        duration: 0.4,
+        ease: ZEB_EASE,
         scrollTrigger: { trigger: ".comparison-table", start: "top 70%", once: true }
       });
-      gsap.from(".compare-row", {
-        opacity: 0,
-        y: 16,
-        stagger: 0.06,
-        duration: 0.4,
-        scrollTrigger: { trigger: ".comparison-table", start: "top 65%", once: true }
-      });
-      gsap.from(".check-icon", {
+      gsap.from(ref.current.querySelectorAll(".check-mark"), {
         scale: 0,
-        stagger: 0.04,
-        duration: 0.3,
+        stagger: 0.03,
+        duration: 0.4,
         ease: "back.out(2)",
-        scrollTrigger: { trigger: ".comparison-table", start: "top 60%", once: true }
+        scrollTrigger: { trigger: ".comparison-table", start: "top 65%", once: true }
       });
     },
     { scope: ref }
   );
 
   return (
-    <section ref={ref} className="px-6 py-20 bg-[var(--surface)]">
-      <div className="container-zeb">
-        <SectionHeader chip="Why ZebPay" title="How we compare" subtitle="Side-by-side on what matters for Indian traders." />
-        <div className="comparison-table relative overflow-x-auto rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)]">
-          <div className="zebpay-col-highlight pointer-events-none absolute bottom-0 top-12 left-[calc(25%-1px)] w-[25%] bg-[var(--cyan)]/5" aria-hidden />
-          <table className="relative w-full min-w-[560px] border-collapse text-sm">
+    <section ref={ref} className="bg-[#0a0f2e] px-6 py-[120px]">
+      <div className="mx-auto max-w-[900px]">
+        <h2 className="text-[clamp(2rem,4vw,3rem)] font-black text-[var(--text-on-dark)]">Why ZebPay?</h2>
+        <p className="mt-2 text-lg text-[var(--text-muted-dark)]">See how we compare.</p>
+
+        <div className="comparison-table relative mt-10 overflow-x-auto rounded-2xl border border-[var(--border-dark)]">
+          <table className="w-full min-w-[640px] border-collapse text-sm">
             <thead>
-              <tr className="bg-[var(--navy)] text-white">
-                <th className="p-4 text-left" />
-                <th className="p-4">ZebPay</th>
-                <th className="p-4">WazirX</th>
-                <th className="p-4">CoinDCX</th>
+              <tr className="text-[var(--text-muted-dark)]">
+                <th className="p-4 text-left font-semibold">Feature</th>
+                <th className="relative p-4 text-center">
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[var(--cyan)] px-3 py-0.5 text-[10px] font-extrabold text-[var(--navy)]">
+                    Recommended
+                  </span>
+                  <span className="font-black text-[var(--text-on-dark)]">ZebPay</span>
+                </th>
+                <th className="p-4 text-center">WazirX</th>
+                <th className="p-4 text-center">CoinDCX</th>
               </tr>
             </thead>
             <tbody>
-              {ROWS.map((r) => (
-                <tr key={r.feature} className={`compare-row ${r.hl ? "bg-[var(--cyan)]/5" : ""}`}>
-                  <td className="border-t border-[var(--border)] p-4 font-medium">{r.feature}</td>
-                  <td className="border-t border-[var(--border)] p-4 text-center font-bold">
-                    <CellContent v={r.zeb} />
+              {FEATURES.map((f, i) => (
+                <tr key={f} className="compare-row border-t border-[var(--border-dark)]">
+                  <td className="p-4 text-[var(--text-on-dark)]">{f}</td>
+                  <td className="bg-[rgba(0,184,230,0.06)] p-4 text-center border-t-2 border-[var(--cyan)]">
+                    <Cell v={ZEB[i]} />
                   </td>
-                  <td className="border-t border-[var(--border)] p-4 text-center">
-                    <CellContent v={r.w} />
+                  <td className="p-4 text-center">
+                    <Cell v={WAZ[i]} />
                   </td>
-                  <td className="border-t border-[var(--border)] p-4 text-center">
-                    <CellContent v={r.d} />
+                  <td className="p-4 text-center">
+                    <Cell v={DCX[i]} />
                   </td>
                 </tr>
               ))}

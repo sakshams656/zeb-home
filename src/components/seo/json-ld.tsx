@@ -5,11 +5,15 @@ export function OrganizationJsonLd() {
     "@context": "https://schema.org",
     "@type": "FinancialService",
     name: "ZebPay",
+    description: "India's most trusted crypto exchange",
     url: siteUrl,
-    description:
-      "India's trusted cryptocurrency exchange offering spot, futures, earn, CryptoPacks, SIP, AI insights, and RMS.",
+    logo: `${siteUrl}/logo.png`,
+    foundingDate: "2014",
     areaServed: "IN",
-    foundingDate: "2014"
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "Crypto Trading Products"
+    }
   };
 
   const website = {

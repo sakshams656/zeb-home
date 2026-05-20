@@ -1,52 +1,45 @@
 "use client";
 
 import { OrganizationJsonLd } from "@/components/seo/json-ld";
-import { PersonaBody } from "./persona-body";
 import { Nav } from "./nav";
-import { PersonaBar } from "./persona-bar";
 import { Hero } from "./hero";
 import { PriceTicker } from "./price-ticker";
-import { FeatureHub } from "./feature-hub";
-import { PhoneDemos } from "./phone-demos";
-import { AdoptionStrip } from "./adoption-strip";
+import { ProductShowcase } from "./product-showcase";
+import { CalculatorHub } from "./calculator-hub";
 import { Markets } from "./markets";
+import { SocialProof } from "./social-proof";
 import { CryptoPacks } from "./crypto-packs";
 import { Earn } from "./earn";
-import { ProFeatures } from "./pro-features";
 import { Security } from "./security";
-import { Comparison } from "./comparison";
-import { Steps } from "./steps";
+import { ProBento } from "./pro-bento";
 import { Testimonials } from "./testimonials";
-import { Faq } from "./faq";
 import { AppDownload } from "./app-download";
-import { TrustStrip } from "./trust-strip";
+import { Comparison } from "./comparison";
+import { Faq } from "./faq";
 import { Footer } from "./footer";
 
 export function LandingPage() {
   return (
-    <PersonaBody>
+    <div className="landing-page bg-[#040812] text-[var(--text-on-dark)]">
       <OrganizationJsonLd />
       <Nav />
-      <PersonaBar />
       <main>
         <Hero />
         <PriceTicker />
-        <FeatureHub />
-        <PhoneDemos />
-        <AdoptionStrip />
+        <ProductShowcase />
+        <CalculatorHub />
         <Markets />
+        <SocialProof />
         <CryptoPacks />
         <Earn />
-        <ProFeatures />
         <Security />
-        <Comparison />
-        <Steps />
+        <ProBento />
         <Testimonials />
-        <Faq />
         <AppDownload />
+        <Comparison />
+        <Faq />
       </main>
-      <TrustStrip />
       <Footer />
-    </PersonaBody>
+    </div>
   );
 }

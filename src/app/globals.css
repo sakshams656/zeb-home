@@ -4,12 +4,17 @@
 :root {
   --navy: #0a0f2e;
   --navy-mid: #122968;
+  --navy-light: #1a3580;
   --cyan: #00b8e6;
   --cyan-dim: #0099c4;
   --gold: #f5a623;
   --success: #00b07a;
   --danger: #e33e5c;
   --blue: #1b55e0;
+  --text-on-dark: #f0f4ff;
+  --text-muted-dark: rgba(240, 244, 255, 0.55);
+  --surface-dark: rgba(255, 255, 255, 0.05);
+  --border-dark: rgba(255, 255, 255, 0.08);
   --bg: #f6f8fc;
   --bg-elevated: #ffffff;
   --surface: #eef2f9;
@@ -71,6 +76,28 @@ body {
   font-family: var(--font-lato), system-ui, sans-serif;
 }
 
+.landing-page {
+  background: #040812;
+  color: var(--text-on-dark);
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
 .container-zeb {
   width: 100%;
   max-width: 1200px;
@@ -130,16 +157,21 @@ body {
   gap: 0.5rem;
 }
 
-.ticker-track {
+.ticker-row {
   animation: ticker 40s linear infinite;
+  will-change: transform;
 }
 
-.ticker-reverse {
-  animation-direction: reverse;
+.ticker-row.ticker-reverse {
+  animation: ticker 40s linear infinite reverse;
+}
+
+.ticker-row:hover {
+  animation-play-state: paused;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ticker-track {
+  .ticker-row {
     animation: none;
   }
 }

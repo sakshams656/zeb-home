@@ -2,14 +2,14 @@
 
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
-import { SectionHeader } from "@/components/ui/section-header";
-import { gsap, prefersReducedMotion } from "@/lib/gsap";
+import { gsap, ZEB_EASE, prefersReducedMotion } from "@/lib/gsap";
 
-const COINS = [
+const ASSETS = [
   { sym: "USDT", apy: 8.5, pct: 100 },
-  { sym: "BTC", apy: 6.0, pct: 71 },
-  { sym: "ETH", apy: 5.0, pct: 59 },
-  { sym: "SOL", apy: 4.5, pct: 53 }
+  { sym: "SOL", apy: 4.5, pct: 53 },
+  { sym: "ETH", apy: 1.5, pct: 18 },
+  { sym: "BTC", apy: 0.2, pct: 2 },
+  { sym: "BNB", apy: 0.5, pct: 6 }
 ];
 
 export function Earn() {
@@ -18,65 +18,47 @@ export function Earn() {
   useGSAP(
     () => {
       if (prefersReducedMotion() || !ref.current) return;
-      gsap.from(".yield-bar-fill", {
-        width: 0,
+      gsap.from(ref.current.querySelectorAll(".yield-bar"), {
+        scaleX: 0,
+        transformOrigin: "left center",
         duration: 1.2,
-        ease: "power2.out",
-        stagger: 0.1,
-        scrollTrigger: { trigger: "#earn", start: "top 75%", once: true }
+        stagger: 0.08,
+        ease: ZEB_EASE,
+        scrollTrigger: { trigger: "#earn", start: "top 70%", once: true }
       });
-      const apyEl = ref.current.querySelector(".apy-counter");
-      if (apyEl) {
-        const obj = { v: 0 };
-        gsap.to(obj, {
-          v: 8.5,
-          duration: 2,
-          ease: "power1.out",
-          snap: { v: 0.1 },
-          scrollTrigger: { trigger: "#earn", start: "top 75%", once: true },
-          onUpdate: () => {
-            (apyEl as HTMLElement).textContent = `${obj.v.toFixed(1)}%`;
-          }
-        });
-      }
     },
     { scope: ref }
   );
 
   return (
-    <section id="earn" ref={ref} className="scroll-mt-20 px-6 py-20">
-      <div className="container-zeb">
-        <SectionHeader
-          chip="Earn"
-          title="Put idle crypto to work"
-          subtitle="Up to 8.5% APY — flexible or locked terms. Daily interest, auto-compound."
-        />
-        <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
-          <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)] p-8">
-            <p className="apy-counter text-5xl font-black text-[var(--cyan)]">0%</p>
-            <p className="mt-2 text-xl font-bold text-[var(--text)]">Max APY on USDT</p>
-            <p className="mt-4 text-[var(--text-muted)]">Ring-fenced from trading · Fully insured · No lock-in option</p>
-          </div>
-          <ul className="space-y-3">
-            {COINS.map((c) => (
-              <li
-                key={c.sym}
-                className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-5 py-4"
-              >
-                <div className="mb-2 flex items-center justify-between">
-                  <span className="font-bold">{c.sym}</span>
-                  <span className="font-black text-[var(--success)]">{c.apy}% APY</span>
-                </div>
-                <div className="h-2 overflow-hidden rounded-full bg-[var(--border)]">
-                  <div
-                    className="yield-bar-fill h-full rounded-full bg-[var(--cyan)]"
-                    style={{ width: `${c.pct}%` }}
-                  />
-                </div>
-              </li>
-            ))}
-          </ul>
+    <section id="earn" ref={ref} className="scroll-mt-24 bg-[#0a0f2e] px-6 py-[120px]">
+      <div className="mx-auto grid max-w-[1200px] gap-12 lg:grid-cols-2">
+        <div>
+          <h2 className="text-[clamp(2.5rem,4vw,3.5rem)] font-black leading-tight text-[var(--text-on-dark)]">
+            Earn while
+            <br />
+            you hold.
+          </h2>
+          <p className="mt-4 text-2xl font-bold text-[var(--cyan)]">Up to 8.5% APY</p>
+          <p className="mt-6 max-w-md text-lg text-[var(--text-muted-dark)]">
+            Stake idle assets across stablecoins and majors. Flexible terms, transparent rates — model returns in the
+            calculator hub above.
+          </p>
         </div>
+
+        <ul className="space-y-4 self-center">
+          {ASSETS.map((a) => (
+            <li key={a.sym} className="rounded-xl border border-[var(--border-dark)] bg-[var(--surface-dark)] p-5">
+              <div className="mb-2 flex justify-between font-bold text-[var(--text-on-dark)]">
+                <span>{a.sym}</span>
+                <span className="text-[var(--cyan)]">{a.apy}% APY</span>
+              </div>
+              <div className="h-2 overflow-hidden rounded-full bg-white/10">
+                <div className="yield-bar h-full rounded-full bg-[var(--cyan)]" style={{ width: `${a.pct}%`, transformOrigin: "left" }} />
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

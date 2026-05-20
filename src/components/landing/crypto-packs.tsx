@@ -2,11 +2,17 @@
 
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
-import { SectionHeader } from "@/components/ui/section-header";
 import { PACKS, type PackId } from "@/lib/market-data";
-import { gsap, prefersReducedMotion } from "@/lib/gsap";
+import { gsap, ZEB_EASE, prefersReducedMotion } from "@/lib/gsap";
 
-const PACK_LIST: PackId[] = ["defi", "l1", "ai", "meme"];
+const PACK_META: Record<PackId, { accent: string; bg: string }> = {
+  defi: { accent: "#00b8e6", bg: "#0d1f2d" },
+  l1: { accent: "#7f77dd", bg: "#0d0d2b" },
+  ai: { accent: "#00b07a", bg: "#0a1a0a" },
+  meme: { accent: "#f5a623", bg: "#2b1a0a" }
+};
+
+const IDS: PackId[] = ["defi", "l1", "ai", "meme"];
 
 export function CryptoPacks() {
   const ref = useRef<HTMLElement>(null);
@@ -18,31 +24,23 @@ export function CryptoPacks() {
 
       gsap.from(root.querySelectorAll(".pack-card"), {
         opacity: 0,
-        x: 60,
+        y: 80,
         stagger: 0.1,
-        duration: 0.7,
-        ease: "power3.out",
-        scrollTrigger: { trigger: root, start: "top 75%", once: true }
+        duration: 0.9,
+        ease: ZEB_EASE,
+        scrollTrigger: { trigger: ".packs-grid", start: "top 75%", once: true }
       });
 
       const cleanups: (() => void)[] = [];
       root.querySelectorAll(".pack-card").forEach((card) => {
         const el = card as HTMLElement;
         const onMove = (e: MouseEvent) => {
-          const rect = el.getBoundingClientRect();
-          const x = (e.clientX - rect.left) / rect.width - 0.5;
-          const y = (e.clientY - rect.top) / rect.height - 0.5;
-          gsap.to(el, {
-            rotateY: x * 16,
-            rotateX: -y * 16,
-            duration: 0.3,
-            ease: "power2.out",
-            transformPerspective: 800
-          });
+          const r = el.getBoundingClientRect();
+          const x = ((e.clientX - r.left) / r.width - 0.5) * 20;
+          const y = ((e.clientY - r.top) / r.height - 0.5) * -20;
+          gsap.to(el, { rotateY: x, rotateX: y, scale: 1.03, duration: 0.4, ease: "power2.out", transformPerspective: 900 });
         };
-        const onLeave = () => {
-          gsap.to(el, { rotateY: 0, rotateX: 0, duration: 0.5, ease: "elastic.out(1, 0.5)" });
-        };
+        const onLeave = () => gsap.to(el, { rotateY: 0, rotateX: 0, scale: 1, duration: 0.7, ease: "elastic.out(1, 0.4)" });
         el.addEventListener("mousemove", onMove);
         el.addEventListener("mouseleave", onLeave);
         cleanups.push(() => {
@@ -50,34 +48,49 @@ export function CryptoPacks() {
           el.removeEventListener("mouseleave", onLeave);
         });
       });
-
       return () => cleanups.forEach((fn) => fn());
     },
     { scope: ref }
   );
 
   return (
-    <section id="packs" ref={ref} className="scroll-mt-20 bg-[var(--surface)] px-6 py-20">
-      <div className="container-zeb">
-        <SectionHeader
-          chip="CryptoPacks"
-          title="Diversified themes in one tap"
-          subtitle="Expert-curated baskets — DeFi, L1s, AI, and more."
-        />
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {PACK_LIST.map((id) => {
+    <section id="packs" ref={ref} className="scroll-mt-24 bg-[#040812] px-6 py-[120px]">
+      <div className="mx-auto max-w-[1200px]">
+        <h2 className="text-[clamp(2rem,4vw,3rem)] font-black text-[var(--text-on-dark)]">Invest in themes, not tickers.</h2>
+        <p className="mt-4 text-xl text-[var(--text-muted-dark)]">4 curated packs built for every kind of investor.</p>
+
+        <div className="packs-grid mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+          {IDS.map((id) => {
             const p = PACKS[id];
+            const meta = PACK_META[id];
             return (
               <article
                 key={id}
-                className="pack-card rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)] p-6 shadow-[var(--shadow)] transition hover:border-[var(--cyan)]"
-                style={{ transformStyle: "preserve-3d" }}
+                className="pack-card flex h-[400px] flex-col justify-between rounded-3xl p-8"
+                style={{ background: meta.bg, transformStyle: "preserve-3d" }}
               >
-                <h3 className="text-lg font-black text-[var(--text)]">{p.name}</h3>
-                <p className="mt-2 text-2xl font-black text-[var(--success)]">+{p.ret}% YTD</p>
-                <p className="mt-3 text-sm text-[var(--text-muted)]">
-                  {p.coins.length} assets · {p.coins.slice(0, 4).join(", ")}…
-                </p>
+                <div className="flex -space-x-2">
+                  {p.coins.slice(0, 3).map((c) => (
+                    <span
+                      key={c}
+                      className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#0a0f2e] bg-[var(--surface-dark)] text-xs font-bold"
+                      style={{ color: meta.accent }}
+                    >
+                      {c[0]}
+                    </span>
+                  ))}
+                </div>
+                <div>
+                  <h3 className="text-2xl font-black text-white">{p.name}</h3>
+                  <p className="mt-2 text-sm text-[var(--text-muted-dark)]">Decentralised finance themes</p>
+                  <p className="mt-4 text-sm text-[var(--text-muted-dark)]">{p.coins.length} coins</p>
+                  <p className="mt-2 inline-block rounded-full px-3 py-1 text-sm font-bold" style={{ color: meta.accent, background: `${meta.accent}22` }}>
+                    ↑ {p.ret}% this year
+                  </p>
+                  <button type="button" className="mt-6 rounded-full border border-white/20 px-5 py-2 text-sm font-bold text-white hover:border-[var(--cyan)]">
+                    Invest →
+                  </button>
+                </div>
               </article>
             );
           })}

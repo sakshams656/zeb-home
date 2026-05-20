@@ -2,14 +2,13 @@
 
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
-import { SectionHeader } from "@/components/ui/section-header";
 import { gsap, prefersReducedMotion } from "@/lib/gsap";
 
-const STATS = [
-  { value: "98%", label: "Cold storage", desc: "Multi-sig across geographies" },
-  { value: "0", label: "Exchange hacks", desc: "Since 2014" },
-  { value: "5-of-3", label: "Multi-sig", desc: "Custody architecture" },
-  { value: "$100M", label: "Insurance", desc: "Custodial coverage" }
+const PILLARS = [
+  { title: "Cold storage", body: "98% of assets in multi-sig cold wallets across geographies." },
+  { title: "Multi-sig wallets", body: "5-of-3 custody architecture for institutional-grade safety." },
+  { title: "Insurance fund", body: "$100M custodial coverage on qualified balances." },
+  { title: "Zero hacks since 2014", body: "A decade-long track record you can verify." }
 ];
 
 export function Security() {
@@ -17,8 +16,10 @@ export function Security() {
 
   useGSAP(
     () => {
-      if (prefersReducedMotion() || !ref.current) return;
-      const path = ref.current.querySelector(".shield-svg path") as SVGPathElement | null;
+      const root = ref.current;
+      if (prefersReducedMotion() || !root) return;
+
+      const path = root.querySelector(".shield-path") as SVGPathElement | null;
       if (path) {
         const len = path.getTotalLength();
         gsap.fromTo(
@@ -28,43 +29,59 @@ export function Security() {
             strokeDashoffset: 0,
             duration: 1.5,
             ease: "power2.out",
-            scrollTrigger: { trigger: "#security", start: "top 70%", once: true }
+            scrollTrigger: { trigger: root, start: "top 70%", once: true }
           }
         );
+        gsap.from(root.querySelectorAll(".shield-facet"), {
+          opacity: 0,
+          stagger: 0.08,
+          duration: 0.5,
+          delay: 0.8,
+          scrollTrigger: { trigger: root, start: "top 70%", once: true }
+        });
       }
-      gsap.from(".security-icon", {
-        scale: 0,
+
+      gsap.from(root.querySelectorAll(".security-pillar"), {
+        scale: 0.8,
         opacity: 0,
-        stagger: 0.15,
+        stagger: 0.12,
         duration: 0.6,
-        ease: "back.out(2)",
-        scrollTrigger: { trigger: "#security", start: "top 70%", once: true }
+        ease: "back.out(1.7)",
+        scrollTrigger: { trigger: root, start: "top 65%", once: true }
       });
     },
     { scope: ref }
   );
 
   return (
-    <section id="security" ref={ref} className="scroll-mt-20 px-6 py-20">
-      <div className="container-zeb">
-        <SectionHeader chip="Security" title="Institutional-grade protection" subtitle="FIU-IND registered · ISO 27001 · SOC 2 Type II" />
-        <div className="mb-10 flex justify-center">
-          <svg className="shield-svg h-24 w-24 text-[var(--cyan)]" viewBox="0 0 64 72" fill="none" aria-hidden>
-            <path
-              d="M32 4 L56 14 V36 C56 52 44 64 32 68 C20 64 8 52 8 36 V14 Z"
-              stroke="currentColor"
-              strokeWidth={2}
-              fill="none"
-            />
-          </svg>
-        </div>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {STATS.map((s) => (
-            <div key={s.label} className="security-icon rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)] p-6 text-center">
-              <p className="text-3xl font-black text-[var(--cyan)]">{s.value}</p>
-              <p className="mt-2 font-bold text-[var(--text)]">{s.label}</p>
-              <p className="mt-1 text-sm text-[var(--text-muted)]">{s.desc}</p>
-            </div>
+    <section id="security" ref={ref} className="scroll-mt-24 bg-[#040812] px-6 py-[120px]">
+      <div className="mx-auto max-w-[1000px] text-center">
+        <h2 className="text-[clamp(2.5rem,4vw,4rem)] font-black text-[var(--text-on-dark)]">Built like a fortress.</h2>
+        <p className="mt-4 text-lg text-[var(--text-muted-dark)]">
+          Zero hacks since 2014. FIU-IND registered. ISO 27001. SOC 2 Type II.
+        </p>
+
+        <svg className="mx-auto mt-12" width={300} height={360} viewBox="0 0 300 360" aria-hidden>
+          <path
+            className="shield-path"
+            d="M150 20 L270 70 V180 C270 280 210 330 150 350 C90 330 30 280 30 180 V70 Z"
+            fill="none"
+            stroke="var(--cyan)"
+            strokeWidth={2}
+          />
+          <path className="shield-facet" d="M150 60 L220 95 V175 L150 210 L80 175 V95 Z" fill="rgba(0,184,230,0.08)" />
+          <path className="shield-facet" d="M150 120 L190 140 V190 L150 210 L110 190 V140 Z" fill="rgba(0,184,230,0.12)" />
+        </svg>
+
+        <div className="mt-12 grid gap-4 sm:grid-cols-2">
+          {PILLARS.map((p) => (
+            <article
+              key={p.title}
+              className="security-pillar rounded-2xl border border-[var(--border-dark)] bg-[var(--surface-dark)] p-6 text-left"
+            >
+              <h3 className="font-bold text-[var(--text-on-dark)]">{p.title}</h3>
+              <p className="mt-2 text-sm text-[var(--text-muted-dark)]">{p.body}</p>
+            </article>
           ))}
         </div>
       </div>

@@ -19,8 +19,8 @@ export const metadata: Metadata = {
     template: "%s | ZebPay"
   },
   description:
-    "Buy, sell, and earn crypto on ZebPay. 6M+ users. Spot, Futures, SIP, CryptoPacks, AI Insights. FIU-IND registered. ISO & SOC 2 certified.",
-  keywords: ["crypto exchange india", "buy bitcoin india", "zebpay", "crypto sip", "btc inr"],
+    "Buy, sell, and earn crypto on ZebPay. 6M+ users, ₹2T+ volume. Spot, Futures, SIP, AI Insights. FIU-IND registered, ISO & SOC 2 certified.",
+  keywords: ["crypto exchange india", "buy bitcoin india", "crypto sip", "zebpay", "btc inr price"],
   openGraph: {
     type: "website",
     locale: "en_IN",
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     siteName: "ZebPay",
     title: "ZebPay — India's Pro-Grade Crypto Exchange",
     description: "Trade smarter with pro-grade tools, RMS, and FIU-IND compliance.",
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }]
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "ZebPay — Trade Crypto in India" }]
   },
   twitter: {
     card: "summary_large_image",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     title: "ZebPay — India's Pro-Grade Crypto Exchange",
     description: "Trade smarter with pro-grade tools, RMS, and FIU-IND compliance."
   },
-  robots: { index: true, follow: true },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
   alternates: { canonical: "/" }
 };
 
@@ -60,7 +60,7 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://apps.apple.com" />
         <link rel="dns-prefetch" href="https://play.google.com" />
       </head>
-      <body className="min-h-screen antialiased font-sans">
+      <body className="min-h-screen bg-[#040812] antialiased font-sans text-[var(--text-on-dark)]">
         <Providers>{children}</Providers>
       </body>
     </html>
