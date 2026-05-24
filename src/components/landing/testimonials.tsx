@@ -80,7 +80,7 @@ export function Testimonials() {
           &ldquo;{t.quote}&rdquo;
         </blockquote>
         <footer className="mt-10 flex items-center justify-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--cyan)] text-sm font-bold text-[var(--navy)]">
+          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--brand)] text-sm font-bold text-white">
             {t.name
               .split(" ")
               .map((w) => w[0])

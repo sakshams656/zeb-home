@@ -1,14 +1,28 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { PhoneFrame } from "@/components/ui/phone-frame";
-import { ExchangeListScreen } from "@/components/phone-demo/exchange-list-screen";
-import { gsap, SplitText, ZEB_EASE, prefersReducedMotion } from "@/lib/gsap";
+import { gsap, ZEB_EASE, prefersReducedMotion } from "@/lib/gsap";
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://zebpay.com";
 
 type Dot = { x: number; y: number; vx: number; vy: number };
+
+function TrustBadge() {
+  return (
+    <svg width={18} height={18} viewBox="0 0 24 24" fill="none" aria-hidden className="shrink-0 text-[var(--cyan)]">
+      <path
+        d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"
+        stroke="currentColor"
+        strokeWidth={1.75}
+        strokeLinejoin="round"
+      />
+      <path d="M9 12l2 2 4-4" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
 
 export function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -69,7 +83,7 @@ export function Hero() {
           d.y += (dy / dist) * 2;
         }
 
-        ctx.fillStyle = "rgba(0,184,230,0.4)";
+        ctx.fillStyle = "rgba(27,85,224,0.45)";
         ctx.beginPath();
         ctx.arc(d.x, d.y, 1, 0, Math.PI * 2);
         ctx.fill();
@@ -81,7 +95,7 @@ export function Hero() {
           const b = dots[j];
           const dist = Math.hypot(a.x - b.x, a.y - b.y);
           if (dist < 120) {
-            ctx.strokeStyle = `rgba(0,184,230,${0.08 * (1 - dist / 120)})`;
+            ctx.strokeStyle = `rgba(27,85,224,${0.1 * (1 - dist / 120)})`;
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
@@ -113,114 +127,70 @@ export function Hero() {
       const root = contentRef.current;
       if (prefersReducedMotion() || !root) return;
 
-      const splits: SplitText[] = [];
-      root.querySelectorAll(".hero-h1").forEach((el) => {
-        const split = new SplitText(el as HTMLElement, { type: "chars" });
-        splits.push(split);
-        gsap.set(split.chars, { opacity: 0, y: 80, rotateX: -60 });
+      gsap.set([".hero-trust", ".hero-h1-line", ".hero-h1-accent", ".hero-cta", ".hero-phone"], {
+        opacity: 0,
+        y: 28
       });
-
-      gsap.set([".hero-sub", ".stat-block", ".hero-phone", ".hero-ctas > *"], { opacity: 0, y: 24 });
 
       const tl = gsap.timeline({ defaults: { ease: ZEB_EASE } });
 
-      const chars = root.querySelectorAll(".hero-h1 .char, .hero-h1 *");
-      tl.to(
-        splits.length ? splits[0].chars : chars,
-        { opacity: 1, y: 0, rotateX: 0, stagger: 0.018, duration: 0.5 },
-        0
-      );
-      tl.to(".hero-sub", { opacity: 1, y: 0, duration: 0.4 }, 0.15);
-
-      tl.fromTo(".stat-users", { x: -60, opacity: 0 }, { x: 0, opacity: 1, duration: 0.45 }, 0.25);
-      tl.fromTo(".stat-volume", { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45 }, 0.32);
-      tl.fromTo(".stat-assets", { x: 60, opacity: 0 }, { x: 0, opacity: 1, duration: 0.45 }, 0.38);
-
-      root.querySelectorAll(".stat-value").forEach((el) => {
-        const target = Number((el as HTMLElement).dataset.target ?? 0);
-        const prefix = (el as HTMLElement).dataset.prefix ?? "";
-        const suffix = (el as HTMLElement).dataset.suffix ?? "";
-        const obj = { v: 0 };
-        tl.to(
-          obj,
-          {
-            v: target,
-            duration: 0.8,
-            ease: "power2.out",
-            onUpdate: () => {
-              (el as HTMLElement).textContent = `${prefix}${Math.round(obj.v)}${suffix}`;
-            }
-          },
-          0.35
-        );
-      });
-
-      tl.fromTo(".hero-phone", { y: 80, opacity: 0, rotateY: -12 }, { y: 0, opacity: 1, rotateY: 0, duration: 0.7 }, 0.5);
-      tl.fromTo(".hero-ctas > *", { opacity: 0, y: 20 }, { opacity: 1, y: 0, stagger: 0.1, duration: 0.4 }, 0.75);
+      tl.to(".hero-trust", { opacity: 1, y: 0, duration: 0.45 }, 0);
+      tl.to(".hero-h1-line", { opacity: 1, y: 0, duration: 0.55 }, 0.08);
+      tl.to(".hero-h1-accent", { opacity: 1, y: 0, duration: 0.55 }, 0.16);
+      tl.to(".hero-cta", { opacity: 1, y: 0, duration: 0.5 }, 0.28);
+      tl.fromTo(".hero-phone", { y: 80, opacity: 0, rotateY: -12 }, { y: 0, opacity: 1, rotateY: 0, duration: 0.7 }, 0.4);
 
       const mm = gsap.matchMedia();
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         gsap.to(".hero-phone", { y: -14, duration: 4, yoyo: true, repeat: -1, ease: "sine.inOut", delay: 2 });
       });
 
-      return () => {
-        splits.forEach((s) => s.revert());
-        mm.revert();
-      };
+      return () => mm.revert();
     },
     { scope: sectionRef }
   );
 
   return (
-    <section ref={sectionRef} className="hero-section relative min-h-screen bg-[#040812]">
+    <section ref={sectionRef} className="hero-section relative min-h-screen">
       <div ref={contentRef} className="relative flex min-h-screen w-full items-center justify-center overflow-hidden">
         <canvas ref={canvasRef} className="absolute inset-0 z-0" aria-hidden />
 
-        <div className="relative z-10 flex w-full max-w-[1200px] flex-col items-center px-6 pt-24 text-center lg:flex-row lg:items-center lg:justify-between lg:text-left">
-          <div className="hero-copy max-w-xl">
-            <h1 className="hero-h1 text-[clamp(2.5rem,6vw,5rem)] font-black leading-[1.05] text-[var(--text-on-dark)]">
-              The exchange
-              <br />
-              India trusts.
-            </h1>
-            <p className="hero-sub mt-6 text-lg text-[var(--text-muted-dark)]">
-              Buy, sell, and earn crypto — regulated, insured, and built for you.
+        <div className="relative z-10 flex w-full max-w-[1200px] flex-col items-center gap-12 px-6 pt-28 pb-16 lg:flex-row lg:items-center lg:justify-between lg:gap-10 lg:pt-24 lg:text-left">
+          <div className="hero-copy w-full max-w-2xl text-left">
+            <p className="hero-trust flex items-center gap-2.5 text-sm font-semibold text-[var(--text-on-dark)] sm:text-base">
+              <TrustBadge />
+              Trusted by 6M+ Users
             </p>
 
-            <div className="mt-10 grid grid-cols-3 gap-4 lg:gap-8">
-              <div className="stat-block stat-users">
-                <p className="stat-value text-[clamp(2rem,5vw,4.5rem)] font-black text-white" data-target={6} data-suffix="M+">
-                  0M+
-                </p>
-                <p className="text-sm text-[var(--text-muted-dark)]">Users</p>
-              </div>
-              <div className="stat-block stat-volume">
-                <p className="stat-value text-[clamp(2rem,5vw,4.5rem)] font-black text-white" data-target={2} data-prefix="₹" data-suffix="T+">
-                  ₹0T+
-                </p>
-                <p className="text-sm text-[var(--text-muted-dark)]">Volume</p>
-              </div>
-              <div className="stat-block stat-assets">
-                <p className="stat-value text-[clamp(2rem,5vw,4.5rem)] font-black text-white" data-target={200} data-suffix="+">
-                  0+
-                </p>
-                <p className="text-sm text-[var(--text-muted-dark)]">Assets</p>
-              </div>
-            </div>
+            <h1 className="mt-6 font-black leading-[1.06] tracking-tight">
+              <span className="hero-h1-line block text-[clamp(4rem,4.5vw,4.6rem)] text-white">
+                India&apos;s Oldest and Most Trusted
+              </span>
+              <span className="hero-h1-accent mt-1 block text-[clamp(3rem,4.5vw,4.5rem)] text-[var(--brand)]">
+                Crypto Trading Platform
+              </span>
+            </h1>
 
-            <div className="hero-ctas mt-10 flex flex-wrap justify-center gap-4 lg:justify-start">
-              <a href={`${APP_URL}/signup`} className="btn-primary">
-                Start trading →
-              </a>
-              <a href="#showcase" className="rounded-full border border-[var(--border-dark)] px-6 py-3 font-bold text-[var(--text-on-dark)] hover:border-[var(--cyan)]">
-                See all products
-              </a>
-            </div>
+            <a href={`${APP_URL}/signup`} className="hero-cta btn-hero-primary mt-10">
+              Get started
+              <span className="text-[1.15em] leading-none" aria-hidden>
+                →
+              </span>
+            </a>
           </div>
 
-          <div className="hero-phone mt-12 shrink-0 lg:mt-0">
+          <div className="hero-phone shrink-0">
             <PhoneFrame tilt={-8}>
-              <ExchangeListScreen />
+              <div className="relative h-full w-full">
+                <Image
+                  src="/homePage.png"
+                  alt="ZebPay app home screen showing portfolio and quick links"
+                  fill
+                  className="object-cover object-top"
+                  sizes="270px"
+                  priority
+                />
+              </div>
             </PhoneFrame>
           </div>
         </div>

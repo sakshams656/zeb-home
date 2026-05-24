@@ -89,7 +89,7 @@ export function Footer() {
 
       <button
         type="button"
-        className="back-to-top fixed bottom-6 right-6 z-40 rounded-full bg-[var(--cyan)] px-4 py-2 text-sm font-bold text-[var(--navy)] opacity-0 shadow-lg"
+        className="back-to-top fixed bottom-6 right-6 z-40 rounded-full bg-[var(--brand)] px-4 py-2 text-sm font-bold text-white opacity-0 shadow-lg"
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         aria-label="Back to top"
       >

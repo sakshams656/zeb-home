@@ -6,7 +6,7 @@ import { PACKS, type PackId } from "@/lib/market-data";
 import { gsap, ZEB_EASE, prefersReducedMotion } from "@/lib/gsap";
 
 const PACK_META: Record<PackId, { accent: string; bg: string }> = {
-  defi: { accent: "#00b8e6", bg: "#0d1f2d" },
+  defi: { accent: "#1b55e0", bg: "#0d1f2d" },
   l1: { accent: "#7f77dd", bg: "#0d0d2b" },
   ai: { accent: "#00b07a", bg: "#0a1a0a" },
   meme: { accent: "#f5a623", bg: "#2b1a0a" }

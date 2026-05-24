@@ -30,7 +30,7 @@ export function AppDownload() {
 
   return (
     <section ref={ref} className="app-download relative overflow-hidden bg-[var(--navy)] px-6 py-[120px]">
-      <div className="pointer-events-none absolute right-0 top-1/2 h-[500px] w-[500px] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(0,184,230,0.12)_0%,transparent_70%)]" />
+      <div className="pointer-events-none absolute right-0 top-1/2 h-[500px] w-[500px] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(27,85,224,0.14)_0%,transparent_70%)]" />
       <div className="mx-auto grid max-w-[1200px] items-center gap-12 lg:grid-cols-[55%_45%]">
         <div className="download-copy">
           <h2 className="text-[clamp(2.5rem,4vw,3.5rem)] font-black leading-tight text-[var(--text-on-dark)]">

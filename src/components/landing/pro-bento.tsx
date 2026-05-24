@@ -111,7 +111,7 @@ export function ProBento() {
             <ul className="mt-4 space-y-2">
               {[
                 { name: "Trading", bal: 62, color: "#1b55e0" },
-                { name: "Earn", bal: 28, color: "#00b8e6" },
+                { name: "Earn", bal: 28, color: "#2a66e8" },
                 { name: "SIP", bal: 10, color: "#00b07a" }
               ].map((w) => (
                 <li key={w.name} className="flex items-center gap-2 text-xs">
@@ -131,14 +131,14 @@ export function ProBento() {
                 <button
                   type="button"
                   onClick={() => setApiTab("python")}
-                  className={`rounded px-2 py-1 ${apiTab === "python" ? "bg-[var(--cyan)] text-[var(--navy)]" : "text-[var(--text-muted-dark)]"}`}
+                  className={`rounded px-2 py-1 ${apiTab === "python" ? "bg-[var(--brand)] text-white" : "text-[var(--text-muted-dark)]"}`}
                 >
                   Python
                 </button>
                 <button
                   type="button"
                   onClick={() => setApiTab("curl")}
-                  className={`rounded px-2 py-1 ${apiTab === "curl" ? "bg-[var(--cyan)] text-[var(--navy)]" : "text-[var(--text-muted-dark)]"}`}
+                  className={`rounded px-2 py-1 ${apiTab === "curl" ? "bg-[var(--brand)] text-white" : "text-[var(--text-muted-dark)]"}`}
                 >
                   cURL
                 </button>

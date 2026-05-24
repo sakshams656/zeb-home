@@ -69,8 +69,8 @@ export function Security() {
             stroke="var(--cyan)"
             strokeWidth={2}
           />
-          <path className="shield-facet" d="M150 60 L220 95 V175 L150 210 L80 175 V95 Z" fill="rgba(0,184,230,0.08)" />
-          <path className="shield-facet" d="M150 120 L190 140 V190 L150 210 L110 190 V140 Z" fill="rgba(0,184,230,0.12)" />
+          <path className="shield-facet" d="M150 60 L220 95 V175 L150 210 L80 175 V95 Z" fill="rgba(27,85,224,0.08)" />
+          <path className="shield-facet" d="M150 120 L190 140 V190 L150 210 L110 190 V140 Z" fill="rgba(27,85,224,0.12)" />
         </svg>
 
         <div className="mt-12 grid gap-4 sm:grid-cols-2">

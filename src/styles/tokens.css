@@ -3,12 +3,17 @@
 :root {
   --navy: #0a0f2e;
   --navy-mid: #122968;
-  --cyan: #00b8e6;
-  --cyan-dim: #0099c4;
+  --zeb-logo-blue: #1b55e0;
+  --brand: var(--zeb-logo-blue);
+  --brand-hover: #1648c7;
+  --brand-dim: #1648c7;
+  --brand-rgb: 27, 85, 224;
+  --cyan: var(--zeb-logo-blue);
+  --cyan-dim: var(--brand-dim);
   --gold: #f5a623;
   --success: #00b07a;
   --danger: #e33e5c;
-  --blue: #1b55e0;
+  --blue: var(--zeb-logo-blue);
 
   --bg: #f6f8fc;
   --bg-elevated: #ffffff;
@@ -16,8 +21,8 @@
   --text: #0a0f2e;
   --text-muted: #5a6478;
   --border: rgba(10, 15, 46, 0.1);
-  --accent: var(--cyan);
-  --accent-text: var(--navy);
+  --accent: var(--brand);
+  --accent-text: #ffffff;
   --shadow: 0 8px 32px rgba(10, 15, 46, 0.08);
   --shadow-lg: 0 20px 60px rgba(10, 15, 46, 0.12);
   --hero-gradient: linear-gradient(135deg, #f6f8fc 0%, #e8eef9 50%, #dce8ff 100%);
@@ -32,8 +37,8 @@
   --text: #f0f4ff;
   --text-muted: rgba(240, 244, 255, 0.65);
   --border: rgba(255, 255, 255, 0.08);
-  --accent: var(--cyan);
-  --accent-text: var(--navy);
+  --accent: var(--brand);
+  --accent-text: #ffffff;
   --shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
   --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.45);
   --hero-gradient: linear-gradient(180deg, #0a0f2e 0%, #0d1235 60%, #121a48 100%);

@@ -4,22 +4,16 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger, ZEB_EASE, prefersReducedMotion } from "@/lib/gsap";
+import { Logo } from "./logo";
+import { NAV_ALL_GROUPS, NAV_COMPANY, NAV_MENU_GROUPS } from "./nav-config";
+import { NavDropdown } from "./nav-dropdown";
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://zebpay.com";
 
-const FULL_LINKS = [
-  { href: "#showcase", label: "Spot" },
-  { href: "#showcase", label: "Futures" },
-  { href: "#earn", label: "Earn" },
-  { href: "#showcase", label: "SIP" },
-  { href: "#packs", label: "CryptoPacks" },
-  { href: "#pro", label: "Pro" }
-];
-
-const PILL_LINKS = FULL_LINKS.slice(0, 3);
-
 export function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [openId, setOpenId] = useState<string | null>(null);
+  const [mobileGroup, setMobileGroup] = useState<string | null>(null);
   const navRef = useRef<HTMLElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
 
@@ -29,65 +23,41 @@ export function Nav() {
       const inner = innerRef.current;
       if (prefersReducedMotion() || !header || !inner) return;
 
-      gsap.from(".nav-logo", { opacity: 0, x: -16, duration: 0.6, ease: ZEB_EASE });
-      gsap.from(".nav-link", { opacity: 0, y: -8, stagger: 0.05, duration: 0.45, ease: ZEB_EASE, delay: 0.1 });
+      gsap.from(".nav-logo", { opacity: 0, y: -10, duration: 0.6, ease: ZEB_EASE });
+      gsap.from(".nav-dropdown-trigger", { opacity: 0, y: -8, stagger: 0.05, duration: 0.45, ease: ZEB_EASE, delay: 0.1 });
 
-      const topInner = {
-        maxWidth: "100%",
-        borderRadius: 0,
-        background: "transparent",
-        backdropFilter: "blur(0px)",
-        border: "1px solid transparent",
-        boxShadow: "none",
-        paddingLeft: 24,
-        paddingRight: 24
+      const SCROLL_RANGE = 80;
+      const SCROLL_INSET = 16;
+
+      gsap.set(inner, { position: "absolute", top: 0, left: 0, right: 0 });
+
+      const applyNavProgress = (progress: number) => {
+        const p = gsap.utils.clamp(0, 1, progress);
+        const inset = p * SCROLL_INSET;
+        gsap.set(header, { top: p * 12 });
+        gsap.set(inner, {
+          left: inset,
+          right: inset,
+          borderRadius: p * 36,
+          background: `rgba(10,15,46,${p * 0.55})`,
+          backdropFilter: p > 0.02 ? `blur(${p * 28}px) saturate(${100 + p * 80}%)` : "none",
+          border: `1px solid rgba(27,85,224,${p * 0.2})`,
+          boxShadow:
+            p > 0.08
+              ? `0 ${p * 8}px ${p * 32}px rgba(0,0,0,${p * 0.35}), inset 0 1px 0 rgba(255,255,255,${p * 0.08})`
+              : "none"
+        });
       };
 
-      const scrolledInner = {
-        maxWidth: 720,
-        marginLeft: "auto",
-        marginRight: "auto",
-        borderRadius: 999,
-        background: "rgba(10,15,46,0.55)",
-        backdropFilter: "blur(28px) saturate(180%)",
-        border: "1px solid rgba(0,184,230,0.15)",
-        boxShadow: "0 8px 32px rgba(0,0,0,0.35), 0 1px 0 rgba(255,255,255,0.08) inset",
-        paddingLeft: 20,
-        paddingRight: 20
-      };
-
-      gsap.set(header, { top: 0, paddingLeft: 0, paddingRight: 0 });
-      gsap.set(inner, topInner);
-
-      const toScrolled = () => {
-        gsap.to(header, { top: 12, paddingLeft: 12, paddingRight: 12, duration: 0.5, ease: ZEB_EASE });
-        gsap.to(inner, { ...scrolledInner, duration: 0.5, ease: ZEB_EASE });
-        gsap.to(".nav-full-links", { opacity: 0, pointerEvents: "none", duration: 0.2 });
-        gsap.to(".nav-pill-links", { opacity: 1, pointerEvents: "auto", duration: 0.3, delay: 0.15 });
-        gsap.to(".nav-login", { opacity: 0, width: 0, margin: 0, padding: 0, overflow: "hidden", duration: 0.25 });
-      };
-
-      const toTop = () => {
-        gsap.to(header, { top: 0, paddingLeft: 0, paddingRight: 0, duration: 0.4, ease: ZEB_EASE });
-        gsap.to(inner, { ...topInner, duration: 0.4, ease: ZEB_EASE });
-        gsap.to(".nav-full-links", { opacity: 1, pointerEvents: "auto", duration: 0.3, delay: 0.1 });
-        gsap.to(".nav-pill-links", { opacity: 0, pointerEvents: "none", duration: 0.2 });
-        gsap.to(".nav-login", { opacity: 1, width: "auto", duration: 0.3, delay: 0.1 });
-      };
-
-      const syncFromScroll = () => {
-        if (window.scrollY > 80) toScrolled();
-        else toTop();
-      };
+      applyNavProgress(Math.min(1, window.scrollY / SCROLL_RANGE));
 
       ScrollTrigger.create({
-        start: "top -80",
-        onEnter: toScrolled,
-        onLeaveBack: toTop,
-        onRefresh: syncFromScroll
+        start: "top top",
+        end: `+=${SCROLL_RANGE}`,
+        scrub: 0.4,
+        onUpdate: (self) => applyNavProgress(self.progress),
+        onRefresh: (self) => applyNavProgress(self.progress)
       });
-
-      if (window.scrollY > 80) syncFromScroll();
     },
     { scope: navRef }
   );
@@ -95,90 +65,119 @@ export function Nav() {
   useGSAP(
     () => {
       if (!menuOpen || prefersReducedMotion()) return;
-      gsap.from(".mobile-nav-link", { opacity: 0, x: 40, stagger: 0.05, duration: 0.4, ease: ZEB_EASE });
+      gsap.from(".mobile-nav-group", { opacity: 0, y: 16, stagger: 0.06, duration: 0.4, ease: ZEB_EASE });
     },
     { dependencies: [menuOpen] }
   );
 
+  const closeMobile = () => {
+    setMenuOpen(false);
+    setMobileGroup(null);
+  };
+
   return (
     <>
-      <header ref={navRef} className="nav-header fixed left-0 right-0 top-0 z-50">
+      <header ref={navRef} className="nav-header fixed left-0 right-0 top-0 z-50 h-[72px] w-full">
         <nav
           ref={innerRef}
-          className="nav-inner mx-auto flex h-[72px] max-w-[1200px] items-center justify-between gap-4 border border-transparent px-6 transition-colors"
+          className="nav-inner border border-transparent will-change-[border-radius,box-shadow,left,right]"
         >
-          <Link href="/" className="nav-logo flex items-center gap-2 font-black text-[var(--text-on-dark)]">
-            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-[var(--cyan)] to-[var(--blue)] text-sm text-[var(--navy)]">
-              Z
-            </span>
-            <span className="nav-wordmark hidden sm:inline">ZebPay</span>
-          </Link>
+          <div className="flex h-[72px] w-full items-center justify-between gap-3 px-4 sm:gap-4 sm:px-6 lg:px-8">
+            <Link href="/" className="nav-logo flex shrink-0 items-center">
+              <Logo />
+            </Link>
 
-          <ul className="nav-full-links hidden items-center gap-5 lg:flex">
-            {FULL_LINKS.map((l) => (
-              <li key={l.label}>
-                <a href={l.href} className="nav-link text-sm font-semibold text-[var(--text-muted-dark)] hover:text-[var(--cyan)]">
-                  {l.label}
-                </a>
-              </li>
-            ))}
-          </ul>
+            <ul className="nav-menus hidden flex-1 items-center justify-center gap-0 lg:flex">
+              {NAV_MENU_GROUPS.map((group) => (
+                <NavDropdown key={group.id} group={group} openId={openId} setOpenId={setOpenId} />
+              ))}
+            </ul>
 
-          <ul className="nav-pill-links pointer-events-none absolute left-1/2 flex -translate-x-1/2 items-center gap-4 opacity-0 lg:flex">
-            {PILL_LINKS.map((l) => (
-              <li key={`pill-${l.label}`}>
-                <a href={l.href} className="text-sm font-semibold text-[var(--text-on-dark)]">
-                  {l.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-
-          <div className="flex items-center gap-2">
-            <a
-              href={`${APP_URL}/login`}
-              className="nav-login hidden text-sm font-bold text-[var(--text-muted-dark)] hover:text-[var(--cyan)] sm:inline"
-            >
-              Log in
-            </a>
-            <a href={`${APP_URL}/signup`} className="btn-primary hidden text-sm sm:inline-flex">
-              Get started
-            </a>
-            <button
-              type="button"
-              className="flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--border-dark)] text-[var(--text-on-dark)] lg:hidden"
-              onClick={() => setMenuOpen(true)}
-              aria-label="Open menu"
-            >
-              ☰
-            </button>
+            <div className="flex items-center gap-2 sm:gap-3">
+              <ul className="hidden lg:flex">
+                <NavDropdown group={NAV_COMPANY} openId={openId} setOpenId={setOpenId} align="right" />
+              </ul>
+              <a href={`${APP_URL}/signup`} className="btn-primary hidden text-sm sm:inline-flex">
+                Get started
+              </a>
+              <button
+                type="button"
+                className="flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--border-dark)] text-[var(--text-on-dark)] lg:hidden"
+                onClick={() => setMenuOpen(true)}
+                aria-label="Open menu"
+              >
+                ☰
+              </button>
+            </div>
           </div>
         </nav>
       </header>
 
       {menuOpen && (
-        <div className="fixed inset-0 z-[60] bg-[#040812]/98 backdrop-blur-md lg:hidden">
+        <div className="fixed inset-0 z-[60] overflow-y-auto bg-[#040812]/98 backdrop-blur-md lg:hidden">
           <button
             type="button"
             className="absolute right-6 top-6 text-2xl text-[var(--text-on-dark)]"
-            onClick={() => setMenuOpen(false)}
+            onClick={closeMobile}
             aria-label="Close menu"
           >
             ✕
           </button>
-          <nav className="flex h-full flex-col justify-center gap-6 px-10">
-            {[...FULL_LINKS, { href: `${APP_URL}/login`, label: "Log in" }, { href: `${APP_URL}/signup`, label: "Get started" }].map(
-              (l) => (
-                <a
-                  key={l.label}
-                  href={l.href}
-                  className="mobile-nav-link text-2xl font-bold text-[var(--text-on-dark)]"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {l.label}
-                </a>
-              )
-            )}
+          <nav className="flex min-h-full flex-col px-6 pb-10 pt-20">
+            <div className="flex flex-col gap-2">
+              {NAV_ALL_GROUPS.map((group) => {
+                const expanded = mobileGroup === group.id;
+                return (
+                  <div key={group.id} className="mobile-nav-group border-b border-[var(--border-dark)] pb-2">
+                    <button
+                      type="button"
+                      className="flex w-full items-center justify-between py-4 text-left text-lg font-bold text-[var(--text-on-dark)]"
+                      aria-expanded={expanded}
+                      onClick={() => setMobileGroup(expanded ? null : group.id)}
+                    >
+                      {group.label}
+                      <svg
+                        className="h-5 w-5 shrink-0 text-[var(--text-muted-dark)] transition-transform"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        aria-hidden
+                        style={{ transform: expanded ? "rotate(180deg)" : "rotate(0deg)" }}
+                      >
+                        <path
+                          d="M4 6l4 4 4-4"
+                          stroke="currentColor"
+                          strokeWidth={1.75}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </button>
+                    {expanded && (
+                      <ul className="mb-2 space-y-1 pl-1">
+                        {group.items.map((item) => (
+                          <li key={item.label}>
+                            <a
+                              href={item.href}
+                              className="mobile-nav-link block rounded-lg px-3 py-2.5 text-base text-[var(--text-muted-dark)] hover:bg-white/5 hover:text-[var(--cyan)]"
+                              onClick={closeMobile}
+                            >
+                              {item.label}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+            <a
+              href={`${APP_URL}/signup`}
+              className="btn-primary mobile-nav-link mt-8 w-full justify-center text-center"
+              onClick={closeMobile}
+            >
+              Get started
+            </a>
           </nav>
         </div>
       )}

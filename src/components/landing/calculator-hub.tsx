@@ -499,7 +499,7 @@ export function CalculatorHub() {
             <div className="flex flex-col">
               <svg viewBox="0 0 320 200" className="h-[200px] w-full shrink-0">
                 {viz.kind === "area" && "path" in viz && (
-                  <path ref={pathRef} d={viz.path} fill="rgba(0,184,230,0.12)" stroke="var(--cyan)" strokeWidth={2} />
+                  <path ref={pathRef} d={viz.path} fill="rgba(27,85,224,0.12)" stroke="var(--cyan)" strokeWidth={2} />
                 )}
                 {viz.kind === "line" && "path" in viz && (
                   <>
@@ -566,7 +566,7 @@ export function CalculatorHub() {
                   <g transform="translate(40 24)">
                     {viz.cols.map((c, i) => {
                       const h = (c.percent / 100) * 140;
-                      const colors = ["#1b55e0", "#00b8e6", "#00b07a"];
+                      const colors = ["#1b55e0", "#2a66e8", "#00b07a"];
                       return (
                         <g key={c.index} transform={`translate(${i * 90} 0)`}>
                           <rect x={0} y={160 - h} width={56} height={h} rx={6} fill={colors[i]} />

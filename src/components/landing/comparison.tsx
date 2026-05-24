@@ -64,7 +64,7 @@ export function Comparison() {
               <tr className="text-[var(--text-muted-dark)]">
                 <th className="p-4 text-left font-semibold">Feature</th>
                 <th className="relative p-4 text-center">
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[var(--cyan)] px-3 py-0.5 text-[10px] font-extrabold text-[var(--navy)]">
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[var(--brand)] px-3 py-0.5 text-[10px] font-extrabold text-white">
                     Recommended
                   </span>
                   <span className="font-black text-[var(--text-on-dark)]">ZebPay</span>
@@ -77,7 +77,7 @@ export function Comparison() {
               {FEATURES.map((f, i) => (
                 <tr key={f} className="compare-row border-t border-[var(--border-dark)]">
                   <td className="p-4 text-[var(--text-on-dark)]">{f}</td>
-                  <td className="bg-[rgba(0,184,230,0.06)] p-4 text-center border-t-2 border-[var(--cyan)]">
+                  <td className="bg-[rgba(27,85,224,0.08)] p-4 text-center border-t-2 border-[var(--brand)]">
                     <Cell v={ZEB[i]} />
                   </td>
                   <td className="p-4 text-center">
