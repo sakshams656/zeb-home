@@ -165,7 +165,7 @@ export function Markets() {
   const chartCache = useRef<Map<string, ChartPoint[]>>(new Map());
   const hoverChartTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const HOVER_CHART_DELAY_MS = 100;
+  const HOVER_CHART_DELAY_MS = 200;
 
   const scheduleChartOnHover = useCallback((sym: string) => {
     if (hoverChartTimer.current) clearTimeout(hoverChartTimer.current);
