@@ -75,7 +75,7 @@ export function PriceTicker() {
   }, []);
 
   return (
-    <div ref={ref} className="price-ticker border-y border-[var(--border-dark)] bg-[#040812] py-4">
+    <div ref={ref} className="price-ticker overflow-hidden border-y border-[var(--border-dark)] bg-[#040812] py-4">
       <TickerRow />
       <TickerRow reverse />
     </div>

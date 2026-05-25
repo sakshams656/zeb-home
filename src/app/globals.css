@@ -88,10 +88,60 @@ body {
 .landing-page {
   background: #040812;
   color: var(--text-on-dark);
+  overflow-x: clip;
+}
+
+html,
+body {
+  overflow-x: clip;
 }
 
 .hero-section {
   background: var(--hero-landing-gradient);
+}
+
+.product-showcase {
+  background:
+    radial-gradient(60% 50% at 15% 18%, rgba(27, 85, 224, 0.28) 0%, transparent 62%),
+    radial-gradient(45% 40% at 85% 82%, rgba(27, 85, 224, 0.18) 0%, transparent 62%),
+    linear-gradient(180deg, #040812 0%, #08122e 50%, #040812 100%);
+}
+
+.calculator-hub {
+  background:
+    radial-gradient(55% 45% at 85% 15%, rgba(27, 85, 224, 0.22) 0%, transparent 60%),
+    radial-gradient(45% 40% at 12% 88%, rgba(27, 85, 224, 0.14) 0%, transparent 60%),
+    linear-gradient(180deg, #040812 0%, #06102a 45%, #040812 100%);
+}
+
+.markets-section {
+  background:
+    radial-gradient(50% 40% at 12% 18%, rgba(27, 85, 224, 0.20) 0%, transparent 60%),
+    radial-gradient(40% 35% at 88% 80%, rgba(27, 85, 224, 0.14) 0%, transparent 60%),
+    linear-gradient(180deg, #040812 0%, #06102a 50%, #040812 100%);
+}
+
+@keyframes market-flash-up {
+  0% {
+    background-color: rgba(0, 176, 122, 0.22);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+@keyframes market-flash-down {
+  0% {
+    background-color: rgba(227, 62, 92, 0.22);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+.market-flash-up {
+  animation: market-flash-up 0.9s ease-out;
+}
+.market-flash-down {
+  animation: market-flash-down 0.9s ease-out;
 }
 
 html.lenis,

@@ -1,12 +1,12 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { Suspense, useCallback, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { PhoneFrame } from "@/components/ui/phone-frame";
 import { DemoPointer } from "./phone-demo/demo-pointer";
 import type { DemoMode } from "./phone-demo/types";
-import { gsap, ScrollTrigger, ZEB_EASE, prefersReducedMotion } from "@/lib/gsap";
+import { gsap, ZEB_EASE, prefersReducedMotion } from "@/lib/gsap";
 
 const QtFlow = dynamic(() => import("./phone-demo/qt-flow").then((m) => ({ default: m.QtFlow })), { ssr: false });
 const FtFlow = dynamic(() => import("./phone-demo/ft-flow").then((m) => ({ default: m.FtFlow })), { ssr: false });
@@ -17,12 +17,13 @@ const AiFlow = dynamic(() => import("./phone-demo/ai-flow").then((m) => ({ defau
 
 type PanelMode = DemoMode;
 
+const AUTO_ADVANCE_MS = 6000;
+
 const PANELS: {
   id: string;
   num: string;
   title: string;
   body: string;
-  bg: string;
   mode: PanelMode;
 }[] = [
   {
@@ -30,7 +31,6 @@ const PANELS: {
     num: "01",
     title: "Spot Trade",
     body: "The fastest way to buy and sell crypto. Up to 200+ pairs.",
-    bg: "#0a0f2e",
     mode: "qt"
   },
   {
@@ -38,7 +38,6 @@ const PANELS: {
     num: "02",
     title: "Futures",
     body: "Trade perpetuals with up to 25x leverage and RMS protection.",
-    bg: "#06112b",
     mode: "ft"
   },
   {
@@ -46,7 +45,6 @@ const PANELS: {
     num: "03",
     title: "SIP",
     body: "Invest on autopilot. Daily, weekly, or monthly in any coin.",
-    bg: "#071a2e",
     mode: "sip"
   },
   {
@@ -54,7 +52,6 @@ const PANELS: {
     num: "04",
     title: "CryptoPacks",
     body: "Expert-curated baskets — DeFi, L1s, AI, and more.",
-    bg: "#080d24",
     mode: "cp"
   },
   {
@@ -62,7 +59,6 @@ const PANELS: {
     num: "05",
     title: "Earn",
     body: "Put idle crypto to work. Up to 8.5% APY on stablecoins.",
-    bg: "#050e1f",
     mode: "exchange"
   },
   {
@@ -70,7 +66,6 @@ const PANELS: {
     num: "06",
     title: "AI Insights",
     body: "Sentiment, opportunities, and risks for every major pair.",
-    bg: "#040c1a",
     mode: "ai"
   }
 ];
@@ -92,10 +87,6 @@ const INITIAL_STEPS: Record<PanelMode, number> = {
   exchange: 1,
   ai: 1
 };
-
-function panelIndex(progress: number) {
-  return Math.min(PANELS.length - 1, Math.max(0, Math.round(progress * (PANELS.length - 1))));
-}
 
 function ScreenFallback() {
   return <div className="flex h-full items-center justify-center text-xs text-[#888]">Loading…</div>;
@@ -130,118 +121,128 @@ function PanelPhone({
 
 export function ProductShowcase() {
   const sectionRef = useRef<HTMLElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const dotsRef = useRef<HTMLDivElement>(null);
-  const lastIdxRef = useRef(0);
+  const copyRef = useRef<HTMLDivElement>(null);
+  const phoneRef = useRef<HTMLDivElement>(null);
+  const interactionRef = useRef(0);
   const [activeMode, setActiveMode] = useState<PanelMode>("qt");
   const [steps, setSteps] = useState<Record<PanelMode, number>>(INITIAL_STEPS);
+  const [paused, setPaused] = useState(false);
+
+  const active = PANELS.find((p) => p.mode === activeMode) ?? PANELS[0];
+
+  const advance = useCallback(() => {
+    setActiveMode((current) => {
+      const idx = PANELS.findIndex((p) => p.mode === current);
+      const next = PANELS[(idx + 1) % PANELS.length];
+      setSteps((s) => ({ ...s, [next.mode]: 1 }));
+      return next.mode;
+    });
+  }, []);
 
   const setPanelStep = useCallback((mode: PanelMode, n: number) => {
+    interactionRef.current = Date.now();
     setSteps((s) => ({ ...s, [mode]: n }));
+  }, []);
+
+  const selectPanel = useCallback((mode: PanelMode) => {
+    interactionRef.current = Date.now();
     setActiveMode(mode);
+    setSteps((s) => ({ ...s, [mode]: 1 }));
   }, []);
 
   useGSAP(
     () => {
-      const section = sectionRef.current;
-      const track = trackRef.current;
-      if (prefersReducedMotion() || !section || !track) return;
+      if (prefersReducedMotion()) return;
+      const copy = copyRef.current;
+      const phone = phoneRef.current;
+      if (!copy || !phone) return;
 
-      const scrollDistance = () => Math.max(0, track.scrollWidth - window.innerWidth);
+      gsap.fromTo(
+        copy.querySelectorAll(".panel-number, .panel-title, .panel-body, .learn-cta"),
+        { opacity: 0, y: 14 },
+        { opacity: 1, y: 0, stagger: 0.05, duration: 0.4, ease: ZEB_EASE, overwrite: true }
+      );
+      gsap.fromTo(phone, { opacity: 0.65, scale: 0.98 }, { opacity: 1, scale: 1, duration: 0.3, ease: ZEB_EASE, overwrite: true });
+    },
+    { dependencies: [activeMode] }
+  );
 
-      const scroll = gsap.to(track, {
-        x: () => -scrollDistance(),
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: () => `+=${scrollDistance()}`,
-          pin: true,
-          scrub: 1,
-          invalidateOnRefresh: true,
-          anticipatePin: 1,
-          onUpdate: (st) => {
-            const idx = panelIndex(st.progress);
-            if (idx !== lastIdxRef.current) {
-              lastIdxRef.current = idx;
-              setActiveMode(PANELS[idx].mode);
-            }
-            dotsRef.current?.querySelectorAll(".showcase-dot").forEach((dot, i) => {
-              const el = dot as HTMLElement;
-              const active = i === idx;
-              el.style.width = active ? "24px" : "8px";
-              el.style.background = active ? "var(--cyan)" : "rgba(255,255,255,0.25)";
-            });
-          }
-        }
-      });
-
-      const panels = gsap.utils.toArray<HTMLElement>(".product-panel", track);
-      panels.forEach((panel, i) => {
-        const mode = PANELS[i].mode;
-        gsap.timeline({
-          scrollTrigger: {
-            trigger: panel,
-            containerAnimation: scroll,
-            start: "left 60%",
-            toggleActions: "play none none none",
-            once: true
-          }
-        })
-          .from(panel.querySelector(".panel-number"), { opacity: 0, y: 40, duration: 0.5, ease: ZEB_EASE })
-          .from(panel.querySelector(".panel-title"), { opacity: 0, y: 60, duration: 0.7, ease: ZEB_EASE }, "-=0.3")
-          .from(panel.querySelector(".panel-body"), { opacity: 0, y: 30, duration: 0.5 }, "-=0.4");
-
-        ScrollTrigger.create({
-          trigger: panel,
-          containerAnimation: scroll,
-          start: "left right",
-          end: "right left",
-          onLeaveBack: () => setSteps((s) => ({ ...s, [mode]: 1 }))
-        });
-      });
-
+  useGSAP(
+    () => {
+      if (prefersReducedMotion()) return;
       gsap.to(".demo-pointer", { y: -6, duration: 0.6, yoyo: true, repeat: -1, ease: "sine.inOut" });
-
-      const onResize = () => ScrollTrigger.refresh();
-      window.addEventListener("resize", onResize);
-      return () => window.removeEventListener("resize", onResize);
     },
     { scope: sectionRef }
   );
 
+  useEffect(() => {
+    if (prefersReducedMotion() || paused) return;
+    interactionRef.current = Date.now();
+    const id = window.setInterval(() => {
+      if (Date.now() - interactionRef.current >= AUTO_ADVANCE_MS) {
+        advance();
+        interactionRef.current = Date.now();
+      }
+    }, 500);
+    return () => window.clearInterval(id);
+  }, [advance, paused, activeMode]);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          setPaused(!entry.isIntersecting);
+        }
+      },
+      { threshold: 0.25 }
+    );
+    io.observe(section);
+    return () => io.disconnect();
+  }, []);
+
+  const onUserActivity = () => {
+    interactionRef.current = Date.now();
+  };
+
   return (
-    <section id="showcase" ref={sectionRef} className="product-showcase relative bg-[#040812]">
-      <div id="phone-demos" className="product-sticky relative h-screen overflow-hidden">
-        <div ref={trackRef} className="product-track flex h-full">
-          {PANELS.map((p) => (
-            <article
-              key={p.id}
-              className="product-panel flex h-full w-screen shrink-0 items-center"
-              style={{ background: p.bg }}
-            >
-              <div className="mx-auto grid w-full max-w-[1200px] grid-cols-1 items-center gap-12 px-6 lg:grid-cols-2">
-                <div className="panel-copy">
-                  <p className="panel-number text-[120px] font-black leading-none text-[var(--cyan)] opacity-90">{p.num}</p>
-                  <h2 className="panel-title text-[clamp(2.5rem,5vw,4rem)] font-black text-[var(--text-on-dark)]">{p.title}</h2>
-                  <p className="panel-body mt-6 max-w-md text-xl text-[var(--text-muted-dark)]">{p.body}</p>
-                  <a
-                    href="#"
-                    className="mt-8 inline-flex rounded-full border border-[var(--border-dark)] px-6 py-3 font-bold text-[var(--cyan)] hover:border-[var(--cyan)]"
-                  >
-                    Learn more →
-                  </a>
-                </div>
-                <div className="panel-phone-spacer hidden min-h-[580px] lg:block" aria-hidden />
-              </div>
-            </article>
-          ))}
+    <section
+      id="showcase"
+      ref={sectionRef}
+      className="product-showcase relative flex h-[100svh] min-h-[640px] overflow-hidden"
+      onMouseMove={onUserActivity}
+      onPointerDown={onUserActivity}
+      onTouchStart={onUserActivity}
+    >
+      <div
+        id="phone-demos"
+        className="relative mx-auto flex h-full w-full max-w-[1200px] flex-col px-6 pb-6 pt-[calc(72px+1.5rem)] lg:pb-8 lg:pt-[calc(72px+2rem)]"
+      >
+        <div className="shrink-0">
+          <p className="text-xs font-bold uppercase tracking-widest text-[var(--brand)] sm:text-sm">Products</p>
+          <h2 className="mt-1.5 max-w-3xl text-[clamp(1.5rem,3vw,2.25rem)] font-black leading-tight text-[var(--text-on-dark)]">
+            Built for every kind of crypto journey.
+          </h2>
         </div>
 
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center px-6">
-          <div className="mx-auto grid w-full max-w-[1200px] grid-cols-1 lg:grid-cols-2">
-            <div className="hidden lg:block" />
-            <div className="panel-phone pointer-events-auto flex justify-center">
+        <div className="mt-4 grid min-h-0 flex-1 items-center gap-6 lg:mt-6 lg:grid-cols-2 lg:gap-10">
+          <div ref={copyRef} className="panel-copy">
+            <p className="panel-number text-[clamp(48px,6vw,72px)] font-black leading-none text-[var(--brand)] opacity-90">
+              {active.num}
+            </p>
+            <h3 className="panel-title mt-1 text-[clamp(1.5rem,3vw,2.25rem)] font-black text-[var(--text-on-dark)]">
+              {active.title}
+            </h3>
+            <p className="panel-body mt-3 max-w-md text-sm text-[var(--text-muted-dark)] sm:text-base">{active.body}</p>
+            <a href="#" className="btn-primary learn-cta mt-5 text-sm">
+              Learn more
+              <span aria-hidden>→</span>
+            </a>
+          </div>
+
+          <div ref={phoneRef} className="flex h-full max-h-[460px] items-center justify-center lg:justify-end">
+            <div className="origin-center scale-[0.78] sm:scale-[0.85] lg:scale-[0.9]">
               <PhoneFrame tilt={6} className="feature-phone">
                 <Suspense fallback={<ScreenFallback />}>
                   <PanelPhone
@@ -255,17 +256,36 @@ export function ProductShowcase() {
           </div>
         </div>
 
-        <div ref={dotsRef} className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 gap-2">
-          {PANELS.map((p) => (
-            <span
-              key={p.id}
-              className="showcase-dot h-2 rounded-full transition-all duration-300"
-              style={{ width: 8, background: "rgba(255,255,255,0.25)" }}
-            />
-          ))}
+        <div
+          role="tablist"
+          aria-label="Product showcase"
+          className="mt-4 flex shrink-0 flex-wrap items-center justify-center gap-2 sm:gap-3"
+        >
+          {PANELS.map((p) => {
+            const isActive = p.mode === activeMode;
+            return (
+              <button
+                key={p.id}
+                type="button"
+                role="tab"
+                aria-selected={isActive}
+                onClick={() => selectPanel(p.mode)}
+                className={`showcase-tab inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors sm:px-3.5 sm:py-2 sm:text-sm ${
+                  isActive
+                    ? "border-transparent bg-[var(--brand)] text-white shadow-[0_8px_24px_rgba(27,85,224,0.35)]"
+                    : "border-[var(--border-dark)] bg-white/[0.04] text-[var(--text-muted-dark)] hover:border-[var(--brand)] hover:text-[var(--text-on-dark)]"
+                }`}
+              >
+                <span className={`tab-num text-[10px] font-black sm:text-xs ${isActive ? "text-white/80" : "text-[var(--brand)]"}`}>
+                  {p.num}
+                </span>
+                {p.title}
+              </button>
+            );
+          })}
         </div>
 
-        <DemoPointer mode={activeMode} steps={steps} maxSteps={MAX_STEPS} />
+        {!paused && <DemoPointer mode={activeMode} steps={steps} maxSteps={MAX_STEPS} />}
       </div>
     </section>
   );
