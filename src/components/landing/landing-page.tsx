@@ -11,7 +11,7 @@ import { SocialProof } from "./social-proof";
 import { CryptoPacks } from "./crypto-packs";
 import { Earn } from "./earn";
 import { Security } from "./security";
-import { ProBento } from "./pro-bento";
+import { DiscoverMore } from "./discover-more";
 import { Testimonials } from "./testimonials";
 import { AppDownload } from "./app-download";
 import { Comparison } from "./comparison";
@@ -29,14 +29,14 @@ export function LandingPage() {
         <ProductShowcase />
         <CalculatorHub />
         <Markets />
+        {/* <CryptoPacks /> */}
+        {/* <Earn /> */}
+        <DiscoverMore />
         <SocialProof />
-        <CryptoPacks />
-        <Earn />
         <Security />
-        <ProBento />
         <Testimonials />
-        <AppDownload />
-        <Comparison />
+        {/* <AppDownload /> */}
+        {/* <Comparison /> */}
         <Faq />
       </main>
       <Footer />
