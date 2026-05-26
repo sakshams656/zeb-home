@@ -27,7 +27,7 @@ export const MARKETS_DISPLAY_SYMS = [
 
 export type MarketsDisplaySym = (typeof MARKETS_DISPLAY_SYMS)[number];
 
-const CG_API_URL = process.env.CG_API_URL;
+ const CG_API_URL="CG-njr3funGutozXGnYap47nj9C";
 
 export interface CgMarketRow {
   id: string;
