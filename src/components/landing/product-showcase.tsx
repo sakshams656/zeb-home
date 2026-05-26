@@ -97,7 +97,15 @@ function ScreenFallback() {
   return <div className="flex h-full items-center justify-center text-xs text-[#888]">Loading…</div>;
 }
 
-function PanelVideo({ src, playing }: { src: string; playing: boolean }) {
+function PanelVideo({
+  src,
+  playing,
+  onEnded
+}: {
+  src: string;
+  playing: boolean;
+  onEnded?: () => void;
+}) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -127,10 +135,10 @@ function PanelVideo({ src, playing }: { src: string; playing: boolean }) {
       src={src}
       className="h-full w-full object-cover object-top"
       muted
-      loop
       playsInline
       autoPlay
       preload="auto"
+      onEnded={onEnded}
       aria-hidden
     />
   );
@@ -268,7 +276,11 @@ export function ProductShowcase() {
           <div ref={phoneRef} className="flex items-center justify-center lg:justify-end">
             <PhoneFrame tilt={6} className="feature-phone">
               {PANEL_VIDEO_SRC[activeMode] ? (
-                <PanelVideo src={PANEL_VIDEO_SRC[activeMode]!} playing={!paused} />
+                <PanelVideo
+                  src={PANEL_VIDEO_SRC[activeMode]!}
+                  playing={!paused}
+                  onEnded={advance}
+                />
               ) : (
                 <Suspense fallback={<ScreenFallback />}>
                   <PanelPhone step={steps.ai} setStep={(n) => setPanelStep("ai", n)} />
