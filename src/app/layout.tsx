@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Lato } from "next/font/google";
 import { Providers } from "@/components/providers";
+import { themeInitScript } from "@/lib/theme-storage";
 import "./globals.css";
 
 const lato = Lato({
@@ -60,6 +61,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript() }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://apps.apple.com" />

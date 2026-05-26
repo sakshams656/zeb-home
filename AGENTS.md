@@ -10,7 +10,9 @@ The website chrome supports both **dark** and **light** themes, gated by a singl
 boolean — the `dark` class on `<html>`. The toggle lives in the nav (see
 [src/components/landing/theme-toggle.tsx](src/components/landing/theme-toggle.tsx)
 and [src/context/theme-context.tsx](src/context/theme-context.tsx)). Theme is
-session-only (defaults to dark on every page load, not persisted).
+persisted in `localStorage` under `zeb-theme` (defaults to dark when unset).
+A blocking script in [src/app/layout.tsx](src/app/layout.tsx) applies the saved
+class on `<html>` before first paint to avoid a flash.
 
 **Every new component MUST swap correctly with the toggle.** That means:
 

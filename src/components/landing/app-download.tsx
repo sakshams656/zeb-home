@@ -38,7 +38,7 @@ export function AppDownload() {
             the go.
           </h2>
           <ul className="mt-8 space-y-3 text-[var(--fg-muted)]">
-            <li>✓ 200+ crypto assets</li>
+            <li>✓ 400+ crypto assets</li>
             <li>✓ Live charts & AI insights</li>
             <li>✓ SIP, Earn, CryptoPacks</li>
           </ul>

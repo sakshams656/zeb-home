@@ -9,8 +9,9 @@ import {
   useState,
   type ReactNode
 } from "react";
+import { readStoredTheme, writeStoredTheme, type Theme } from "@/lib/theme-storage";
 
-export type Theme = "dark" | "light";
+export type { Theme } from "@/lib/theme-storage";
 
 type ThemeContextValue = {
   theme: Theme;
@@ -21,22 +22,29 @@ type ThemeContextValue = {
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
-// Session-only theme: always boots dark on each fresh page load.
+function applyThemeToDocument(theme: Theme) {
+  const root = document.documentElement;
+  root.classList.toggle("dark", theme === "dark");
+  root.style.colorScheme = theme;
+}
+
 // The `dark` class on <html> is the single boolean that drives all CSS tokens.
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("dark");
+  const [theme, setThemeState] = useState<Theme>(() => readStoredTheme() ?? "dark");
 
   useEffect(() => {
-    const root = document.documentElement;
-    root.classList.toggle("dark", theme === "dark");
-    root.style.colorScheme = theme;
+    applyThemeToDocument(theme);
   }, [theme]);
 
-  const setTheme = useCallback((next: Theme) => setThemeState(next), []);
-  const toggle = useCallback(
-    () => setThemeState((prev) => (prev === "dark" ? "light" : "dark")),
-    []
-  );
+  const setTheme = useCallback((next: Theme) => {
+    setThemeState(next);
+    writeStoredTheme(next);
+    applyThemeToDocument(next);
+  }, []);
+
+  const toggle = useCallback(() => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  }, [theme, setTheme]);
 
   const value = useMemo<ThemeContextValue>(
     () => ({ theme, isDark: theme === "dark", toggle, setTheme }),
