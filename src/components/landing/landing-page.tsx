@@ -1,6 +1,7 @@
 "use client";
 
 import { OrganizationJsonLd } from "@/components/seo/json-ld";
+import type { HomeScreenBodySection } from "@/lib/home-screen-layout";
 import { Nav } from "./nav";
 import { Hero } from "./hero";
 import { PriceTicker } from "./price-ticker";
@@ -8,17 +9,22 @@ import { ProductShowcase } from "./product-showcase";
 import { CalculatorHub } from "./calculator-hub";
 import { Markets } from "./markets";
 import { SocialProof } from "./social-proof";
-import { CryptoPacks } from "./crypto-packs";
-import { Earn } from "./earn";
 import { Security } from "./security";
+import { Announcements } from "./announcements";
 import { DiscoverMore } from "./discover-more";
 import { Testimonials } from "./testimonials";
-import { AppDownload } from "./app-download";
-import { Comparison } from "./comparison";
 import { Faq } from "./faq";
 import { Footer } from "./footer";
 
-export function LandingPage() {
+type LandingPageProps = {
+  discoverMoreSection?: HomeScreenBodySection | null;
+  announcementsSection?: HomeScreenBodySection | null;
+};
+
+export function LandingPage({
+  discoverMoreSection = null,
+  announcementsSection = null
+}: LandingPageProps) {
   return (
     <div className="landing-page">
       <OrganizationJsonLd />
@@ -29,9 +35,8 @@ export function LandingPage() {
         <ProductShowcase />
         <CalculatorHub />
         <Markets />
-        {/* <CryptoPacks /> */}
-        {/* <Earn /> */}
-        <DiscoverMore />
+        <Announcements section={announcementsSection ?? null} />
+        <DiscoverMore section={discoverMoreSection ?? null} />
         <SocialProof />
         <Security />
         <Testimonials />

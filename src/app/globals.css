@@ -259,6 +259,21 @@ body {
   background: var(--section-bg-2);
 }
 
+.discover-sidebar-list {
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
+}
+
+.discover-sidebar-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.discover-sidebar-list::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 999px;
+}
+
 .security-section {
   background: var(--section-bg-1);
 }

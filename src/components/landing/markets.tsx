@@ -351,9 +351,6 @@ export function Markets() {
             </h2>
             <p className="mt-2 text-sm text-[var(--fg-muted)]">
               Live prices across the assets traders are watching right now.
-              {loadError ? (
-                <span className="block text-[var(--danger)]">Using cached data — live feed unavailable.</span>
-              ) : null}
             </p>
           </div>
           <div className="flex gap-1 self-start rounded-full border border-[var(--border)] bg-[var(--surface)] p-1 sm:self-auto">
