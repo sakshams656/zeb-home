@@ -110,7 +110,7 @@ export function NavDropdown({ group, openId, setOpenId, align = "left" }: NavDro
       <button
         type="button"
         id={triggerId}
-        className="nav-dropdown-trigger flex items-center rounded-lg px-3 py-2 text-sm font-semibold text-[var(--text-muted-dark)] transition-colors hover:bg-white/5 hover:text-[var(--text-on-dark)]"
+        className="nav-dropdown-trigger flex items-center rounded-lg px-3 py-2 text-sm font-semibold text-[var(--fg-muted)] transition-colors hover:bg-[var(--surface)] hover:text-[var(--fg)]"
         aria-expanded={isOpen}
         aria-haspopup="menu"
         aria-controls={panelId}
@@ -131,8 +131,12 @@ export function NavDropdown({ group, openId, setOpenId, align = "left" }: NavDro
         id={panelId}
         role="menu"
         aria-labelledby={triggerId}
-        className={`nav-dropdown-panel absolute top-[calc(100%+8px)] z-[60] min-w-[220px] overflow-hidden rounded-2xl border border-[var(--border-dark)] bg-[rgba(10,15,46,0.92)] py-2 shadow-[0_12px_40px_rgba(0,0,0,0.45)] backdrop-blur-[20px] ${align === "right" ? "right-0" : "left-0"}`}
-        style={{ display: "none" }}
+        className={`nav-dropdown-panel absolute top-[calc(100%+8px)] z-[60] min-w-[220px] overflow-hidden rounded-2xl border border-[var(--border)] py-2 backdrop-blur-[20px] ${align === "right" ? "right-0" : "left-0"}`}
+        style={{
+          display: "none",
+          background: "rgba(var(--nav-bg-rgb), 0.92)",
+          boxShadow: "var(--shadow-lg)"
+        }}
       >
         <ul>
           {group.items.map((item) => (
@@ -140,7 +144,7 @@ export function NavDropdown({ group, openId, setOpenId, align = "left" }: NavDro
               <a
                 href={item.href}
                 role="menuitem"
-                className="block px-4 py-2.5 text-sm text-[var(--text-muted-dark)] transition-colors hover:bg-white/5 hover:text-[var(--cyan)]"
+                className="block px-4 py-2.5 text-sm text-[var(--fg-muted)] transition-colors hover:bg-[var(--surface)] hover:text-[var(--brand)]"
                 onClick={() => close()}
               >
                 {item.label}

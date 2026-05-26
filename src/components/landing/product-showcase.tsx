@@ -221,7 +221,7 @@ export function ProductShowcase() {
       >
         <div className="shrink-0">
           <p className="text-xs font-bold uppercase tracking-widest text-[var(--brand)] sm:text-sm">Products</p>
-          <h2 className="mt-1.5 max-w-3xl text-[clamp(1.5rem,3vw,2.25rem)] font-black leading-tight text-[var(--text-on-dark)]">
+          <h2 className="mt-1.5 max-w-3xl text-[clamp(1.5rem,3vw,2.25rem)] font-black leading-tight text-[var(--fg)]">
             Built for every kind of crypto journey.
           </h2>
         </div>
@@ -231,10 +231,10 @@ export function ProductShowcase() {
             <p className="panel-number text-[clamp(48px,6vw,72px)] font-black leading-none text-[var(--brand)] opacity-90">
               {active.num}
             </p>
-            <h3 className="panel-title mt-1 text-[clamp(1.5rem,3vw,2.25rem)] font-black text-[var(--text-on-dark)]">
+            <h3 className="panel-title mt-1 text-[clamp(1.5rem,3vw,2.25rem)] font-black text-[var(--fg)]">
               {active.title}
             </h3>
-            <p className="panel-body mt-3 max-w-md text-sm text-[var(--text-muted-dark)] sm:text-base">{active.body}</p>
+            <p className="panel-body mt-3 max-w-md text-sm text-[var(--fg-muted)] sm:text-base">{active.body}</p>
             <a href="#" className="btn-primary learn-cta mt-5 text-sm">
               Learn more
               <span aria-hidden>→</span>
@@ -272,11 +272,11 @@ export function ProductShowcase() {
                 onClick={() => selectPanel(p.mode)}
                 className={`showcase-tab inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors sm:px-3.5 sm:py-2 sm:text-sm ${
                   isActive
-                    ? "border-transparent bg-[var(--brand)] text-white shadow-[0_8px_24px_rgba(27,85,224,0.35)]"
-                    : "border-[var(--border-dark)] bg-white/[0.04] text-[var(--text-muted-dark)] hover:border-[var(--brand)] hover:text-[var(--text-on-dark)]"
+                    ? "border-transparent bg-[var(--brand)] text-white shadow-[0_8px_24px_rgba(var(--brand-rgb),0.35)]"
+                    : "border-[var(--border)] bg-[var(--surface)] text-[var(--fg-muted)] hover:border-[var(--brand)] hover:text-[var(--fg)]"
                 }`}
               >
-                <span className={`tab-num text-[10px] font-black sm:text-xs ${isActive ? "text-white/80" : "text-[var(--brand)]"}`}>
+                <span className={`tab-num text-[10px] font-black sm:text-xs ${isActive ? "text-[var(--fg)]" : "text-[var(--brand)]"}`}>
                   {p.num}
                 </span>
                 {p.title}

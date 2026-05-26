@@ -12,7 +12,7 @@ type Dot = { x: number; y: number; vx: number; vy: number };
 
 function TrustBadge() {
   return (
-    <svg width={18} height={18} viewBox="0 0 24 24" fill="none" aria-hidden className="shrink-0 text-[var(--cyan)]">
+    <svg width={18} height={18} viewBox="0 0 24 24" fill="none" aria-hidden className="shrink-0 text-[var(--brand)]">
       <path
         d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"
         stroke="currentColor"
@@ -63,12 +63,23 @@ export function Hero() {
       mouseRef.current = { x: e.clientX, y: e.clientY };
     };
 
+    // Particle color reads the theme-invariant brand RGB triple plus
+    // a theme-aware alpha so the dots stay readable on either background.
+    const getParticleRgb = () =>
+      getComputedStyle(document.documentElement)
+        .getPropertyValue("--brand-rgb")
+        .trim() || "27, 85, 224";
+    const isLight = () => !document.documentElement.classList.contains("dark");
+
     const draw = () => {
       if (document.hidden) {
         raf = requestAnimationFrame(draw);
         return;
       }
       ctx.clearRect(0, 0, w, h);
+      const rgb = getParticleRgb();
+      const dotAlpha = isLight() ? 0.55 : 0.45;
+      const lineAlphaBase = isLight() ? 0.14 : 0.1;
       for (const d of dots) {
         d.x += d.vx;
         d.y += d.vy;
@@ -83,7 +94,7 @@ export function Hero() {
           d.y += (dy / dist) * 2;
         }
 
-        ctx.fillStyle = "rgba(27,85,224,0.45)";
+        ctx.fillStyle = `rgba(${rgb}, ${dotAlpha})`;
         ctx.beginPath();
         ctx.arc(d.x, d.y, 1, 0, Math.PI * 2);
         ctx.fill();
@@ -95,7 +106,7 @@ export function Hero() {
           const b = dots[j];
           const dist = Math.hypot(a.x - b.x, a.y - b.y);
           if (dist < 120) {
-            ctx.strokeStyle = `rgba(27,85,224,${0.1 * (1 - dist / 120)})`;
+            ctx.strokeStyle = `rgba(${rgb}, ${lineAlphaBase * (1 - dist / 120)})`;
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
@@ -157,13 +168,13 @@ export function Hero() {
 
         <div className="relative z-10 flex w-full max-w-[1200px] flex-col items-center gap-12 px-6 pt-28 pb-16 lg:flex-row lg:items-center lg:justify-between lg:gap-10 lg:pt-24 lg:text-left">
           <div className="hero-copy w-full max-w-2xl text-left">
-            <p className="hero-trust flex items-center gap-2.5 text-sm font-semibold text-[var(--text-on-dark)] sm:text-base">
+            <p className="hero-trust flex items-center gap-2.5 text-sm font-semibold text-[var(--fg)] sm:text-base">
               <TrustBadge />
               Trusted by 6M+ Users
             </p>
 
             <h1 className="mt-6 font-black leading-[1.06] tracking-tight">
-              <span className="hero-h1-line block text-[clamp(4rem,4.5vw,4.6rem)] text-white">
+              <span className="hero-h1-line block text-[clamp(4rem,4.5vw,4.6rem)] text-[var(--fg)]">
                 India&apos;s Oldest and Most Trusted
               </span>
               <span className="hero-h1-accent mt-1 block text-[clamp(3rem,4.5vw,4.5rem)] text-[var(--brand)]">

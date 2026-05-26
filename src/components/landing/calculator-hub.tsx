@@ -165,9 +165,9 @@ type FieldProps = {
 function Field({ label, value, onChange, prefix, suffix, step, min, max }: FieldProps) {
   return (
     <label className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-      <span className="text-sm font-medium text-white/75">{label}</span>
-      <span className="flex w-full items-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.04] px-3.5 py-2.5 transition focus-within:border-[var(--brand)] focus-within:ring-2 focus-within:ring-[rgba(27,85,224,0.35)] sm:w-[60%]">
-        {prefix && <span className="text-sm text-white/45">{prefix}</span>}
+      <span className="text-sm font-medium text-[var(--fg)]">{label}</span>
+      <span className="flex w-full items-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3.5 py-2.5 transition focus-within:border-[var(--brand)] focus-within:ring-2 focus-within:ring-[rgba(var(--brand-rgb),0.35)] sm:w-[60%]">
+        {prefix && <span className="text-sm text-[var(--fg-subtle)]">{prefix}</span>}
         <input
           type="number"
           inputMode="decimal"
@@ -176,9 +176,9 @@ function Field({ label, value, onChange, prefix, suffix, step, min, max }: Field
           max={max}
           value={Number.isFinite(value) ? value : 0}
           onChange={(e) => onChange(+e.target.value)}
-          className="ml-auto w-full appearance-none bg-transparent text-right font-semibold tabular-nums text-white outline-none [-moz-appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+          className="ml-auto w-full appearance-none bg-transparent text-right font-semibold tabular-nums text-[var(--fg)] outline-none [-moz-appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
         />
-        {suffix && <span className="text-sm text-white/45">{suffix}</span>}
+        {suffix && <span className="text-sm text-[var(--fg-subtle)]">{suffix}</span>}
       </span>
     </label>
   );
@@ -197,8 +197,8 @@ function Segment<T extends string>({
 }) {
   return (
     <label className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-      <span className="text-sm font-medium text-white/75">{label}</span>
-      <div className="grid w-full grid-cols-2 gap-1 rounded-xl border border-white/[0.08] bg-white/[0.04] p-1 sm:w-[60%]">
+      <span className="text-sm font-medium text-[var(--fg)]">{label}</span>
+      <div className="grid w-full grid-cols-2 gap-1 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-1 sm:w-[60%]">
         {options.map((o) => {
           const active = o.value === value;
           return (
@@ -208,8 +208,8 @@ function Segment<T extends string>({
               onClick={() => onChange(o.value)}
               className={`rounded-lg px-3 py-2 text-sm font-semibold transition ${
                 active
-                  ? "bg-[var(--brand)] text-white shadow-[0_4px_16px_rgba(27,85,224,0.35)]"
-                  : "text-white/65 hover:text-white"
+                  ? "bg-[var(--brand)] text-white shadow-[0_4px_16px_rgba(var(--brand-rgb),0.35)]"
+                  : "text-[var(--fg-muted)] hover:text-white"
               }`}
             >
               {o.label}
@@ -236,8 +236,8 @@ function SelectChips<T extends number | string>({
 }) {
   return (
     <label className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-      <span className="text-sm font-medium text-white/75">{label}</span>
-      <div className="flex w-full gap-1 rounded-xl border border-white/[0.08] bg-white/[0.04] p-1 sm:w-[60%]">
+      <span className="text-sm font-medium text-[var(--fg)]">{label}</span>
+      <div className="flex w-full gap-1 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-1 sm:w-[60%]">
         {options.map((o) => {
           const active = o === value;
           return (
@@ -247,8 +247,8 @@ function SelectChips<T extends number | string>({
               onClick={() => onChange(o)}
               className={`flex-1 rounded-lg px-2 py-2 text-sm font-semibold transition ${
                 active
-                  ? "bg-[var(--brand)] text-white shadow-[0_4px_16px_rgba(27,85,224,0.35)]"
-                  : "text-white/65 hover:text-white"
+                  ? "bg-[var(--brand)] text-white shadow-[0_4px_16px_rgba(var(--brand-rgb),0.35)]"
+                  : "text-[var(--fg-muted)] hover:text-white"
               }`}
             >
               {formatOption ? formatOption(o) : String(o)}
@@ -325,12 +325,12 @@ function LineChart({
   const gridTicks = [0, 0.25, 0.5, 0.75, 1];
 
   return (
-    <div className="rounded-2xl border border-white/[0.08] bg-[linear-gradient(180deg,rgba(255,255,255,0.025),rgba(255,255,255,0))] p-3 sm:p-4">
+    <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-3 sm:p-4">
       <svg viewBox={`0 0 ${W} ${H}`} className="w-full" style={{ height }} preserveAspectRatio="none">
         <defs>
           <linearGradient id="calc-area-grad" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0%" stopColor="rgba(27,85,224,0.55)" />
-            <stop offset="100%" stopColor="rgba(27,85,224,0)" />
+            <stop offset="0%" stopColor="rgba(var(--brand-rgb),0.55)" />
+            <stop offset="100%" stopColor="rgba(var(--brand-rgb),0)" />
           </linearGradient>
         </defs>
         {gridTicks.map((p, i) => {
@@ -343,7 +343,7 @@ function LineChart({
                 x2={W - PAD_R}
                 y1={y}
                 y2={y}
-                stroke="rgba(255,255,255,0.06)"
+                stroke="var(--border)"
                 strokeWidth={1}
                 strokeDasharray={i === 0 || i === gridTicks.length - 1 ? "" : "2 4"}
               />
@@ -352,7 +352,7 @@ function LineChart({
                 y={y + 3}
                 textAnchor="end"
                 fontSize={9}
-                fill="rgba(255,255,255,0.4)"
+                fill="var(--fg-subtle)"
                 fontFamily="inherit"
               >
                 {valueFormat(v)}
@@ -366,7 +366,7 @@ function LineChart({
             x2={W - PAD_R}
             y1={yToPx(0)}
             y2={yToPx(0)}
-            stroke="rgba(255,255,255,0.28)"
+            stroke="var(--border-strong)"
             strokeWidth={1}
             strokeDasharray="3 3"
           />
@@ -399,7 +399,7 @@ function LineChart({
         )}
       </svg>
       {(xStart || xEnd) && (
-        <div className="mt-2 flex justify-between px-1 text-[10px] text-white/45">
+        <div className="mt-2 flex justify-between px-1 text-[10px] text-[var(--fg-subtle)]">
           <span>{xStart}</span>
           <span>{xEnd}</span>
         </div>
@@ -416,7 +416,7 @@ function CompositionBar({
   const total = segments.reduce((a, b) => a + b.value, 0);
   return (
     <div>
-      <div className="flex h-3 w-full overflow-hidden rounded-full bg-white/[0.05]">
+      <div className="flex h-3 w-full overflow-hidden rounded-full bg-[var(--surface-strong)]">
         {segments.map((s, i) => {
           const pct = total > 0 ? (s.value / total) * 100 : 0;
           return (
@@ -428,14 +428,14 @@ function CompositionBar({
           );
         })}
       </div>
-      <div className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-xs text-white/65">
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-xs text-[var(--fg-muted)]">
         {segments.map((s, i) => {
           const pct = total > 0 ? (s.value / total) * 100 : 0;
           return (
             <span key={i} className="inline-flex items-center gap-1.5">
               <span className="inline-block h-2 w-2 rounded-full" style={{ background: s.color }} />
               <span>{s.label}</span>
-              <span className="tabular-nums text-white/45">{pct.toFixed(1)}%</span>
+              <span className="tabular-nums text-[var(--fg-subtle)]">{pct.toFixed(1)}%</span>
             </span>
           );
         })}
@@ -463,12 +463,12 @@ function RmsTrack({
   const pct = (v: number) => Math.min(Math.max(((v - min) / range) * 100, 0), 100);
 
   return (
-    <div className="rounded-2xl border border-white/[0.08] bg-[linear-gradient(180deg,rgba(255,255,255,0.025),rgba(255,255,255,0))] p-4 sm:p-5">
+    <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 sm:p-5">
       <div className="mb-4 flex items-center justify-between sm:mb-5">
-        <span className="text-xs font-medium uppercase tracking-wider text-white/55">
+        <span className="text-xs font-medium uppercase tracking-wider text-[var(--fg-muted)]">
           Price track
         </span>
-        <span className="rounded-full border border-white/[0.08] bg-white/[0.06] px-2.5 py-1 text-xs font-bold text-white tabular-nums">
+        <span className="rounded-full border border-[var(--border)] bg-[var(--surface-strong)] px-2.5 py-1 text-xs font-bold text-[var(--fg)] tabular-nums">
           R:R {rr.toFixed(2)}
         </span>
       </div>
@@ -481,7 +481,7 @@ function RmsTrack({
           SL
         </span>
         <span
-          className="absolute -translate-x-1/2 text-[10px] font-bold text-white"
+          className="absolute -translate-x-1/2 text-[10px] font-bold text-[var(--fg)]"
           style={{ left: `${pct(entry)}%` }}
         >
           Entry
@@ -494,13 +494,19 @@ function RmsTrack({
         </span>
       </div>
 
-      <div className="relative h-3 rounded-full bg-[linear-gradient(90deg,rgba(227,62,92,0.45),rgba(255,255,255,0.08)_45%,rgba(255,255,255,0.08)_55%,rgba(0,176,122,0.5))]">
+      <div
+        className="relative h-3 rounded-full"
+        style={{
+          background:
+            "linear-gradient(90deg, rgba(227,62,92,0.45), var(--surface-strong) 45%, var(--surface-strong) 55%, rgba(0,176,122,0.5))"
+        }}
+      >
         <span
           className="absolute top-0 h-3 w-px bg-[var(--danger)]"
           style={{ left: `${pct(sl)}%` }}
         />
         <span
-          className="absolute top-0 h-3 w-px bg-white/80"
+          className="absolute top-0 h-3 w-px bg-[var(--fg)]"
           style={{ left: `${pct(entry)}%` }}
         />
         <span
@@ -508,22 +514,22 @@ function RmsTrack({
           style={{ left: `${pct(tp)}%` }}
         />
         <span
-          className="absolute top-1/2 -ml-2 -mt-2 h-4 w-4 rounded-full border-2 border-white bg-[var(--brand)] shadow-[0_0_0_4px_rgba(27,85,224,0.25)] transition-all"
+          className="absolute top-1/2 -ml-2 -mt-2 h-4 w-4 rounded-full border-2 border-[var(--bg-elevated)] bg-[var(--brand)] shadow-[0_0_0_4px_rgba(var(--brand-rgb),0.25)] transition-all"
           style={{ left: `${pct(current)}%` }}
         />
       </div>
 
       <div className="mt-6 grid grid-cols-3 gap-3 text-center text-xs">
         <div>
-          <div className="text-white/55">Stop Loss</div>
+          <div className="text-[var(--fg-muted)]">Stop Loss</div>
           <div className="mt-1 font-bold tabular-nums text-[var(--danger)]">{inr(sl)}</div>
         </div>
         <div>
-          <div className="text-white/55">Entry</div>
-          <div className="mt-1 font-bold tabular-nums text-white">{inr(entry)}</div>
+          <div className="text-[var(--fg-muted)]">Entry</div>
+          <div className="mt-1 font-bold tabular-nums text-[var(--fg)]">{inr(entry)}</div>
         </div>
         <div>
-          <div className="text-white/55">Take Profit</div>
+          <div className="text-[var(--fg-muted)]">Take Profit</div>
           <div className="mt-1 font-bold tabular-nums text-[var(--success)]">{inr(tp)}</div>
         </div>
       </div>
@@ -539,10 +545,10 @@ function StatCard({ k, v, accent }: { k: string; v: string; accent?: "success" |
         ? "text-[var(--danger)]"
         : accent === "brand"
           ? "text-[var(--brand)]"
-          : "text-white";
+          : "text-[var(--fg)]";
   return (
-    <div className="rounded-xl border border-white/[0.08] bg-white/[0.025] p-3 sm:p-4">
-      <p className="text-xs text-white/55">{k}</p>
+    <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3 sm:p-4">
+      <p className="text-xs text-[var(--fg-muted)]">{k}</p>
       <p className={`mt-1 text-base font-black tabular-nums sm:text-lg ${color}`}>{v}</p>
     </div>
   );
@@ -611,10 +617,10 @@ export function CalculatorHub() {
       className="calculator-hub scroll-mt-24 px-6 py-16 lg:py-24"
     >
       <div className="mx-auto max-w-[1200px]">
-        <h2 className="text-[clamp(1.75rem,3.5vw,2.75rem)] font-black text-[var(--text-on-dark)]">
+        <h2 className="text-[clamp(1.75rem,3.5vw,2.75rem)] font-black text-[var(--fg)]">
           Run the numbers.
         </h2>
-        <p className="mt-2 text-base text-[var(--text-muted-dark)] sm:text-lg">
+        <p className="mt-2 text-base text-[var(--fg-muted)] sm:text-lg">
           Every product, real formulas, instant projections.
         </p>
 
@@ -631,15 +637,15 @@ export function CalculatorHub() {
                       aria-pressed={active}
                       className={`calc-tab group flex w-[220px] items-start gap-3 rounded-2xl border p-3.5 text-left transition lg:w-full ${
                         active
-                          ? "border-transparent bg-[linear-gradient(135deg,rgba(27,85,224,0.95),rgba(27,85,224,0.55))] text-white shadow-[0_10px_30px_rgba(27,85,224,0.35)]"
-                          : "border-white/[0.06] bg-white/[0.03] text-white/85 hover:border-white/[0.12] hover:bg-white/[0.06]"
+                          ? "border-transparent bg-[linear-gradient(135deg,rgba(var(--brand-rgb),0.95),rgba(var(--brand-rgb),0.55))] text-white shadow-[0_10px_30px_rgba(var(--brand-rgb),0.35)]"
+                          : "border-[var(--border)] bg-[var(--surface)] text-[var(--fg)] hover:border-[var(--border-strong)] hover:bg-[var(--surface-strong)]"
                       }`}
                     >
                       <span
                         className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl border transition ${
                           active
-                            ? "border-white/30 bg-white/15 text-white"
-                            : "border-white/[0.08] bg-[rgba(27,85,224,0.14)] text-[var(--brand)] group-hover:bg-[rgba(27,85,224,0.22)]"
+                            ? "border-[var(--border-strong)] bg-[var(--surface-strong)] text-[var(--fg)]"
+                            : "border-[var(--border)] bg-[rgba(var(--brand-rgb),0.14)] text-[var(--brand)] group-hover:bg-[rgba(var(--brand-rgb),0.22)]"
                         }`}
                       >
                         {m.icon}
@@ -648,7 +654,7 @@ export function CalculatorHub() {
                         <span className="block text-sm font-bold leading-snug">{m.label}</span>
                         <span
                           className={`mt-0.5 block text-xs leading-snug ${
-                            active ? "text-white/80" : "text-white/55"
+                            active ? "text-[var(--fg)]" : "text-[var(--fg-muted)]"
                           }`}
                         >
                           {m.rail}
@@ -661,14 +667,14 @@ export function CalculatorHub() {
             </ul>
           </aside>
 
-          <div className="calc-body rounded-3xl border border-white/[0.08] bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.015))] p-5 backdrop-blur-sm sm:p-6 lg:p-7">
-            <header className="flex items-start gap-3 border-b border-white/[0.06] pb-4 sm:gap-4 sm:pb-5">
-              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-[rgba(27,85,224,0.35)] bg-[rgba(27,85,224,0.18)] text-[var(--brand)] sm:h-12 sm:w-12">
+          <div className="calc-body rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 backdrop-blur-sm sm:p-6 lg:p-7">
+            <header className="flex items-start gap-3 border-b border-[var(--border)] pb-4 sm:gap-4 sm:pb-5">
+              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-[rgba(var(--brand-rgb),0.35)] bg-[rgba(var(--brand-rgb),0.18)] text-[var(--brand)] sm:h-12 sm:w-12">
                 {meta.icon}
               </span>
               <div className="min-w-0">
-                <h3 className="text-lg font-black text-white sm:text-xl lg:text-2xl">{meta.title}</h3>
-                <p className="mt-0.5 text-xs text-white/60 sm:mt-1 sm:text-sm">{meta.subtitle}</p>
+                <h3 className="text-lg font-black text-[var(--fg)] sm:text-xl lg:text-2xl">{meta.title}</h3>
+                <p className="mt-0.5 text-xs text-[var(--fg-muted)] sm:mt-1 sm:text-sm">{meta.subtitle}</p>
               </div>
             </header>
 
@@ -1110,17 +1116,17 @@ function ExpertResults({
       <LineChart
         series={[
           { values: strat },
-          { values: bench, dashed: true, color: "rgba(255,255,255,0.55)" }
+          { values: bench, dashed: true, color: "var(--fg-muted)" }
         ]}
         xStart="Now"
         xEnd={`Month ${state.months}`}
       />
-      <div className="flex items-center gap-4 text-xs text-white/65">
+      <div className="flex items-center gap-4 text-xs text-[var(--fg-muted)]">
         <span className="inline-flex items-center gap-1.5">
           <span className="inline-block h-0.5 w-4 rounded-full bg-[var(--brand)]" /> Strategy
         </span>
         <span className="inline-flex items-center gap-1.5">
-          <span className="inline-block h-0.5 w-4 rounded-full bg-white/55" /> Benchmark (1% / mo)
+          <span className="inline-block h-0.5 w-4 rounded-full bg-[var(--fg-muted)]" /> Benchmark (1% / mo)
         </span>
       </div>
       <div className="grid grid-cols-2 gap-3">
@@ -1192,17 +1198,17 @@ function SubsResults({
         {r.allocations.map((a, i) => (
           <div
             key={a.index}
-            className="rounded-xl border border-white/[0.08] bg-white/[0.025] p-4"
+            className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4"
           >
-            <div className="flex items-center gap-2 text-xs text-white/55">
+            <div className="flex items-center gap-2 text-xs text-[var(--fg-muted)]">
               <span
                 className="inline-block h-2 w-2 rounded-full"
                 style={{ background: colors[i % colors.length] }}
               />
               Wallet {a.index}
             </div>
-            <div className="mt-1 text-lg font-black tabular-nums text-white">{inr(a.amount)}</div>
-            <div className="text-xs tabular-nums text-white/55">{a.percent.toFixed(1)}%</div>
+            <div className="mt-1 text-lg font-black tabular-nums text-[var(--fg)]">{inr(a.amount)}</div>
+            <div className="text-xs tabular-nums text-[var(--fg-muted)]">{a.percent.toFixed(1)}%</div>
           </div>
         ))}
       </div>

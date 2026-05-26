@@ -34,13 +34,13 @@ export function Earn() {
     <section id="earn" ref={ref} className="scroll-mt-24 bg-[#0a0f2e] px-6 py-[120px]">
       <div className="mx-auto grid max-w-[1200px] gap-12 lg:grid-cols-2">
         <div>
-          <h2 className="text-[clamp(2.5rem,4vw,3.5rem)] font-black leading-tight text-[var(--text-on-dark)]">
+          <h2 className="text-[clamp(2.5rem,4vw,3.5rem)] font-black leading-tight text-[var(--fg)]">
             Earn while
             <br />
             you hold.
           </h2>
           <p className="mt-4 text-2xl font-bold text-[var(--cyan)]">Up to 8.5% APY</p>
-          <p className="mt-6 max-w-md text-lg text-[var(--text-muted-dark)]">
+          <p className="mt-6 max-w-md text-lg text-[var(--fg-muted)]">
             Stake idle assets across stablecoins and majors. Flexible terms, transparent rates — model returns in the
             calculator hub above.
           </p>
@@ -48,12 +48,12 @@ export function Earn() {
 
         <ul className="space-y-4 self-center">
           {ASSETS.map((a) => (
-            <li key={a.sym} className="rounded-xl border border-[var(--border-dark)] bg-[var(--surface-dark)] p-5">
-              <div className="mb-2 flex justify-between font-bold text-[var(--text-on-dark)]">
+            <li key={a.sym} className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5">
+              <div className="mb-2 flex justify-between font-bold text-[var(--fg)]">
                 <span>{a.sym}</span>
                 <span className="text-[var(--cyan)]">{a.apy}% APY</span>
               </div>
-              <div className="h-2 overflow-hidden rounded-full bg-white/10">
+              <div className="h-2 overflow-hidden rounded-full bg-[var(--surface-strong)]">
                 <div className="yield-bar h-full rounded-full bg-[var(--cyan)]" style={{ width: `${a.pct}%`, transformOrigin: "left" }} />
               </div>
             </li>

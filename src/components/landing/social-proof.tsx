@@ -87,21 +87,21 @@ export function SocialProof() {
           <p className="text-sm font-bold uppercase tracking-widest text-[var(--brand)]">
             Trusted at scale
           </p>
-          <h2 className="mt-2 text-[clamp(1.5rem,3vw,2.25rem)] font-black text-[var(--text-on-dark)]">
+          <h2 className="mt-2 text-[clamp(1.5rem,3vw,2.25rem)] font-black text-[var(--fg)]">
             Millions trade, save and invest on ZebPay
           </h2>
         </div>
-        <ul className="grid grid-cols-1 sm:grid-cols-3 lg:divide-x lg:divide-white/[0.06]">
+        <ul className="grid grid-cols-1 sm:grid-cols-3 lg:divide-x lg:divide-[var(--border)]">
           {STATS.map((s) => (
             <li key={s.cls} className="stat-tile px-2 py-5 text-center lg:px-8">
               <span className="stat-mask block overflow-hidden pb-1">
                 <span
-                  className={`stat-slide ${s.cls} block text-[clamp(2.25rem,4.5vw,3.5rem)] font-black leading-none tabular-nums text-white`}
+                  className={`stat-slide ${s.cls} block text-[clamp(2.25rem,4.5vw,3.5rem)] font-black leading-none tabular-nums text-[var(--fg)]`}
                 >
                   0{s.suffix}
                 </span>
               </span>
-              <p className="stat-label mt-3 text-sm text-white/55 sm:text-base">{s.label}</p>
+              <p className="stat-label mt-3 text-sm text-[var(--fg-muted)] sm:text-base">{s.label}</p>
             </li>
           ))}
         </ul>

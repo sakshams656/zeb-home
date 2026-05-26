@@ -53,14 +53,19 @@ export default function RootLayout({
   children
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={lato.variable} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${lato.variable} dark`}
+      style={{ colorScheme: "dark" }}
+      suppressHydrationWarning
+    >
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://apps.apple.com" />
         <link rel="dns-prefetch" href="https://play.google.com" />
       </head>
-      <body className="min-h-screen bg-[#040812] antialiased font-sans text-[var(--text-on-dark)]">
+      <body className="min-h-screen bg-[var(--bg)] antialiased font-sans text-[var(--fg)]">
         <Providers>{children}</Providers>
       </body>
     </html>

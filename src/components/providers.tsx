@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect } from "react";
-import { ThemeProvider } from "next-themes";
 import "lenis/dist/lenis.css";
 import { destroyLenis, initLenis } from "@/lib/lenis";
 import { prefersReducedMotion } from "@/lib/gsap";
+import { ThemeProvider } from "@/context/theme-context";
 
 function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
@@ -17,7 +17,7 @@ function SmoothScroll({ children }: { children: React.ReactNode }) {
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} forcedTheme="dark">
+    <ThemeProvider>
       <SmoothScroll>{children}</SmoothScroll>
     </ThemeProvider>
   );

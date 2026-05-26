@@ -58,11 +58,11 @@ function ChangeChip({ value }: { value: number }) {
   const up = value >= 0;
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-bold tabular-nums ${
-        up
-          ? "bg-[rgba(0,176,122,0.14)] text-[var(--success)]"
-          : "bg-[rgba(227,62,92,0.14)] text-[var(--danger)]"
-      }`}
+      className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-bold tabular-nums"
+      style={{
+        background: up ? "rgba(0,176,122,0.14)" : "rgba(227,62,92,0.14)",
+        color: up ? "var(--success)" : "var(--danger)"
+      }}
     >
       <span aria-hidden>{up ? "▲" : "▼"}</span>
       <span>{formatPercent(value).replace("+", "")}</span>
@@ -182,14 +182,14 @@ export function Markets() {
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-sm font-bold uppercase tracking-widest text-[var(--brand)]">Markets</p>
-            <h2 className="mt-2 text-[clamp(2rem,4vw,3rem)] font-black text-[var(--text-on-dark)]">
+            <h2 className="mt-2 text-[clamp(2rem,4vw,3rem)] font-black text-[var(--fg)]">
               What&apos;s moving today
             </h2>
-            <p className="mt-2 text-sm text-white/55">
+            <p className="mt-2 text-sm text-[var(--fg-muted)]">
               Live prices across the assets traders are watching right now.
             </p>
           </div>
-          <div className="flex gap-1 self-start rounded-full border border-white/[0.08] bg-white/[0.04] p-1 sm:self-auto">
+          <div className="flex gap-1 self-start rounded-full border border-[var(--border)] bg-[var(--surface)] p-1 sm:self-auto">
             {TABS.map((t) => {
               const active = tab === t.id;
               return (
@@ -200,8 +200,8 @@ export function Markets() {
                   aria-pressed={active}
                   className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
                     active
-                      ? "bg-[var(--brand)] text-white shadow-[0_4px_16px_rgba(27,85,224,0.35)]"
-                      : "text-white/65 hover:text-white"
+                      ? "bg-[var(--brand)] text-white shadow-[0_4px_16px_rgba(var(--brand-rgb),0.35)]"
+                      : "text-[var(--fg-muted)] hover:text-[var(--fg)]"
                   }`}
                 >
                   {t.label}
@@ -211,11 +211,17 @@ export function Markets() {
           </div>
         </div>
 
-        <div className="markets-table mt-8 overflow-hidden rounded-3xl border border-white/[0.08] bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.015))] backdrop-blur-sm">
+        <div
+          className="markets-table mt-8 overflow-hidden rounded-3xl border border-[var(--border)] backdrop-blur-sm"
+          style={{ background: "var(--surface)" }}
+        >
           <div className="overflow-x-auto">
             <table className="w-full min-w-[860px] text-sm">
-              <thead className="sticky top-0 z-10 bg-[rgba(7,13,32,0.85)] backdrop-blur">
-                <tr className="border-b border-white/[0.06] text-left text-[11px] font-semibold uppercase tracking-wider text-white/45">
+              <thead
+                className="sticky top-0 z-10 backdrop-blur"
+                style={{ background: "rgba(var(--nav-bg-rgb), 0.85)" }}
+              >
+                <tr className="border-b border-[var(--border)] text-left text-[11px] font-semibold uppercase tracking-wider text-[var(--fg-subtle)]">
                   <th className="py-4 pl-6 pr-2">#</th>
                   <th className="py-4 pr-2">Coin</th>
                   <th className="py-4 pr-2">Price</th>
@@ -248,8 +254,8 @@ export function Markets() {
                           onRowActivate();
                         }
                       }}
-                      className={`market-row group relative cursor-pointer transition-colors hover:bg-[linear-gradient(90deg,rgba(27,85,224,0.10),rgba(27,85,224,0)_70%)] focus:outline-none focus-visible:bg-[linear-gradient(90deg,rgba(27,85,224,0.12),rgba(27,85,224,0)_70%)] ${
-                        isLast ? "" : "border-b border-white/[0.05]"
+                      className={`market-row group relative cursor-pointer transition-colors focus:outline-none ${
+                        isLast ? "" : "border-b border-[var(--border)]"
                       }`}
                     >
                       <td className="relative py-5 pl-6 pr-2">
@@ -258,24 +264,32 @@ export function Markets() {
                           aria-hidden
                         />
                         {i < 3 ? (
-                          <span className="inline-flex items-center justify-center rounded-md bg-[rgba(27,85,224,0.16)] px-1.5 py-0.5 text-xs font-bold text-[var(--brand)] tabular-nums">
+                          <span
+                            className="inline-flex items-center justify-center rounded-md px-1.5 py-0.5 text-xs font-bold text-[var(--brand)] tabular-nums"
+                            style={{ background: "rgba(var(--brand-rgb), 0.16)" }}
+                          >
                             {i + 1}
                           </span>
                         ) : (
-                          <span className="text-sm tabular-nums text-white/55">{i + 1}</span>
+                          <span className="text-sm tabular-nums text-[var(--fg-muted)]">{i + 1}</span>
                         )}
                       </td>
                       <td className="py-5 pr-2">
                         <span className="flex items-center gap-3">
                           <span
                             aria-hidden
-                            className="grid h-9 w-9 place-items-center rounded-full bg-[linear-gradient(135deg,rgba(27,85,224,0.95),rgba(27,85,224,0.45))] text-sm font-black text-white shadow-[0_4px_14px_rgba(27,85,224,0.35)]"
+                            className="grid h-9 w-9 place-items-center rounded-full text-sm font-black text-[var(--fg)]"
+                            style={{
+                              background:
+                                "linear-gradient(135deg, rgba(var(--brand-rgb), 0.95), rgba(var(--brand-rgb), 0.45))",
+                              boxShadow: "0 4px 14px rgba(var(--brand-rgb), 0.35)"
+                            }}
                           >
                             {c.sym[0]}
                           </span>
                           <span className="flex flex-col">
-                            <span className="font-bold leading-tight text-white">{c.name}</span>
-                            <span className="mt-0.5 inline-block w-fit rounded bg-white/[0.05] px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-white/55">
+                            <span className="font-bold leading-tight text-[var(--fg)]">{c.name}</span>
+                            <span className="mt-0.5 inline-block w-fit rounded bg-[var(--surface)] px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[var(--fg-muted)]">
                               {c.sym}
                             </span>
                           </span>
@@ -284,7 +298,7 @@ export function Markets() {
                       <td className="py-5 pr-2">
                         <span
                           key={flashKey}
-                          className={`inline-block rounded px-1.5 py-1 font-semibold tabular-nums text-white ${flashCls}`}
+                          className={`inline-block rounded px-1.5 py-1 font-semibold tabular-nums text-[var(--fg)] ${flashCls}`}
                         >
                           {formatInr(displayPrice)}
                         </span>
@@ -294,13 +308,17 @@ export function Markets() {
                       </td>
                       <td className="py-5 pr-2">
                         <div className="flex items-center gap-3">
-                          <span className="w-14 shrink-0 text-sm tabular-nums text-white/70">
+                          <span className="w-14 shrink-0 text-sm tabular-nums text-[var(--fg-muted)]">
                             {c.vol} Cr
                           </span>
-                          <span className="block h-1 w-20 overflow-hidden rounded-full bg-white/[0.05]">
+                          <span className="block h-1 w-20 overflow-hidden rounded-full bg-[var(--surface)]">
                             <span
-                              className="block h-full rounded-full bg-[linear-gradient(90deg,rgba(27,85,224,0.95),rgba(27,85,224,0.45))]"
-                              style={{ width: `${(c.vol / maxVol) * 100}%` }}
+                              className="block h-full rounded-full"
+                              style={{
+                                width: `${(c.vol / maxVol) * 100}%`,
+                                background:
+                                  "linear-gradient(90deg, rgba(var(--brand-rgb), 0.95), rgba(var(--brand-rgb), 0.45))"
+                              }}
                             />
                           </span>
                         </div>
@@ -308,10 +326,10 @@ export function Markets() {
                       <td className="py-5 pr-2">
                         <Sparkline seed={i + 1} positive={c.ch >= 0} />
                       </td>
-                      <td className="py-5 pr-6 text-right text-white/35">
+                      <td className="py-5 pr-6 text-right text-[var(--fg-subtle)]">
                         <span
                           aria-hidden
-                          className="inline-block transition-transform group-hover:translate-x-1 group-focus-visible:translate-x-1 group-hover:text-white group-focus-visible:text-white"
+                          className="inline-block transition-transform group-hover:translate-x-1 group-focus-visible:translate-x-1 group-hover:text-[var(--fg)] group-focus-visible:text-[var(--fg)]"
                         >
                           →
                         </span>
@@ -324,7 +342,7 @@ export function Markets() {
           </div>
         </div>
 
-        <div className="mt-6 flex flex-col items-center justify-between gap-3 text-sm text-white/55 sm:flex-row">
+        <div className="mt-6 flex flex-col items-center justify-between gap-3 text-sm text-[var(--fg-muted)] sm:flex-row">
           <span className="tabular-nums">
             Showing top {coins.length} of 350+ assets.
           </span>

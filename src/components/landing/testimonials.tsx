@@ -101,12 +101,12 @@ export function Testimonials() {
       </svg>
 
       <div className="relative mx-auto flex max-w-[760px] flex-col items-center">
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/[0.04] px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-white/75">
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--fg-muted)]">
           Loved by traders
         </span>
 
         <div ref={contentRef} className="testimonial-content mt-6">
-          <blockquote className="text-[clamp(1.25rem,2.6vw,1.9rem)] font-normal italic leading-relaxed text-[var(--text-on-dark)]">
+          <blockquote className="text-[clamp(1.25rem,2.6vw,1.9rem)] font-normal italic leading-relaxed text-[var(--fg)]">
             &ldquo;{t.quote}&rdquo;
           </blockquote>
           <footer className="mt-6 flex items-center justify-center gap-3">
@@ -117,10 +117,10 @@ export function Testimonials() {
                 .join("")}
             </span>
             <div className="text-left">
-              <cite className="font-bold not-italic text-[var(--text-on-dark)]">
+              <cite className="font-bold not-italic text-[var(--fg)]">
                 {t.name}
               </cite>
-              <p className="text-sm text-[var(--text-muted-dark)]">{t.role}</p>
+              <p className="text-sm text-[var(--fg-muted)]">{t.role}</p>
             </div>
           </footer>
         </div>
@@ -133,11 +133,13 @@ export function Testimonials() {
               aria-label={`Testimonial ${i + 1}`}
               onClick={() => goTo(i)}
               className={`h-2 rounded-full transition-all ${
-                i === index ? "w-6 bg-[var(--brand)]" : "w-2 bg-white/20 hover:bg-white/40"
+                i === index
+                  ? "w-6 bg-[var(--brand)]"
+                  : "w-2 bg-[var(--surface-strong)] hover:bg-[var(--border-strong)]"
               }`}
             />
           ))}
-          <div className="ml-4 h-1 w-48 overflow-hidden rounded-full bg-white/10">
+          <div className="ml-4 h-1 w-48 overflow-hidden rounded-full bg-[var(--surface-strong)]">
             <div
               key={index}
               className="testimonial-progress-fill h-full bg-[var(--brand)]"
