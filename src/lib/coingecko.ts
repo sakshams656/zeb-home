@@ -27,6 +27,8 @@ export const MARKETS_DISPLAY_SYMS = [
 
 export type MarketsDisplaySym = (typeof MARKETS_DISPLAY_SYMS)[number];
 
+const CG_API_URL = process.env.CG_API_URL;
+
 export interface CgMarketRow {
   id: string;
   symbol: string;
@@ -50,7 +52,7 @@ type CgConfig = {
 };
 
 function getCgConfig(): CgConfig | null {
-  const raw = process.env.NEXT_PUBLIC_CG_API_URL?.trim();
+  const raw = CG_API_URL?.trim();
   if (!raw) return null;
 
   if (raw.startsWith("http")) {
@@ -70,7 +72,7 @@ function getCgConfig(): CgConfig | null {
 
 async function cgFetch<T>(path: string, search?: Record<string, string>): Promise<T> {
   const cfg = getCgConfig();
-  if (!cfg) throw new Error("NEXT_PUBLIC_CG_API_URL is not set");
+  if (!cfg) throw new Error("CG_API_URL is not set");
 
   const url = new URL(`${cfg.base}${path}`);
   if (search) {
