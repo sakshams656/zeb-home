@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger, prefersReducedMotion } from "@/lib/gsap";
+import { LINKS } from "@/lib/links";
 import { SectionHeader } from "@/components/ui/section-header";
 import { Reveal } from "@/components/ui/reveal";
 import { CalcShell, RangeField, ResultBox, ResultRow } from "../calculator-ui";
@@ -247,7 +248,7 @@ function AiPanel() {
         {sentiment >= 60 ? "🟢 Bullish" : sentiment >= 40 ? "🟡 Neutral" : "🔴 Bearish"} — AI suggests{" "}
         {sentiment >= 60 ? "cautious long bias on majors" : "reduce leverage, tighten RMS"}
       </p>
-      <a href={process.env.NEXT_PUBLIC_APP_URL ?? "https://zebpay.com"} className="mt-4 inline-block text-sm font-bold text-[var(--cyan)]">
+      <a href={LINKS.getStarted} className="mt-4 inline-block text-sm font-bold text-[var(--cyan)]">
         See live in app →
       </a>
     </CalcShell>
@@ -334,7 +335,7 @@ function OptionsPanel() {
         <ResultRow label="Net PnL (preview)" value={formatInr(Math.round(r.netPnl))} highlight={r.netPnl >= 0 ? "success" : "danger"} />
         <ResultRow label="Break-even" value={formatInr(Math.round(r.breakEven))} />
       </ResultBox>
-      <a href={process.env.NEXT_PUBLIC_APP_URL ?? "https://zebpay.com"} className="mt-3 inline-block text-sm font-bold text-[var(--cyan)]">
+      <a href={LINKS.getStarted} className="mt-3 inline-block text-sm font-bold text-[var(--cyan)]">
         Join waitlist →
       </a>
     </CalcShell>

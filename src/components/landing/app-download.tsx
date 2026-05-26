@@ -5,8 +5,7 @@ import { useGSAP } from "@gsap/react";
 import { PhoneFrame } from "@/components/ui/phone-frame";
 import { ExchangeListScreen } from "@/components/phone-demo/exchange-list-screen";
 import { gsap, ZEB_EASE, prefersReducedMotion } from "@/lib/gsap";
-
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://zebpay.com";
+import { LINKS } from "@/lib/links";
 
 export function AppDownload() {
   const ref = useRef<HTMLElement>(null);
@@ -44,10 +43,10 @@ export function AppDownload() {
             <li>✓ SIP, Earn, CryptoPacks</li>
           </ul>
           <div className="mt-8 flex flex-wrap gap-3">
-            <a href={`${APP_URL}/app`} className="btn-primary">
+            <a href={LINKS.getStarted} className="btn-primary">
               App Store
             </a>
-            <a href={`${APP_URL}/app`} className="rounded-full border border-[var(--border)] px-6 py-3 font-bold text-[var(--fg)]">
+            <a href={LINKS.getStarted} className="rounded-full border border-[var(--border)] px-6 py-3 font-bold text-[var(--fg)]">
               Play Store
             </a>
           </div>

@@ -16,6 +16,7 @@ import { INITIAL_COINS, type Coin } from "@/lib/market-data";
 import { formatInr, formatPercent } from "@/lib/format";
 import { gsap, ZEB_EASE, prefersReducedMotion } from "@/lib/gsap";
 import { makeLinePath } from "@/lib/charts";
+import { LINKS, exchangePairUrl } from "@/lib/links";
 import { MarketIntradayChart } from "./market-intraday-chart";
 
 type Tab = "trending" | "gainers" | "losers";
@@ -325,9 +326,9 @@ export function Markets() {
     { dependencies: [tab], scope: ref }
   );
 
-  const onRowActivate = () => {
+  const onRowActivate = (sym: string) => {
     if (typeof window !== "undefined") {
-      window.location.hash = "#calculators";
+      window.location.href = exchangePairUrl(sym);
     }
   };
 
@@ -422,11 +423,11 @@ export function Markets() {
                           cancelScheduledChart();
                           setActiveSym(c.sym);
                         }}
-                        onClick={onRowActivate}
+                        onClick={() => onRowActivate(c.sym)}
                         onKeyDown={(e) => {
                           if (e.key === "Enter" || e.key === " ") {
                             e.preventDefault();
-                            onRowActivate();
+                            onRowActivate(c.sym);
                           }
                         }}
                         className={`market-row group relative cursor-pointer transition-colors focus:outline-none ${rowBorder}`}
@@ -572,7 +573,7 @@ export function Markets() {
           <span className="tabular-nums">
             Showing top {coins.length} of 350+ assets.
           </span>
-          <a href="#calculators" className="btn-outline">
+          <a href={LINKS.exchange} className="btn-outline">
             View all markets
           </a>
         </div>

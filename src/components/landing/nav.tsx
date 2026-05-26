@@ -6,10 +6,9 @@ import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger, ZEB_EASE, prefersReducedMotion } from "@/lib/gsap";
 import { Logo } from "./logo";
 import { NAV_ALL_GROUPS, NAV_COMPANY, NAV_MENU_GROUPS } from "./nav-config";
-import { NavDropdown } from "./nav-dropdown";
+import { NavMenuBar } from "./nav-dropdown";
 import { ThemeToggle } from "./theme-toggle";
-
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://zebpay.com";
+import { LINKS } from "@/lib/links";
 
 export function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -137,19 +136,24 @@ export function Nav() {
               <Logo priority className="h-auto w-[110px] sm:w-[140px] lg:w-[180px]" />
             </Link>
 
-            <ul className="nav-menus hidden flex-1 items-center justify-center gap-0 lg:flex">
-              {NAV_MENU_GROUPS.map((group) => (
-                <NavDropdown key={group.id} group={group} openId={openId} setOpenId={setOpenId} />
-              ))}
-            </ul>
+            <NavMenuBar
+              groups={NAV_MENU_GROUPS}
+              openId={openId}
+              setOpenId={setOpenId}
+              className="nav-menus hidden flex-1 items-center justify-center gap-0 lg:flex"
+            />
 
             <div className="flex min-w-0 items-center gap-2 sm:gap-3">
-              <ul className="hidden lg:flex">
-                <NavDropdown group={NAV_COMPANY} openId={openId} setOpenId={setOpenId} align="right" />
-              </ul>
+              <NavMenuBar
+                groups={[NAV_COMPANY]}
+                openId={openId}
+                setOpenId={setOpenId}
+                align="right"
+                className="hidden lg:flex"
+              />
               <ThemeToggle />
               <a
-                href={`${APP_URL}/signup`}
+                href={LINKS.getStarted}
                 className="btn-primary hidden whitespace-nowrap text-sm lg:inline-flex"
               >
                 Get started
@@ -232,7 +236,7 @@ export function Nav() {
               })}
             </div>
             <a
-              href={`${APP_URL}/signup`}
+              href={LINKS.getStarted}
               className="btn-primary mobile-nav-link mt-8 w-full justify-center text-center"
               onClick={closeMobile}
             >

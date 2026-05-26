@@ -5,26 +5,48 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { useTheme } from "@/context/theme-context";
 import { gsap, ScrollTrigger, ZEB_EASE, prefersReducedMotion } from "@/lib/gsap";
+import { LINKS } from "@/lib/links";
 import { Logo } from "./logo";
-
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://zebpay.com";
 
 const COLS = [
   {
     title: "Product",
-    links: ["Spot", "Futures", "SIP", "CryptoPacks", "Earn"]
+    links: [
+      { label: "Spot", href: LINKS.exchange },
+      { label: "Futures", href: LINKS.futures },
+      { label: "SIP", href: LINKS.sip },
+      { label: "CryptoPacks", href: LINKS.cryptopacks },
+      { label: "Earn", href: LINKS.earn }
+    ]
   },
   {
     title: "Pro tools",
-    links: ["AI Insights", "Expert Trades", "RMS", "Sub Accounts", "Options", "APIs"]
+    links: [
+      { label: "AI Insights", href: "#" },
+      { label: "Expert Trades", href: "#" },
+      { label: "RMS", href: "#" },
+      { label: "Sub Accounts", href: "#" },
+      { label: "Options", href: "#" },
+      { label: "APIs", href: LINKS.apidocs }
+    ]
   },
   {
     title: "Company",
-    links: ["About", "Blog", "Careers", "Press"]
+    links: [
+      { label: "About", href: "#" },
+      { label: "Blog", href: LINKS.blog },
+      { label: "Careers", href: "#" },
+      { label: "Press", href: "#" }
+    ]
   },
   {
     title: "Legal",
-    links: ["Privacy", "Terms", "Risk disclosure", "Grievance"]
+    links: [
+      { label: "Privacy", href: "#" },
+      { label: "Terms", href: "#" },
+      { label: "Risk disclosure", href: "#" },
+      { label: "Grievance", href: "#" }
+    ]
   }
 ];
 
@@ -129,7 +151,7 @@ export function Footer() {
         ref={ref}
         className="footer-globe-bg relative overflow-hidden text-[var(--fg)]"
       >
-        <div className="container-zeb flex flex-col items-center pb-12 pt-20 text-center">
+        <div className="container-zeb flex flex-col items-center pt-20 text-center">
           <p className="text-sm font-bold uppercase tracking-widest text-[var(--brand)]">
             Start trading
           </p>
@@ -139,7 +161,7 @@ export function Footer() {
           <p className="mt-3 max-w-xl text-sm text-[var(--fg-muted)] sm:text-base">
             India&apos;s most trusted crypto exchange. 6M+ users, ₹2T+ traded, 200+ assets.
           </p>
-          <a href={`${APP_URL}/signup`} className="btn-primary mt-6">
+          <a href={LINKS.getStarted} className="btn-primary mt-6">
             Get started →
           </a>
           <div className="relative mt-6 w-full max-w-[800px] sm:mt-8">
@@ -156,22 +178,22 @@ export function Footer() {
               </p>
               <div className="mt-4 flex gap-2">
                 <SocialIcon
-                  href="#"
+                  href="https://twitter.com/zebpay"
                   label="Twitter / X"
                   d="M18.244 2H21l-6.52 7.45L22 22h-6.83l-4.78-6.27L4.8 22H2l7-8L2 2h6.99l4.32 5.74L18.244 2zM17.1 20h1.6L7 4h-1.6L17.1 20z"
                 />
                 <SocialIcon
-                  href="#"
+                  href="https://www.linkedin.com/company/zebpay/"
                   label="LinkedIn"
                   d="M4 4h4v16H4V4zm2 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm4 4h3.8v2.2h.06c.53-1 1.83-2.06 3.77-2.06 4.04 0 4.78 2.66 4.78 6.12V20h-4v-5.2c0-1.24-.02-2.84-1.73-2.84-1.73 0-2 1.35-2 2.75V20h-4V8z"
                 />
                 <SocialIcon
-                  href="#"
+                  href="https://www.instagram.com/zebpayofficial/"
                   label="Instagram"
                   d="M12 2c2.72 0 3.05 0 4.12.06 1.07.05 1.8.22 2.43.47.66.25 1.22.59 1.77 1.15.56.55.9 1.11 1.15 1.77.25.63.42 1.36.47 2.43.05 1.07.06 1.4.06 4.12s0 3.05-.06 4.12c-.05 1.07-.22 1.8-.47 2.43-.25.66-.59 1.22-1.15 1.77-.55.56-1.11.9-1.77 1.15-.63.25-1.36.42-2.43.47-1.07.06-1.4.06-4.12.06s-3.05 0-4.12-.06c-1.07-.05-1.8-.22-2.43-.47-.66-.25-1.22-.59-1.77-1.15-.56-.55-.9-1.11-1.15-1.77-.25-.63-.42-1.36-.47-2.43C2 15.05 2 14.72 2 12s0-3.05.06-4.12c.05-1.07.22-1.8.47-2.43.25-.66.59-1.22 1.15-1.77.55-.56 1.11-.9 1.77-1.15.63-.25 1.36-.42 2.43-.47C8.95 2 9.28 2 12 2zm0 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm5.5-3.5a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4z"
                 />
                 <SocialIcon
-                  href="#"
+                  href="https://www.youtube.com/user/ZebpayTube"
                   label="YouTube"
                   d="M23.5 6.2a3 3 0 0 0-2.12-2.12C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.38.48A3 3 0 0 0 .5 6.2C0 8.08 0 12 0 12s0 3.92.5 5.8a3 3 0 0 0 2.12 2.12C4.5 20.4 12 20.4 12 20.4s7.5 0 9.38-.48a3 3 0 0 0 2.12-2.12C24 15.92 24 12 24 12s0-3.92-.5-5.8zM9.6 15.6V8.4l6.4 3.6-6.4 3.6z"
                 />
@@ -184,12 +206,12 @@ export function Footer() {
                 </h4>
                 <ul className="mt-3 space-y-2">
                   {col.links.map((l) => (
-                    <li key={l}>
+                    <li key={l.label}>
                       <Link
-                        href="#"
+                        href={l.href}
                         className="text-sm text-[var(--fg-muted)] transition-colors hover:text-[var(--brand)]"
                       >
-                        {l}
+                        {l.label}
                       </Link>
                     </li>
                   ))}

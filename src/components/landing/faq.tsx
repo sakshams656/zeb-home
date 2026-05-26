@@ -6,28 +6,28 @@ import { gsap, ZEB_EASE, prefersReducedMotion } from "@/lib/gsap";
 
 const FAQS = [
   {
-    q: "Is ZebPay regulated?",
-    a: "Yes. ZebPay is registered with FIU-IND and complies with Indian AML and KYC regulations."
+    q: "What trading options does ZebPay offer?",
+    a: "ZebPay enables users to buy, sell, and trade a wide range of crypto assets through an intuitive platform designed for smooth and efficient execution."
   },
   {
-    q: "How secure is my crypto?",
-    a: "98% of assets are held in cold storage with multi-sig wallets and insurance coverage on hot wallet balances."
+    q: "Is ZebPay suitable for beginners?",
+    a: "Yes. ZebPay is built to be easy to navigate, making it accessible for new users while still offering depth for those looking to explore crypto further."
   },
   {
-    q: "What is the minimum SIP amount?",
-    a: "You can start a SIP from ₹100 per installment on supported assets and pause or resume any time."
+    q: "Does ZebPay offer advanced trading features?",
+    a: "ZebPay provides features that support more experienced users, including detailed market views and tools that help track trades and activity with clarity."
   },
   {
-    q: "What are ZebPay's trading fees?",
-    a: "Spot maker/taker start at 0.10% / 0.15%. Futures fees are competitive with volume-based discounts."
+    q: "How can users track their crypto portfolio on ZebPay?",
+    a: "Users can monitor their holdings, view profit and loss, check individual asset performance, and access transaction history through the portfolio feature."
   },
   {
-    q: "Can I use sub accounts?",
-    a: "Yes. Isolate trading, earn and API strategies with separate wallets, balances and API keys."
+    q: "Are there earning options available on ZebPay?",
+    a: "Yes. ZebPay offers options that allow users to earn on their crypto holdings, helping them make more of their assets over time."
   },
   {
-    q: "When will options launch?",
-    a: "INR-settled options on majors are coming soon. Join the waitlist in-app to get early access."
+    q: "How does ZebPay approach platform security?",
+    a: "ZebPay follows a security-first approach, implementing strong safeguards and best practices to help protect user accounts and assets in an evolving digital environment."
   }
 ] as const;
 

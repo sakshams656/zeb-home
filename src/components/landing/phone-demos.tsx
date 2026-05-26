@@ -8,6 +8,7 @@ import { SectionHeader } from "@/components/ui/section-header";
 import { DemoPointer } from "./phone-demo/demo-pointer";
 import type { DemoMode } from "./phone-demo/types";
 import { gsap, ScrollTrigger, prefersReducedMotion } from "@/lib/gsap";
+import { LINKS } from "@/lib/links";
 
 const QtFlow = dynamic(() => import("./phone-demo/qt-flow").then((m) => ({ default: m.QtFlow })), { ssr: false });
 const CpFlow = dynamic(() => import("./phone-demo/cp-flow").then((m) => ({ default: m.CpFlow })), { ssr: false });
@@ -15,8 +16,6 @@ const FtFlow = dynamic(() => import("./phone-demo/ft-flow").then((m) => ({ defau
 const SipFlow = dynamic(() => import("./phone-demo/sip-flow").then((m) => ({ default: m.SipFlow })), { ssr: false });
 const ExchangeFlow = dynamic(() => import("./phone-demo/exchange-flow").then((m) => ({ default: m.ExchangeFlow })), { ssr: false });
 const AiFlow = dynamic(() => import("./phone-demo/ai-flow").then((m) => ({ default: m.AiFlow })), { ssr: false });
-
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://zebpay.com";
 
 type FeatId = DemoMode;
 
@@ -99,7 +98,7 @@ export function PhoneDemos() {
               </button>
             ))}
             <p className="hidden text-xs text-[var(--text-muted)] lg:block">
-              Demo only · <Link href={`${APP_URL}/signup`} className="font-semibold text-[var(--cyan)]">Sign up to trade live</Link>
+              Demo only · <Link href={LINKS.getStarted} className="font-semibold text-[var(--cyan)]">Sign up to trade live</Link>
             </p>
           </div>
           <div className="relative mx-auto w-full min-w-0 max-w-[320px]">

@@ -5,8 +5,7 @@ import { useEffect, useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { PhoneFrame } from "@/components/ui/phone-frame";
 import { gsap, ZEB_EASE, prefersReducedMotion } from "@/lib/gsap";
-
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://zebpay.com";
+import { LINKS } from "@/lib/links";
 
 type Dot = { x: number; y: number; vx: number; vy: number };
 
@@ -186,7 +185,7 @@ export function Hero() {
               </span>
             </h1>
 
-            <a href={`${APP_URL}/signup`} className="hero-cta btn-hero-primary mt-10">
+            <a href={LINKS.getStarted} className="hero-cta btn-hero-primary mt-10">
               Get started
               <span className="text-[1.15em] leading-none" aria-hidden>
                 →
