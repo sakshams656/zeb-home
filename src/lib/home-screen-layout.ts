@@ -1,5 +1,5 @@
 const DEFAULT_LAYOUT_URL =
-  "https://www.zebstage.com/api/v1/home-screen/layout";
+  "https://www.zebapi.com/api/v1/home-screen/layout";
 
 export interface HomeScreenLayoutResponse {
   success: boolean;
