@@ -6,8 +6,8 @@ import { gsap, ZEB_EASE, prefersReducedMotion } from "@/lib/gsap";
 
 const STATS = [
   { cls: "stat-1", target: 6, suffix: "M+", label: "Users worldwide" },
-  { cls: "stat-2", target: 2, prefix: "₹", suffix: "T+", label: "Total volume traded" },
-  { cls: "stat-3", target: 200, suffix: "+", label: "Crypto assets available" }
+  { cls: "stat-2", target: 22, prefix: "₹", suffix: "B+", label: "Total volume traded" },
+  { cls: "stat-3", target: 400, suffix: "+", label: "Crypto assets available" }
 ];
 
 export function SocialProof() {

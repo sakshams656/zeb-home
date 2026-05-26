@@ -76,18 +76,37 @@ function CheckIcon({ className }: { className?: string }) {
 }
 
 function ShieldVisual() {
+  // Theme-aware shield. Dark page: brand-blue body with white border + white
+  // Z-mark. Light page: white body with brand-blue border + blue Z-mark. The
+  // silhouette is a classic heraldic shield — arched top, pointed bottom — so
+  // it reads as a proper shield rather than a flat block.
   const { isDark } = useTheme();
-  const theme = isDark ? "dark" : "light";
+  const fill = isDark ? "rgb(var(--brand-rgb))" : "#ffffff";
+  const stroke = isDark ? "#ffffff" : "rgb(var(--brand-rgb))";
+  const markSrc = isDark ? "/zebpay-mark.png" : "/zebpay-mark-blue.png";
 
   return (
-    <div className="security-hero-visual relative mx-auto aspect-[5/6] w-full max-w-[340px]">
+    <div className="security-hero-visual relative mx-auto aspect-[1/1] w-full max-w-[320px]">
+      <svg
+        viewBox="0 0 100 100"
+        className="absolute inset-0 h-full w-full drop-shadow-[0_18px_40px_rgba(var(--brand-rgb),0.32)]"
+        aria-hidden
+      >
+        <path
+          d="M 14 22 Q 50 2 86 22 L 86 50 Q 86 78 50 96 Q 14 78 14 50 Z"
+          fill={fill}
+          stroke={stroke}
+          strokeWidth={3}
+          strokeLinejoin="round"
+          strokeLinecap="round"
+        />
+      </svg>
       <Image
-        src={`/security/icons/${theme}/hero-shield.png`}
+        src={markSrc}
         alt=""
-        width={340}
-        height={408}
-        className="h-full w-full object-contain"
-        priority
+        width={140}
+        height={140}
+        className="pointer-events-none absolute left-1/2 top-[52%] w-[40%] -translate-x-1/2 -translate-y-1/2 object-contain"
         aria-hidden
       />
     </div>

@@ -5,7 +5,8 @@ import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger, ZEB_EASE, prefersReducedMotion } from "@/lib/gsap";
 import { Logo } from "./logo";
-import { NAV_ALL_GROUPS, NAV_COMPANY, NAV_MENU_GROUPS } from "./nav-config";
+import { NAV_ALL_GROUPS, NAV_MENU_GROUPS } from "./nav-config";
+// NAV_COMPANY temporarily hidden — see nav-config.ts
 import { NavMenuBar } from "./nav-dropdown";
 import { ThemeToggle } from "./theme-toggle";
 import { LINKS } from "@/lib/links";
@@ -144,6 +145,7 @@ export function Nav() {
             />
 
             <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+              {/* Company dropdown temporarily hidden — restore NAV_COMPANY in nav-config.ts
               <NavMenuBar
                 groups={[NAV_COMPANY]}
                 openId={openId}
@@ -151,6 +153,7 @@ export function Nav() {
                 align="right"
                 className="hidden lg:flex"
               />
+              */}
               <ThemeToggle />
               <a
                 href={LINKS.getStarted}

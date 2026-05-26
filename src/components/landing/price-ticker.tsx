@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { TICKER_COINS } from "@/lib/market-data";
 import { fetchMarketsCoins } from "@/lib/coingecko";
 import { formatInr, formatPercent } from "@/lib/format";
+import { exchangePairUrl } from "@/lib/links";
 
 type TickerCoin = {
   sym: string;
@@ -17,7 +18,11 @@ const FALLBACK: TickerCoin[] = TICKER_COINS;
 function CoinChip({ sym, price, ch, image }: TickerCoin) {
   const positive = ch >= 0;
   return (
-    <span className="ticker-chip inline-flex shrink-0 items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-4 py-2 text-sm font-semibold tabular-nums">
+    <a
+      href={exchangePairUrl(sym)}
+      aria-label={`Trade ${sym} on ZebPay`}
+      className="ticker-chip inline-flex shrink-0 items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-4 py-2 text-sm font-semibold tabular-nums transition-colors hover:border-[var(--brand)] hover:bg-[var(--surface-strong)] focus-visible:border-[var(--brand)] focus-visible:outline-none"
+    >
       {image ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
@@ -47,7 +52,7 @@ function CoinChip({ sym, price, ch, image }: TickerCoin) {
       >
         {positive ? "↑" : "↓"} {formatPercent(ch)}
       </span>
-    </span>
+    </a>
   );
 }
 

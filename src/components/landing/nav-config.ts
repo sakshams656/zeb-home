@@ -25,11 +25,11 @@ export const NAV_FEATURES: NavGroup = {
     { label: "SIP", href: LINKS.sip },
     { label: "CryptoPacks", href: LINKS.cryptopacks },
     { label: "Earn", href: LINKS.earn },
-    { label: "Referral", href: "#" },
+    // { label: "Referral", href: "#" },
     { label: "API Trading", href: LINKS.apidocs },
-    { label: "HNI", href: "#" },
-    { label: "SubAccounts", href: "#pro" },
-    { label: "RMS", href: "#pro" }
+    // { label: "HNI", href: "#" },
+    // { label: "SubAccounts", href: "#pro" },
+    // { label: "RMS", href: "#pro" }
   ]
 };
 
@@ -43,17 +43,17 @@ export const NAV_MORE: NavGroup = {
   ]
 };
 
-export const NAV_COMPANY: NavGroup = {
-  id: "company",
-  label: "Company",
-  items: [
-    { label: "About Us", href: "#" },
-    { label: "Careers", href: "#" },
-    { label: "Our Vision", href: "#" },
-    { label: "Mission and Values", href: "#" }
-  ]
-};
+// export const NAV_COMPANY: NavGroup = {
+//   id: "company",
+//   label: "Company",
+//   items: [
+//     { label: "About Us", href: "#" },
+//     // { label: "Careers", href: "#" },
+//     { label: "Our Vision", href: "#" },
+//     { label: "Mission and Values", href: "#" }
+//   ]
+// };
 
 export const NAV_MENU_GROUPS = [NAV_TRADE, NAV_FEATURES, NAV_MORE] as const;
 
-export const NAV_ALL_GROUPS = [NAV_TRADE, NAV_FEATURES, NAV_MORE, NAV_COMPANY] as const;
+export const NAV_ALL_GROUPS = [NAV_TRADE, NAV_FEATURES, NAV_MORE] as const;

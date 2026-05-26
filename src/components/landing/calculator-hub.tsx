@@ -103,13 +103,13 @@ const META: CalcMeta[] = [
     title: "Risk Management Calculator",
     subtitle: "Plan take-profit, stop-loss and risk-reward for every trade."
   },
-  {
-    id: "subs",
-    label: "Sub accounts",
-    rail: "Capital split",
-    title: "Sub-Accounts Split Calculator",
-    subtitle: "Distribute capital across multiple wallets by weight."
-  },
+  // {
+  //   id: "subs",
+  //   label: "Sub accounts",
+  //   rail: "Capital split",
+  //   title: "Sub-Accounts Split Calculator",
+  //   subtitle: "Distribute capital across multiple wallets by weight."
+  // },
   {
     id: "options",
     label: "Options",

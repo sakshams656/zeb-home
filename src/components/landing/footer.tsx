@@ -5,9 +5,11 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { useTheme } from "@/context/theme-context";
 import { gsap, ScrollTrigger, ZEB_EASE, prefersReducedMotion } from "@/lib/gsap";
-import { LINKS } from "@/lib/links";
+import { LINKS, converterUrl } from "@/lib/links";
 import { Logo } from "./logo";
 
+// Items with `href: "#"` are awaiting real URLs. Replace `#` with the
+// matching entry from `LINKS` (or a literal URL) when each one ships.
 const COLS = [
   {
     title: "Product",
@@ -20,32 +22,31 @@ const COLS = [
     ]
   },
   {
-    title: "Pro tools",
+    title: "Convertor",
     links: [
-      { label: "AI Insights", href: "#" },
-      { label: "Expert Trades", href: "#" },
-      { label: "RMS", href: "#" },
-      { label: "Sub Accounts", href: "#" },
-      { label: "Options", href: "#" },
-      { label: "APIs", href: LINKS.apidocs }
+      { label: "BTC to INR", href: converterUrl("BTC") },
+      { label: "ETH to INR", href: converterUrl("ETH") },
+      { label: "SOL to INR", href: converterUrl("SOL") },
+      { label: "XRP to INR", href: converterUrl("XRP") },
+      { label: "BAT to INR", href: converterUrl("BAT") }
     ]
   },
   {
     title: "Company",
     links: [
-      { label: "About", href: "#" },
+      { label: "About", href: LINKS.about },
       { label: "Blog", href: LINKS.blog },
-      { label: "Careers", href: "#" },
-      { label: "Press", href: "#" }
+      { label: "Careers", href: LINKS.careers },
+      { label: "Mission & vision", href: LINKS.missionVision }
     ]
   },
   {
     title: "Legal",
     links: [
-      { label: "Privacy", href: "#" },
-      { label: "Terms", href: "#" },
-      { label: "Risk disclosure", href: "#" },
-      { label: "Grievance", href: "#" }
+      { label: "Terms of use", href: LINKS.terms },
+      { label: "Privacy policy", href: LINKS.privacy },
+      { label: "Risk disclosure", href: LINKS.riskDisclosure }
+      // Grievance link omitted — no public URL yet
     ]
   }
 ];
@@ -218,6 +219,18 @@ export function Footer() {
                 </ul>
               </div>
             ))}
+          </div>
+        </div>
+
+        <div>
+          <div className="container-zeb py-5">
+            <p className="max-w-[1100px] text-xs leading-relaxed text-[var(--fg-muted)]">
+              <span className="font-semibold text-[var(--fg)]">Disclaimer:</span>{" "}
+              Trading in crypto assets is subject to market and legal risks.
+              Prices in one country may differ from prices in other countries.
+              ZebPay does not guarantee any returns. Use ZebPay&apos;s services
+              at your own risk.
+            </p>
           </div>
         </div>
 
