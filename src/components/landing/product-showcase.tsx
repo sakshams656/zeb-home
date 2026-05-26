@@ -35,7 +35,7 @@ const PANELS: {
     id: "spot",
     num: "01",
     title: "Spot Trade",
-    body: "The fastest way to buy and sell crypto. Up to 200+ pairs.",
+    body: "The fastest way to buy and sell crypto. Up to 400+ pairs.",
     mode: "qt"
   },
   {

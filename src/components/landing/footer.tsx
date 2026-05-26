@@ -159,7 +159,7 @@ export function Footer() {
             Crypto, from India to the world.
           </h2>
           <p className="mt-3 max-w-xl text-sm text-[var(--fg-muted)] sm:text-base">
-            India&apos;s most trusted crypto exchange. 6M+ users, ₹2T+ traded, 200+ assets.
+            India&apos;s most trusted crypto exchange. 6M+ users, ₹2T+ traded, 400+ assets.
           </p>
           <a href={LINKS.getStarted} className="btn-primary mt-6">
             Get started →
@@ -174,7 +174,7 @@ export function Footer() {
             <div className="footer-col">
               <Logo variant="auto" width={150} height={52} className="h-auto w-[150px]" />
               <p className="mt-3 max-w-[240px] text-xs text-[var(--fg-muted)]">
-                India&apos;s most trusted crypto exchange since 2014. Trade, save and invest in 200+ assets.
+                India&apos;s most trusted crypto exchange since 2014. Trade, save and invest in 400+ assets.
               </p>
               <div className="mt-4 flex gap-2">
                 <SocialIcon

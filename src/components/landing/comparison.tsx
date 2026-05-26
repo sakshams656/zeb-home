@@ -14,7 +14,7 @@ const FEATURES = [
   "ISO certified",
   "SOC 2",
   "0% maker fee",
-  "200+ assets",
+  "400+ assets",
   "Earn rewards",
   "Expert copy trade"
 ];
