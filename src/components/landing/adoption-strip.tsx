@@ -47,7 +47,7 @@ export function AdoptionStrip() {
   );
 
   return (
-    <section ref={ref} className="px-6 py-16">
+    <section ref={ref} className="py-14 sm:py-16 lg:py-20">
       <div className="container-zeb">
         <p className="mb-8 text-center text-sm font-bold uppercase tracking-wider text-[var(--text-muted)]">
           Platform metrics · {persona === "trader" ? "Active traders" : "Retail investors"}
@@ -55,7 +55,7 @@ export function AdoptionStrip() {
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {metrics.map((m) => (
             <div key={m.label} className="rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)] p-6 text-center">
-              <p className="text-3xl font-black text-[var(--text)]">
+              <p className="text-[clamp(1.75rem,5vw,2.25rem)] font-black text-[var(--text)]">
                 <span className="stat-counter" data-target={m.target} data-suffix={m.suffix}>
                   0{m.suffix}
                 </span>

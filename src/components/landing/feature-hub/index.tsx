@@ -393,19 +393,26 @@ export function FeatureHub() {
   useGSAP(
     () => {
       if (prefersReducedMotion()) return;
-      ScrollTrigger.create({
-        trigger: "#features",
-        start: "top top",
-        end: "+=80%",
-        pin: true,
-        pinSpacing: true
+      // Pin only on desktop. Pinning a tall section on phones traps the
+      // viewport for the duration of the pin range, which is awful UX on
+      // small screens.
+      const mm = gsap.matchMedia();
+      mm.add("(min-width: 1024px)", () => {
+        ScrollTrigger.create({
+          trigger: "#features",
+          start: "top top",
+          end: "+=80%",
+          pin: true,
+          pinSpacing: true,
+        });
       });
+      return () => mm.revert();
     },
     { scope: sectionRef }
   );
 
   return (
-    <section id="features" ref={sectionRef} className="feature-hub-section scroll-mt-20 px-6 py-20">
+    <section id="features" ref={sectionRef} className="feature-hub-section scroll-mt-20 py-14 sm:py-16 lg:py-24">
       <div className="container-zeb">
         <SectionHeader
           chip="Tools & Calculators"
@@ -443,9 +450,9 @@ export function FeatureHub() {
                 </button>
               ))}
             </div>
-            <div className="grid gap-8 p-6 lg:grid-cols-2 lg:p-8">
+            <div className="grid gap-8 p-4 sm:p-6 lg:grid-cols-2 lg:p-8">
               <div>
-                <h3 className="text-xl font-black text-[var(--text)]">{copy.title}</h3>
+                <h3 className="text-[clamp(1.125rem,4vw,1.5rem)] font-black text-[var(--text)]">{copy.title}</h3>
                 <ul className="mt-4 space-y-2">
                   {copy.bullets.map((b) => (
                     <li key={b} className="flex items-start gap-2 text-sm text-[var(--text-muted)]">

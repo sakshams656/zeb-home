@@ -30,34 +30,83 @@ export function Nav() {
       const SCROLL_RANGE = 80;
       const SCROLL_INSET = 16;
 
+      // lint-allow: unguarded-gsap-pixel-layout — initial pin at 0/0/0 only
+      // establishes the absolute origin; the per-viewport pill animation is
+      // gated through gsap.matchMedia below.
       gsap.set(inner, { position: "absolute", top: 0, left: 0, right: 0 });
 
-      const applyNavProgress = (progress: number) => {
-        const p = gsap.utils.clamp(0, 1, progress);
-        const inset = p * SCROLL_INSET;
-        gsap.set(header, { top: p * 12 });
-        gsap.set(inner, {
-          left: inset,
-          right: inset,
-          borderRadius: p * 36,
-          background: `rgba(var(--nav-bg-rgb), ${p * 0.55})`,
-          backdropFilter: p > 0.02 ? `blur(${p * 28}px) saturate(${100 + p * 80}%)` : "none",
-          border: `1px solid rgba(var(--nav-tint-rgb), ${p * 0.2})`,
-          boxShadow:
-            p > 0.08
-              ? `0 ${p * 8}px ${p * 32}px rgba(var(--nav-shadow-rgb), ${p * 0.35}), inset 0 1px 0 rgba(var(--nav-inset-rgb), ${p * 0.08})`
-              : "none"
+      const mm = gsap.matchMedia();
+
+      // <640px: flat full-bleed header. No insets / radius / border — just a
+      // translucent backdrop on scroll. Pixel-layout writes here would shrink
+      // the pill below the natural width of [logo | toggle | hamburger] and
+      // push the hamburger past the rounded right edge (bug fix).
+      mm.add("(max-width: 639px)", () => {
+        const applyMobileProgress = (progress: number) => {
+          const p = gsap.utils.clamp(0, 1, progress);
+          gsap.set(inner, {
+            background: `rgba(var(--nav-bg-rgb), ${p * 0.55})`,
+            backdropFilter: p > 0.02 ? `blur(${p * 18}px) saturate(${100 + p * 60}%)` : "none",
+            boxShadow:
+              p > 0.08
+                ? `0 ${p * 6}px ${p * 18}px rgba(var(--nav-shadow-rgb), ${p * 0.25})`
+                : "none"
+          });
+        };
+
+        applyMobileProgress(Math.min(1, window.scrollY / SCROLL_RANGE));
+
+        const st = ScrollTrigger.create({
+          start: "top top",
+          end: `+=${SCROLL_RANGE}`,
+          scrub: 0.4,
+          onUpdate: (self) => applyMobileProgress(self.progress),
+          onRefresh: (self) => applyMobileProgress(self.progress)
         });
-      };
 
-      applyNavProgress(Math.min(1, window.scrollY / SCROLL_RANGE));
+        return () => {
+          st.kill();
+          gsap.set(inner, { clearProps: "background,backdropFilter,boxShadow" });
+        };
+      });
 
-      ScrollTrigger.create({
-        start: "top top",
-        end: `+=${SCROLL_RANGE}`,
-        scrub: 0.4,
-        onUpdate: (self) => applyNavProgress(self.progress),
-        onRefresh: (self) => applyNavProgress(self.progress)
+      // >=640px: full floating-pill effect with insets, radius, border, shadow.
+      mm.add("(min-width: 640px)", () => {
+        const applyDesktopProgress = (progress: number) => {
+          const p = gsap.utils.clamp(0, 1, progress);
+          const inset = p * SCROLL_INSET;
+          gsap.set(header, { top: p * 12 });
+          gsap.set(inner, {
+            left: inset,
+            right: inset,
+            borderRadius: p * 36,
+            background: `rgba(var(--nav-bg-rgb), ${p * 0.55})`,
+            backdropFilter: p > 0.02 ? `blur(${p * 28}px) saturate(${100 + p * 80}%)` : "none",
+            border: `1px solid rgba(var(--nav-tint-rgb), ${p * 0.2})`,
+            boxShadow:
+              p > 0.08
+                ? `0 ${p * 8}px ${p * 32}px rgba(var(--nav-shadow-rgb), ${p * 0.35}), inset 0 1px 0 rgba(var(--nav-inset-rgb), ${p * 0.08})`
+                : "none"
+          });
+        };
+
+        applyDesktopProgress(Math.min(1, window.scrollY / SCROLL_RANGE));
+
+        const st = ScrollTrigger.create({
+          start: "top top",
+          end: `+=${SCROLL_RANGE}`,
+          scrub: 0.4,
+          onUpdate: (self) => applyDesktopProgress(self.progress),
+          onRefresh: (self) => applyDesktopProgress(self.progress)
+        });
+
+        return () => {
+          st.kill();
+          gsap.set(header, { clearProps: "top" });
+          gsap.set(inner, {
+            clearProps: "left,right,borderRadius,background,backdropFilter,border,boxShadow"
+          });
+        };
       });
     },
     { scope: navRef }
@@ -81,11 +130,11 @@ export function Nav() {
       <header ref={navRef} className="nav-header fixed left-0 right-0 top-0 z-50 h-[72px] w-full">
         <nav
           ref={innerRef}
-          className="nav-inner border border-transparent will-change-[border-radius,box-shadow,left,right]"
+          className="nav-inner overflow-hidden border border-transparent will-change-[border-radius,box-shadow,left,right]"
         >
-          <div className="flex h-[72px] w-full items-center justify-between gap-3 px-4 sm:gap-4 sm:px-6 lg:px-8">
+          <div className="flex h-[72px] w-full items-center justify-between gap-2 px-3 sm:gap-4 sm:px-6 lg:px-8">
             <Link href="/" className="nav-logo flex shrink-0 items-center">
-              <Logo priority />
+              <Logo priority className="h-auto w-[110px] sm:w-[140px] lg:w-[180px]" />
             </Link>
 
             <ul className="nav-menus hidden flex-1 items-center justify-center gap-0 lg:flex">
@@ -94,17 +143,20 @@ export function Nav() {
               ))}
             </ul>
 
-            <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex min-w-0 items-center gap-2 sm:gap-3">
               <ul className="hidden lg:flex">
                 <NavDropdown group={NAV_COMPANY} openId={openId} setOpenId={setOpenId} align="right" />
               </ul>
               <ThemeToggle />
-              <a href={`${APP_URL}/signup`} className="btn-primary hidden text-sm sm:inline-flex">
+              <a
+                href={`${APP_URL}/signup`}
+                className="btn-primary hidden whitespace-nowrap text-sm lg:inline-flex"
+              >
                 Get started
               </a>
               <button
                 type="button"
-                className="flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--border)] text-[var(--fg)] lg:hidden"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[var(--border)] text-[var(--fg)] lg:hidden"
                 onClick={() => setMenuOpen(true)}
                 aria-label="Open menu"
               >
@@ -120,11 +172,11 @@ export function Nav() {
           className="fixed inset-0 z-[60] overflow-y-auto backdrop-blur-md lg:hidden"
           style={{ background: "rgba(var(--nav-bg-rgb), 0.98)" }}
         >
-          <div className="absolute right-6 top-6 flex items-center gap-3">
+          <div className="absolute right-4 top-4 flex items-center gap-2 sm:right-6 sm:top-6 sm:gap-3">
             <ThemeToggle />
             <button
               type="button"
-              className="text-2xl text-[var(--fg)]"
+              className="grid h-11 w-11 place-items-center rounded-lg text-2xl leading-none text-[var(--fg)] hover:bg-[var(--surface)]"
               onClick={closeMobile}
               aria-label="Close menu"
             >
@@ -166,7 +218,7 @@ export function Nav() {
                           <li key={item.label}>
                             <a
                               href={item.href}
-                              className="mobile-nav-link block rounded-lg px-3 py-2.5 text-base text-[var(--fg-muted)] hover:bg-[var(--surface)] hover:text-[var(--brand)]"
+                              className="mobile-nav-link block min-h-11 rounded-lg px-3 py-3 text-base text-[var(--fg-muted)] hover:bg-[var(--surface)] hover:text-[var(--brand)]"
                               onClick={closeMobile}
                             >
                               {item.label}

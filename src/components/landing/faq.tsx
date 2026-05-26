@@ -194,7 +194,7 @@ export function Faq() {
   return (
     <section
       ref={ref}
-      className="faq-section relative overflow-hidden px-6 py-24 lg:py-28"
+      className="faq-section relative overflow-hidden px-4 py-14 sm:px-6 sm:py-16 lg:py-24"
     >
       <div
         aria-hidden

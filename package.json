@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint && npm run lint:responsive",
+    "lint:responsive": "node scripts/responsive-lint.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

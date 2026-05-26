@@ -71,7 +71,7 @@ export function PhoneDemos() {
     <section
       id="phone-demos"
       ref={sectionRef}
-      className="scroll-mt-20 px-6 py-20"
+      className="scroll-mt-20 px-4 py-14 sm:px-6 sm:py-16 lg:py-24"
       style={{ background: "var(--hero-gradient)" }}
     >
       <div className="container-zeb">
@@ -80,14 +80,14 @@ export function PhoneDemos() {
           title="Built for every kind of crypto journey"
           subtitle="Six app flows — Quick Trade, Packs, Futures, SIP, Exchange, and AI Insights. Demo only."
         />
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,300px)_1fr] lg:items-start">
-          <div className="flex max-h-[520px] flex-col gap-2 overflow-y-auto pr-1">
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,300px)_minmax(0,1fr)] lg:items-start">
+          <div className="-mx-4 flex min-w-0 snap-x snap-mandatory flex-row gap-2 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:px-6 lg:mx-0 lg:max-h-[520px] lg:flex-col lg:overflow-x-visible lg:overflow-y-auto lg:px-0 lg:pr-1">
             {TABS.map((tab) => (
               <button
                 key={tab.id}
                 type="button"
                 onClick={() => selectFeat(tab.id)}
-                className={`shrink-0 rounded-2xl border p-3 text-left transition ${
+                className={`w-44 shrink-0 snap-start rounded-2xl border p-3 text-left transition lg:w-auto ${
                   feat === tab.id
                     ? "border-[var(--cyan)] bg-[var(--bg-elevated)] shadow-[var(--shadow)]"
                     : "border-[var(--border)] bg-[var(--bg-elevated)]/50"
@@ -98,15 +98,15 @@ export function PhoneDemos() {
                 <div className="text-xs text-[var(--text-muted)]">{tab.desc}</div>
               </button>
             ))}
-            <p className="text-xs text-[var(--text-muted)]">
+            <p className="hidden text-xs text-[var(--text-muted)] lg:block">
               Demo only · <Link href={`${APP_URL}/signup`} className="font-semibold text-[var(--cyan)]">Sign up to trade live</Link>
             </p>
           </div>
-          <div className="relative mx-auto w-full max-w-[320px]">
+          <div className="relative mx-auto w-full min-w-0 max-w-[320px]">
             <div
               ref={phoneRef}
               className="phone-chrome feature-phone relative overflow-hidden rounded-[2.5rem] border-[10px] border-[#1a1f3a] bg-[#0a0f2e] shadow-[var(--shadow-lg)]"
-              style={{ aspectRatio: "9/19", minHeight: 520 }}
+              style={{ aspectRatio: "9/19" }}
             >
               <div className="absolute left-1/2 top-2 z-20 h-6 w-24 -translate-x-1/2 rounded-full bg-black" />
               <div ref={screenRef} className="phone-screen-active relative flex h-full flex-col overflow-hidden pt-8">
@@ -118,7 +118,9 @@ export function PhoneDemos() {
                 {feat === "ai" && <AiFlow step={step} setStep={(n) => setStep("ai", n)} />}
               </div>
             </div>
-            <DemoPointer mode={feat} steps={steps} maxSteps={STEPS} />
+            <div className="hidden lg:block">
+              <DemoPointer mode={feat} steps={steps} maxSteps={STEPS} scope="phone-demos" />
+            </div>
           </div>
         </div>
       </div>

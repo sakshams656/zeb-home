@@ -83,7 +83,7 @@ export function Testimonials() {
   const t = ITEMS[index];
 
   return (
-    <section className="testimonials-section relative overflow-hidden px-6 py-20 text-center lg:py-24">
+    <section className="testimonials-section relative overflow-hidden px-4 py-16 text-center sm:px-6 sm:py-20 lg:py-24">
       <svg
         className="pointer-events-none absolute -left-8 top-1/3 h-56 w-56 opacity-[0.10]"
         viewBox="0 0 100 100"
@@ -125,21 +125,27 @@ export function Testimonials() {
           </footer>
         </div>
 
-        <div className="mt-8 flex items-center gap-3">
+        <div className="mt-8 flex w-full flex-wrap items-center justify-center gap-2 sm:gap-3">
           {ITEMS.map((_, i) => (
             <button
               key={i}
               type="button"
               aria-label={`Testimonial ${i + 1}`}
               onClick={() => goTo(i)}
-              className={`h-2 rounded-full transition-all ${
-                i === index
-                  ? "w-6 bg-[var(--brand)]"
-                  : "w-2 bg-[var(--surface-strong)] hover:bg-[var(--border-strong)]"
-              }`}
-            />
+              className="grid h-11 place-items-center"
+              style={{ width: i === index ? "1.5rem" : "0.5rem" }}
+            >
+              <span
+                className={`block h-2 rounded-full transition-all ${
+                  i === index
+                    ? "w-6 bg-[var(--brand)]"
+                    : "w-2 bg-[var(--surface-strong)] hover:bg-[var(--border-strong)]"
+                }`}
+                aria-hidden
+              />
+            </button>
           ))}
-          <div className="ml-4 h-1 w-48 overflow-hidden rounded-full bg-[var(--surface-strong)]">
+          <div className="ml-2 h-1 w-32 overflow-hidden rounded-full bg-[var(--surface-strong)] sm:ml-4 sm:w-48">
             <div
               key={index}
               className="testimonial-progress-fill h-full bg-[var(--brand)]"

@@ -31,16 +31,16 @@ export function Earn() {
   );
 
   return (
-    <section id="earn" ref={ref} className="scroll-mt-24 bg-[#0a0f2e] px-6 py-[120px]">
-      <div className="mx-auto grid max-w-[1200px] gap-12 lg:grid-cols-2">
+    <section id="earn" ref={ref} className="scroll-mt-24 bg-[#0a0f2e] py-14 sm:py-16 lg:py-24">
+      <div className="container-zeb grid gap-12 lg:grid-cols-2">
         <div>
-          <h2 className="text-[clamp(2.5rem,4vw,3.5rem)] font-black leading-tight text-[var(--fg)]">
+          <h2 className="text-[clamp(2rem,6vw,3.5rem)] font-black leading-tight text-[var(--fg)]">
             Earn while
             <br />
             you hold.
           </h2>
-          <p className="mt-4 text-2xl font-bold text-[var(--cyan)]">Up to 8.5% APY</p>
-          <p className="mt-6 max-w-md text-lg text-[var(--fg-muted)]">
+          <p className="mt-4 text-[clamp(1.25rem,4vw,1.5rem)] font-bold text-[var(--cyan)]">Up to 8.5% APY</p>
+          <p className="mt-6 max-w-md text-base text-[var(--fg-muted)] sm:text-lg">
             Stake idle assets across stablecoins and majors. Flexible terms, transparent rates — model returns in the
             calculator hub above.
           </p>

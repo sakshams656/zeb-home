@@ -160,8 +160,8 @@ function SidebarCard({
       type="button"
       onClick={onSelect}
       aria-pressed={active}
-      className={`discover-card group flex w-full items-start gap-3 rounded-2xl border p-2.5 text-left transition ${
-        isEvent ? "border-l-[3px] border-l-[var(--brand)] pl-3.5" : ""
+      className={`discover-card group flex w-full flex-col items-stretch gap-3 rounded-2xl border p-2.5 text-left transition sm:flex-row sm:items-start ${
+        isEvent ? "border-l-[3px] border-l-[var(--brand)] sm:pl-3.5" : ""
       } ${
         active
           ? "border-transparent text-[var(--fg)]"
@@ -180,7 +180,7 @@ function SidebarCard({
     >
       {!isEvent ? (
         <span
-          className="relative block h-[78px] w-[140px] shrink-0 overflow-hidden rounded-xl"
+          className="relative block h-40 w-full shrink-0 overflow-hidden rounded-xl sm:h-[78px] sm:w-[140px]"
           style={{ background: "var(--surface-strong)" }}
         >
           <img
@@ -330,7 +330,7 @@ export function DiscoverMore({ section }: DiscoverMoreProps) {
     <section
       id="discover-more"
       ref={sectionRef}
-      className="discover-more scroll-mt-24 px-6 py-16 lg:py-24"
+      className="discover-more scroll-mt-24 px-4 py-14 sm:px-6 sm:py-16 lg:py-24"
     >
       <div className="mx-auto max-w-[1200px]">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
@@ -354,7 +354,7 @@ export function DiscoverMore({ section }: DiscoverMoreProps) {
                   type="button"
                   onClick={() => setTabIndex(i)}
                   aria-pressed={active}
-                  className={`rounded-full px-3.5 py-2 text-xs font-semibold transition sm:text-sm ${
+                  className={`min-h-11 rounded-full px-4 py-2.5 text-sm font-semibold transition ${
                     active
                       ? "bg-[var(--brand)] text-white shadow-[0_4px_16px_rgba(var(--brand-rgb),0.35)]"
                       : "text-[var(--fg-muted)] hover:text-[var(--fg)]"
