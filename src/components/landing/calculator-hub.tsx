@@ -1,7 +1,9 @@
 "use client";
 
-import { useRef, useState, type ReactNode } from "react";
+import Image from "next/image";
+import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
+import { useTheme } from "@/context/theme-context";
 import {
   earnApyCalc,
   expertRoiCalc,
@@ -33,38 +35,22 @@ type CalcMeta = {
   rail: string;
   title: string;
   subtitle: string;
-  icon: ReactNode;
 };
 
-function I({ d }: { d: string }) {
+function CalcIcon({ id, size = 36 }: { id: CalcId; size?: number }) {
+  const { isDark } = useTheme();
+  const theme = isDark ? "dark" : "light";
   return (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.8}
-      strokeLinecap="round"
-      strokeLinejoin="round"
+    <Image
+      src={`/calculators/icons/${theme}/${id}.png`}
+      alt=""
+      width={size}
+      height={size}
+      className="h-full w-full object-contain"
       aria-hidden
-    >
-      <path d={d} />
-    </svg>
+    />
   );
 }
-
-const ICONS: Record<CalcId, ReactNode> = {
-  spot: <I d="M8 3 4 7l4 4 M4 7h16 M16 21l4-4-4-4 M20 17H4" />,
-  futures: <I d="M3 17l6-6 4 4 8-8 M14 7h7v7" />,
-  sip: <I d="M3 8h18 M3 14h18 M7 4v3 M17 4v3 M9 11v6 M15 11v6" />,
-  packs: <I d="M3 7l9-4 9 4-9 4-9-4z M3 12l9 4 9-4 M3 17l9 4 9-4" />,
-  earn: <I d="M12 3v18 M16 7H10a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6H7" />,
-  expert: <I d="M13 2 4 14h7l-1 8 9-12h-7l1-8z" />,
-  rms: <I d="M12 2l9 4v6c0 5-4 9-9 10-5-1-9-5-9-10V6l9-4z" />,
-  subs: <I d="M3 6l9-4 9 4-9 4-9-4z M3 12l9 4 9-4 M3 18l9 4 9-4" />,
-  options: <I d="M3 12h4l3-8 4 16 3-8h4" />
-};
 
 const META: CalcMeta[] = [
   {
@@ -72,16 +58,14 @@ const META: CalcMeta[] = [
     label: "Spot fees",
     rail: "Buy/sell cost breakdown",
     title: "Spot Trading Calculator",
-    subtitle: "See the exact cost, fee and net amount on every spot trade.",
-    icon: ICONS.spot
+    subtitle: "See the exact cost, fee and net amount on every spot trade."
   },
   {
     id: "futures",
     label: "Futures margin",
     rail: "PnL & liquidation",
     title: "Futures Margin Calculator",
-    subtitle: "Estimate PnL and liquidation price for leveraged positions.",
-    icon: ICONS.futures
+    subtitle: "Estimate PnL and liquidation price for leveraged positions."
   },
   {
     id: "sip",
@@ -89,56 +73,49 @@ const META: CalcMeta[] = [
     rail: "Wealth over time",
     title: "Crypto SIP Calculator",
     subtitle:
-      "Calculate your crypto investment returns. Estimate potential gains and the future value of your holdings.",
-    icon: ICONS.sip
+      "Calculate your crypto investment returns. Estimate potential gains and the future value of your holdings."
   },
   {
     id: "packs",
     label: "CryptoPacks",
     rail: "Basket growth",
     title: "CryptoPacks Returns Calculator",
-    subtitle: "Project basket growth at your target CAGR over time.",
-    icon: ICONS.packs
+    subtitle: "Project basket growth at your target CAGR over time."
   },
   {
     id: "earn",
     label: "Earn APY",
     rail: "Staking yield",
     title: "Earn APY Calculator",
-    subtitle: "See compounded earnings on idle crypto across any time horizon.",
-    icon: ICONS.earn
+    subtitle: "See compounded earnings on idle crypto across any time horizon."
   },
   {
     id: "expert",
     label: "Expert trades",
     rail: "Signal ROI",
     title: "Expert Trades ROI Calculator",
-    subtitle: "Model returns from copy-traded signal strategies vs a passive benchmark.",
-    icon: ICONS.expert
+    subtitle: "Model returns from copy-traded signal strategies vs a passive benchmark."
   },
   {
     id: "rms",
     label: "RMS",
     rail: "TP / SL levels",
     title: "Risk Management Calculator",
-    subtitle: "Plan take-profit, stop-loss and risk-reward for every trade.",
-    icon: ICONS.rms
+    subtitle: "Plan take-profit, stop-loss and risk-reward for every trade."
   },
   {
     id: "subs",
     label: "Sub accounts",
     rail: "Capital split",
     title: "Sub-Accounts Split Calculator",
-    subtitle: "Distribute capital across multiple wallets by weight.",
-    icon: ICONS.subs
+    subtitle: "Distribute capital across multiple wallets by weight."
   },
   {
     id: "options",
     label: "Options",
     rail: "Payoff at expiry",
     title: "Options Payoff Calculator",
-    subtitle: "Visualise call/put payoff and break-even at expiry.",
-    icon: ICONS.options
+    subtitle: "Visualise call/put payoff and break-even at expiry."
   }
 ];
 
@@ -555,6 +532,7 @@ function StatCard({ k, v, accent }: { k: string; v: string; accent?: "success" |
 }
 
 export function CalculatorHub() {
+  const { isDark } = useTheme();
   const sectionRef = useRef<HTMLElement>(null);
   const [tab, setTab] = useState<CalcId>("sip");
 
@@ -635,26 +613,26 @@ export function CalculatorHub() {
                       type="button"
                       onClick={() => switchTab(m.id)}
                       aria-pressed={active}
-                      className={`calc-tab group flex w-[220px] items-start gap-3 rounded-2xl border p-3.5 text-left transition lg:w-full ${
+                      className={`calc-tab group flex w-[220px] items-start gap-3 rounded-2xl p-3.5 text-left transition lg:w-full ${
                         active
-                          ? "border-transparent bg-[linear-gradient(135deg,rgba(var(--brand-rgb),0.95),rgba(var(--brand-rgb),0.55))] text-white shadow-[0_10px_30px_rgba(var(--brand-rgb),0.35)]"
-                          : "border-[var(--border)] bg-[var(--surface)] text-[var(--fg)] hover:border-[var(--border-strong)] hover:bg-[var(--surface-strong)]"
+                          ? isDark
+                            ? "bg-[linear-gradient(135deg,rgba(var(--brand-rgb),0.95),rgba(var(--brand-rgb),0.55))] text-white shadow-[0_10px_30px_rgba(var(--brand-rgb),0.35)]"
+                            : "bg-[linear-gradient(90deg,#ffffff_0%,#f4f7ff_32%,rgba(var(--brand-rgb),0.22)_58%,rgba(var(--brand-rgb),0.78)_100%)] text-[var(--fg)] shadow-[0_10px_28px_rgba(var(--brand-rgb),0.22)]"
+                          : "border border-[var(--border)] bg-[var(--surface)] text-[var(--fg)] hover:border-[var(--border-strong)] hover:bg-[var(--surface-strong)]"
                       }`}
                     >
-                      <span
-                        className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl border transition ${
-                          active
-                            ? "border-[var(--border-strong)] bg-[var(--surface-strong)] text-[var(--fg)]"
-                            : "border-[var(--border)] bg-[rgba(var(--brand-rgb),0.14)] text-[var(--brand)] group-hover:bg-[rgba(var(--brand-rgb),0.22)]"
-                        }`}
-                      >
-                        {m.icon}
+                      <span className="grid h-9 w-9 shrink-0 place-items-center overflow-hidden rounded-xl transition">
+                        <CalcIcon id={m.id} />
                       </span>
                       <span className="min-w-0 flex-1">
                         <span className="block text-sm font-bold leading-snug">{m.label}</span>
                         <span
                           className={`mt-0.5 block text-xs leading-snug ${
-                            active ? "text-[var(--fg)]" : "text-[var(--fg-muted)]"
+                            active
+                              ? isDark
+                                ? "text-white/80"
+                                : "text-[var(--fg-muted)]"
+                              : "text-[var(--fg-muted)]"
                           }`}
                         >
                           {m.rail}
@@ -669,8 +647,8 @@ export function CalculatorHub() {
 
           <div className="calc-body rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 backdrop-blur-sm sm:p-6 lg:p-7">
             <header className="flex items-start gap-3 border-b border-[var(--border)] pb-4 sm:gap-4 sm:pb-5">
-              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-[rgba(var(--brand-rgb),0.35)] bg-[rgba(var(--brand-rgb),0.18)] text-[var(--brand)] sm:h-12 sm:w-12">
-                {meta.icon}
+              <span className="grid h-11 w-11 shrink-0 place-items-center overflow-hidden rounded-2xl sm:h-12 sm:w-12">
+                <CalcIcon id={meta.id} size={48} />
               </span>
               <div className="min-w-0">
                 <h3 className="text-lg font-black text-[var(--fg)] sm:text-xl lg:text-2xl">{meta.title}</h3>
