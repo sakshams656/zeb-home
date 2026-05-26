@@ -271,56 +271,6 @@ body {
   background: var(--section-bg-footer);
 }
 
-@keyframes footer-orbit-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-@keyframes footer-streak {
-  0%,
-  100% {
-    opacity: 0.25;
-    transform: translateY(0) scaleY(1);
-  }
-  50% {
-    opacity: 0.9;
-    transform: translateY(-4px) scaleY(1.06);
-  }
-}
-@keyframes footer-twinkle {
-  0%,
-  100% {
-    opacity: 0.35;
-    transform: scale(0.9);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.1);
-  }
-}
-.footer-globe-rotate {
-  animation: footer-orbit-spin 80s linear infinite;
-  transform-origin: 50% 50%;
-  transform-box: fill-box;
-}
-.footer-streak {
-  animation: footer-streak 3.4s ease-in-out infinite;
-  transform-origin: 50% 100%;
-  transform-box: fill-box;
-}
-.footer-star {
-  animation: footer-twinkle 2.6s ease-in-out infinite;
-  transform-origin: 50% 50%;
-  transform-box: fill-box;
-}
-@media (prefers-reduced-motion: reduce) {
-  .footer-globe-rotate,
-  .footer-streak,
-  .footer-star {
-    animation: none;
-  }
-}
-
 .faq-section {
   background: var(--section-bg-faq);
 }
