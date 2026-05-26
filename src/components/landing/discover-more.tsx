@@ -405,16 +405,16 @@ export function DiscoverMore({ section }: DiscoverMoreProps) {
                       (e.currentTarget as HTMLImageElement).src = `https://i.ytimg.com/vi/${activeVideoId}/hqdefault.jpg`;
                     }}
                   />
-                  <span className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0)_55%,rgba(0,0,0,0.7)_100%)]" />
+                  <span className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.1)_35%,rgba(0,0,0,0.55)_70%,rgba(0,0,0,0.88)_100%)]" />
                   <span className="absolute left-1/2 top-1/2 grid h-16 w-16 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-[var(--brand)] text-white shadow-[0_10px_40px_rgba(var(--brand-rgb),0.55)] transition-transform group-hover:scale-110 sm:h-20 sm:w-20">
                     <PlayIcon className="h-7 w-7 translate-x-0.5 sm:h-8 sm:w-8" />
                   </span>
                   <span className="absolute bottom-0 left-0 right-0 flex items-end justify-between gap-4 p-5 text-left sm:p-6">
-                    <span className="min-w-0">
-                      <span className="block text-xs font-semibold uppercase tracking-wider text-[var(--fg-muted)]">
+                    <span className="min-w-0 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+                      <span className="block text-xs font-semibold uppercase tracking-wider text-white/80">
                         {activeMeta?.author ?? "YouTube"}
                       </span>
-                      <span className="mt-1 line-clamp-2 text-lg font-black leading-tight text-[var(--fg)] sm:text-2xl">
+                      <span className="mt-1 line-clamp-2 text-lg font-black leading-tight text-white sm:text-2xl">
                         {activeMeta?.title ?? featuredTitle}
                       </span>
                     </span>

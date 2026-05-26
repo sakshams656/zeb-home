@@ -8,16 +8,21 @@ import { DemoPointer } from "./phone-demo/demo-pointer";
 import type { DemoMode } from "./phone-demo/types";
 import { gsap, ZEB_EASE, prefersReducedMotion } from "@/lib/gsap";
 
-const QtFlow = dynamic(() => import("./phone-demo/qt-flow").then((m) => ({ default: m.QtFlow })), { ssr: false });
-const FtFlow = dynamic(() => import("./phone-demo/ft-flow").then((m) => ({ default: m.FtFlow })), { ssr: false });
-const SipFlow = dynamic(() => import("./phone-demo/sip-flow").then((m) => ({ default: m.SipFlow })), { ssr: false });
-const CpFlow = dynamic(() => import("./phone-demo/cp-flow").then((m) => ({ default: m.CpFlow })), { ssr: false });
-const ExchangeFlow = dynamic(() => import("./phone-demo/exchange-flow").then((m) => ({ default: m.ExchangeFlow })), { ssr: false });
 const AiFlow = dynamic(() => import("./phone-demo/ai-flow").then((m) => ({ default: m.AiFlow })), { ssr: false });
 
 type PanelMode = DemoMode;
 
-const AUTO_ADVANCE_MS = 6000;
+const PANEL_VIDEO_SRC: Partial<Record<PanelMode, string>> = {
+  qt: "/videos/quick_trade.mp4",
+  ft: "/videos/futures.mp4",
+  sip: "/videos/sip.mp4",
+  cp: "/videos/crypto_packs.mp4",
+  exchange: "/videos/earn.mp4"
+};
+
+const VIDEO_PLAYBACK_RATE = 1.5;
+
+const AUTO_ADVANCE_MS = 30000;
 
 const PANELS: {
   id: string;
@@ -92,31 +97,53 @@ function ScreenFallback() {
   return <div className="flex h-full items-center justify-center text-xs text-[#888]">Loading…</div>;
 }
 
+function PanelVideo({ src, playing }: { src: string; playing: boolean }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const applyRate = () => {
+      video.playbackRate = VIDEO_PLAYBACK_RATE;
+    };
+    applyRate();
+    video.addEventListener("loadedmetadata", applyRate);
+
+    if (playing) {
+      video.currentTime = 0;
+      void video.play().catch(() => {});
+    } else {
+      video.pause();
+    }
+
+    return () => video.removeEventListener("loadedmetadata", applyRate);
+  }, [src, playing]);
+
+  return (
+    <video
+      ref={videoRef}
+      key={src}
+      src={src}
+      className="h-full w-full object-cover object-top"
+      muted
+      loop
+      playsInline
+      autoPlay
+      preload="auto"
+      aria-hidden
+    />
+  );
+}
+
 function PanelPhone({
-  mode,
   step,
   setStep
 }: {
-  mode: PanelMode;
   step: number;
   setStep: (n: number) => void;
 }) {
-  switch (mode) {
-    case "qt":
-      return <QtFlow step={step} setStep={setStep} />;
-    case "ft":
-      return <FtFlow step={step} setStep={setStep} />;
-    case "sip":
-      return <SipFlow step={step} setStep={setStep} />;
-    case "cp":
-      return <CpFlow step={step} setStep={setStep} />;
-    case "exchange":
-      return <ExchangeFlow step={step} setStep={setStep} />;
-    case "ai":
-      return <AiFlow step={step} setStep={setStep} />;
-    default:
-      return null;
-  }
+  return <AiFlow step={step} setStep={setStep} />;
 }
 
 export function ProductShowcase() {
@@ -240,13 +267,13 @@ export function ProductShowcase() {
 
           <div ref={phoneRef} className="flex items-center justify-center lg:justify-end">
             <PhoneFrame tilt={6} className="feature-phone">
-              <Suspense fallback={<ScreenFallback />}>
-                <PanelPhone
-                  mode={activeMode}
-                  step={steps[activeMode]}
-                  setStep={(n) => setPanelStep(activeMode, n)}
-                />
-              </Suspense>
+              {PANEL_VIDEO_SRC[activeMode] ? (
+                <PanelVideo src={PANEL_VIDEO_SRC[activeMode]!} playing={!paused} />
+              ) : (
+                <Suspense fallback={<ScreenFallback />}>
+                  <PanelPhone step={steps.ai} setStep={(n) => setPanelStep("ai", n)} />
+                </Suspense>
+              )}
             </PhoneFrame>
           </div>
         </div>
@@ -280,7 +307,7 @@ export function ProductShowcase() {
           })}
         </div>
 
-        {!paused && (
+        {!paused && activeMode === "ai" && (
           <div className="hidden lg:block">
             <DemoPointer mode={activeMode} steps={steps} maxSteps={MAX_STEPS} scope="product-showcase" />
           </div>
