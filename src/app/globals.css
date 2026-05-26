@@ -259,6 +259,21 @@ body {
   background: var(--section-bg-2);
 }
 
+.discover-sidebar-list {
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
+}
+
+.discover-sidebar-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.discover-sidebar-list::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 999px;
+}
+
 .security-section {
   background: var(--section-bg-1);
 }
@@ -406,27 +421,46 @@ html.lenis body {
   overflow: hidden;
 }
 
+/* Fluid container: 16px gutters on phones, 24px from sm, 32px from lg. */
 .container-zeb {
   width: 100%;
   max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+@media (min-width: 640px) {
+  .container-zeb {
+    padding-inline: 1.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .container-zeb {
+    padding-inline: 2rem;
+  }
 }
 
+/* Mobile-first button. Floor enforces a 44px tap target; from sm we ramp up to
+   the previous desktop sizing. Tablet/desktop visuals are unchanged. */
 .btn-primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
+  min-height: 2.75rem;
+  padding: 0.625rem 1.25rem;
   border-radius: 9999px;
   font-weight: 700;
   font-size: 0.9375rem;
+  line-height: 1.15;
+  white-space: nowrap;
   background: var(--brand);
   color: #fff;
   transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+}
+@media (min-width: 640px) {
+  .btn-primary {
+    padding: 0.75rem 1.5rem;
+  }
 }
 .btn-primary:hover {
   transform: translateY(-1px);
@@ -438,13 +472,12 @@ html.lenis body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
-  min-height: 4rem;
-  min-width: min(100%, 20rem);
-  padding: 1.25rem 3rem;
+  gap: 0.5rem;
+  min-height: 3rem;
+  padding: 0.75rem 1.5rem;
   border-radius: 9999px;
   font-weight: 800;
-  font-size: clamp(1.25rem, 2.8vw, 1.75rem);
+  font-size: 1rem;
   line-height: 1.15;
   letter-spacing: -0.01em;
   background: var(--brand);
@@ -453,6 +486,16 @@ html.lenis body {
 }
 
 @media (min-width: 640px) {
+  .btn-hero-primary {
+    gap: 0.75rem;
+    min-height: 4rem;
+    min-width: 20rem;
+    padding: 1.25rem 3rem;
+    font-size: clamp(1.25rem, 2.8vw, 1.75rem);
+  }
+}
+
+@media (min-width: 1024px) {
   .btn-hero-primary {
     min-height: 4.5rem;
     min-width: 22rem;
@@ -471,14 +514,22 @@ html.lenis body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.75rem 1.5rem;
+  min-height: 2.75rem;
+  padding: 0.625rem 1.25rem;
   border-radius: 9999px;
   font-weight: 700;
   font-size: 0.9375rem;
+  line-height: 1.15;
+  white-space: nowrap;
   border: 1px solid var(--border);
   color: var(--fg);
   background: var(--bg-elevated);
   transition: border-color 0.2s, background 0.2s;
+}
+@media (min-width: 640px) {
+  .btn-outline {
+    padding: 0.75rem 1.5rem;
+  }
 }
 .btn-outline:hover {
   border-color: var(--brand);

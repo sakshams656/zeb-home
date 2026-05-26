@@ -163,7 +163,7 @@ export function Security() {
     <section
       id="security"
       ref={ref}
-      className="security-section scroll-mt-24 px-6 py-16 lg:py-24"
+      className="security-section scroll-mt-24 px-4 py-14 sm:px-6 sm:py-16 lg:py-24"
     >
       <div className="mx-auto max-w-[1200px]">
         <div className="text-center">
@@ -201,7 +201,7 @@ export function Security() {
                   className="security-stat rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] p-4"
                 >
                   <p
-                    className={`text-2xl font-black tabular-nums sm:text-3xl ${
+                    className={`text-[clamp(1.75rem,5vw,2.25rem)] font-black tabular-nums ${
                       s.tone === "success" ? "text-[var(--success)]" : "text-[var(--fg)]"
                     }`}
                   >
@@ -235,7 +235,7 @@ export function Security() {
 
             <a
               href="#"
-              className="inline-flex items-center gap-1.5 self-start text-sm font-semibold text-[var(--brand)] transition-colors hover:text-[var(--fg)]"
+              className="inline-flex min-h-11 items-center gap-1.5 self-start py-2 text-sm font-semibold text-[var(--brand)] transition-colors hover:text-[var(--fg)]"
             >
               View security report
               <span aria-hidden>→</span>

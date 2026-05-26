@@ -62,7 +62,7 @@ export function Steps() {
   );
 
   return (
-    <section ref={ref} className="onboarding-steps px-6 py-20">
+    <section ref={ref} className="onboarding-steps py-14 sm:py-16 lg:py-24">
       <div className="container-zeb">
         <SectionHeader chip="Get started" title="Three steps to your first trade" />
         <div className="relative">

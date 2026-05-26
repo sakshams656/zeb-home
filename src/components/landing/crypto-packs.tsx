@@ -54,19 +54,19 @@ export function CryptoPacks() {
   );
 
   return (
-    <section id="packs" ref={ref} className="scroll-mt-24 bg-[#040812] px-6 py-[120px]">
-      <div className="mx-auto max-w-[1200px]">
-        <h2 className="text-[clamp(2rem,4vw,3rem)] font-black text-[var(--fg)]">Invest in themes, not tickers.</h2>
-        <p className="mt-4 text-xl text-[var(--fg-muted)]">4 curated packs built for every kind of investor.</p>
+    <section id="packs" ref={ref} className="scroll-mt-24 bg-[#040812] py-14 sm:py-16 lg:py-24">
+      <div className="container-zeb">
+        <h2 className="text-[clamp(2rem,5vw,3rem)] font-black text-[var(--fg)]">Invest in themes, not tickers.</h2>
+        <p className="mt-4 text-base text-[var(--fg-muted)] sm:text-xl">4 curated packs built for every kind of investor.</p>
 
-        <div className="packs-grid mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+        <div className="packs-grid mt-12 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
           {IDS.map((id) => {
             const p = PACKS[id];
             const meta = PACK_META[id];
             return (
               <article
                 key={id}
-                className="pack-card flex h-[400px] flex-col justify-between rounded-3xl p-8"
+                className="pack-card flex min-h-[360px] flex-col justify-between rounded-3xl p-6 sm:p-8"
                 style={{ background: meta.bg, transformStyle: "preserve-3d" }}
               >
                 <div className="flex -space-x-2">
@@ -87,7 +87,7 @@ export function CryptoPacks() {
                   <p className="mt-2 inline-block rounded-full px-3 py-1 text-sm font-bold" style={{ color: meta.accent, background: `${meta.accent}22` }}>
                     ↑ {p.ret}% this year
                   </p>
-                  <button type="button" className="mt-6 rounded-full border border-[var(--border)] px-5 py-2 text-sm font-bold text-[var(--fg)] hover:border-[var(--brand)]">
+                  <button type="button" className="mt-6 inline-flex min-h-11 items-center rounded-full border border-[var(--border)] px-5 py-2 text-sm font-bold text-[var(--fg)] hover:border-[var(--brand)]">
                     Invest →
                   </button>
                 </div>

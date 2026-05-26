@@ -210,28 +210,25 @@ export function ProductShowcase() {
     <section
       id="showcase"
       ref={sectionRef}
-      className="product-showcase relative flex h-[100svh] min-h-[640px] overflow-hidden"
+      className="product-showcase relative overflow-hidden px-4 py-14 sm:px-6 sm:py-16 lg:py-24"
       onMouseMove={onUserActivity}
       onPointerDown={onUserActivity}
       onTouchStart={onUserActivity}
     >
-      <div
-        id="phone-demos"
-        className="relative mx-auto flex h-full w-full max-w-[1200px] flex-col px-6 pb-6 pt-[calc(72px+1.5rem)] lg:pb-8 lg:pt-[calc(72px+2rem)]"
-      >
-        <div className="shrink-0">
+      <div id="product-showcase" className="relative mx-auto w-full max-w-[1200px]">
+        <div>
           <p className="text-xs font-bold uppercase tracking-widest text-[var(--brand)] sm:text-sm">Products</p>
-          <h2 className="mt-1.5 max-w-3xl text-[clamp(1.5rem,3vw,2.25rem)] font-black leading-tight text-[var(--fg)]">
+          <h2 className="mt-1.5 max-w-3xl text-[clamp(1.5rem,5vw,2.25rem)] font-black leading-tight text-[var(--fg)]">
             Built for every kind of crypto journey.
           </h2>
         </div>
 
-        <div className="mt-4 grid min-h-0 flex-1 items-center gap-6 lg:mt-6 lg:grid-cols-2 lg:gap-10">
+        <div className="mt-8 grid items-center gap-8 lg:mt-10 lg:grid-cols-2 lg:gap-10">
           <div ref={copyRef} className="panel-copy">
-            <p className="panel-number text-[clamp(48px,6vw,72px)] font-black leading-none text-[var(--brand)] opacity-90">
+            <p className="panel-number text-[clamp(48px,9vw,72px)] font-black leading-none text-[var(--brand)] opacity-90">
               {active.num}
             </p>
-            <h3 className="panel-title mt-1 text-[clamp(1.5rem,3vw,2.25rem)] font-black text-[var(--fg)]">
+            <h3 className="panel-title mt-1 text-[clamp(1.5rem,5vw,2.25rem)] font-black text-[var(--fg)]">
               {active.title}
             </h3>
             <p className="panel-body mt-3 max-w-md text-sm text-[var(--fg-muted)] sm:text-base">{active.body}</p>
@@ -241,25 +238,23 @@ export function ProductShowcase() {
             </a>
           </div>
 
-          <div ref={phoneRef} className="flex h-full max-h-[460px] items-center justify-center lg:justify-end">
-            <div className="origin-center scale-[0.78] sm:scale-[0.85] lg:scale-[0.9]">
-              <PhoneFrame tilt={6} className="feature-phone">
-                <Suspense fallback={<ScreenFallback />}>
-                  <PanelPhone
-                    mode={activeMode}
-                    step={steps[activeMode]}
-                    setStep={(n) => setPanelStep(activeMode, n)}
-                  />
-                </Suspense>
-              </PhoneFrame>
-            </div>
+          <div ref={phoneRef} className="flex items-center justify-center lg:justify-end">
+            <PhoneFrame tilt={6} className="feature-phone">
+              <Suspense fallback={<ScreenFallback />}>
+                <PanelPhone
+                  mode={activeMode}
+                  step={steps[activeMode]}
+                  setStep={(n) => setPanelStep(activeMode, n)}
+                />
+              </Suspense>
+            </PhoneFrame>
           </div>
         </div>
 
         <div
           role="tablist"
           aria-label="Product showcase"
-          className="mt-4 flex shrink-0 flex-wrap items-center justify-center gap-2 sm:gap-3"
+          className="-mx-4 mt-8 flex snap-x snap-mandatory items-center gap-2 overflow-x-auto px-4 pb-2 sm:gap-3 lg:mx-0 lg:mt-6 lg:flex-wrap lg:justify-center lg:overflow-visible lg:px-0 lg:pb-0"
         >
           {PANELS.map((p) => {
             const isActive = p.mode === activeMode;
@@ -270,13 +265,13 @@ export function ProductShowcase() {
                 role="tab"
                 aria-selected={isActive}
                 onClick={() => selectPanel(p.mode)}
-                className={`showcase-tab inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors sm:px-3.5 sm:py-2 sm:text-sm ${
+                className={`showcase-tab inline-flex shrink-0 snap-start items-center gap-1.5 rounded-full border px-4 py-2.5 text-sm font-semibold transition-colors sm:px-4 sm:py-2.5 ${
                   isActive
                     ? "border-transparent bg-[var(--brand)] text-white shadow-[0_8px_24px_rgba(var(--brand-rgb),0.35)]"
                     : "border-[var(--border)] bg-[var(--surface)] text-[var(--fg-muted)] hover:border-[var(--brand)] hover:text-[var(--fg)]"
                 }`}
               >
-                <span className={`tab-num text-[10px] font-black sm:text-xs ${isActive ? "text-[var(--fg)]" : "text-[var(--brand)]"}`}>
+                <span className={`tab-num text-xs font-black ${isActive ? "text-[var(--fg)]" : "text-[var(--brand)]"}`}>
                   {p.num}
                 </span>
                 {p.title}
@@ -285,7 +280,11 @@ export function ProductShowcase() {
           })}
         </div>
 
-        {!paused && <DemoPointer mode={activeMode} steps={steps} maxSteps={MAX_STEPS} />}
+        {!paused && (
+          <div className="hidden lg:block">
+            <DemoPointer mode={activeMode} steps={steps} maxSteps={MAX_STEPS} scope="product-showcase" />
+          </div>
+        )}
       </div>
     </section>
   );

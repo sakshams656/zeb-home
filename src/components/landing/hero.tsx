@@ -49,7 +49,11 @@ export function Hero() {
 
     const initDots = () => {
       dots.length = 0;
-      for (let i = 0; i < 300; i++) {
+      // Mobile gets a much lighter particle field: the O(n^2) link math
+      // becomes painful on low-end phones and the screen is small enough
+      // that 80 dots still feels dense.
+      const COUNT = window.innerWidth < 640 ? 80 : 300;
+      for (let i = 0; i < COUNT; i++) {
         dots.push({
           x: Math.random() * w,
           y: Math.random() * h,
@@ -162,11 +166,11 @@ export function Hero() {
   );
 
   return (
-    <section ref={sectionRef} className="hero-section relative min-h-screen">
-      <div ref={contentRef} className="relative flex min-h-screen w-full items-center justify-center overflow-hidden">
+    <section ref={sectionRef} className="hero-section relative flex min-h-screen items-center justify-center">
+      <div ref={contentRef} className="relative flex w-full items-center justify-center overflow-hidden">
         <canvas ref={canvasRef} className="absolute inset-0 z-0" aria-hidden />
 
-        <div className="relative z-10 flex w-full max-w-[1200px] flex-col items-center gap-12 px-6 pt-28 pb-16 lg:flex-row lg:items-center lg:justify-between lg:gap-10 lg:pt-24 lg:text-left">
+        <div className="relative z-10 flex w-full max-w-[1200px] flex-col items-center gap-10 px-4 pb-16 pt-28 sm:gap-12 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:gap-10 lg:pt-24 lg:text-left">
           <div className="hero-copy w-full max-w-2xl text-left">
             <p className="hero-trust flex items-center gap-2.5 text-sm font-semibold text-[var(--fg)] sm:text-base">
               <TrustBadge />
@@ -174,10 +178,10 @@ export function Hero() {
             </p>
 
             <h1 className="mt-6 font-black leading-[1.06] tracking-tight">
-              <span className="hero-h1-line block text-[clamp(4rem,4.5vw,4.6rem)] text-[var(--fg)]">
+              <span className="hero-h1-line block text-[clamp(2rem,7vw,4.6rem)] text-[var(--fg)]">
                 India&apos;s Oldest and Most Trusted
               </span>
-              <span className="hero-h1-accent mt-1 block text-[clamp(3rem,4.5vw,4.5rem)] text-[var(--brand)]">
+              <span className="hero-h1-accent mt-1 block text-[clamp(1.75rem,6vw,4.5rem)] text-[var(--brand)]">
                 Crypto Trading Platform
               </span>
             </h1>

@@ -340,7 +340,7 @@ export function Markets() {
     <section
       id="markets"
       ref={ref}
-      className="markets-section scroll-mt-24 px-6 py-[120px]"
+      className="markets-section scroll-mt-24 px-4 py-14 sm:px-6 sm:py-16 lg:py-24"
     >
       <div className="mx-auto max-w-[1200px]">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
@@ -351,9 +351,6 @@ export function Markets() {
             </h2>
             <p className="mt-2 text-sm text-[var(--fg-muted)]">
               Live prices across the assets traders are watching right now.
-              {loadError ? (
-                <span className="block text-[var(--danger)]">Using cached data — live feed unavailable.</span>
-              ) : null}
             </p>
           </div>
           <div className="flex gap-1 self-start rounded-full border border-[var(--border)] bg-[var(--surface)] p-1 sm:self-auto">
@@ -382,20 +379,20 @@ export function Markets() {
           className="markets-table mt-8 overflow-hidden rounded-3xl border border-[var(--border)] backdrop-blur-sm"
           style={{ background: "var(--surface)" }}
         >
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[860px] text-sm">
+          <div>
+            <table className="w-full text-sm">
               <thead
                 className="sticky top-0 z-10 backdrop-blur"
                 style={{ background: "rgba(var(--nav-bg-rgb), 0.85)" }}
               >
                 <tr className="border-b border-[var(--border)] text-left text-[11px] font-semibold uppercase tracking-wider text-[var(--fg-subtle)]">
-                  <th className="py-4 pl-6 pr-2">#</th>
-                  <th className="py-4 pr-2">Coin</th>
-                  <th className="py-4 pr-2">Price</th>
-                  <th className="py-4 pr-2">24H</th>
-                  <th className="py-4 pr-2">Volume</th>
-                  <th className="py-4 pr-2">7D Trend</th>
-                  <th className="py-4 pr-6"></th>
+                  <th className="hidden py-4 pl-4 pr-2 sm:table-cell sm:pl-6">#</th>
+                  <th className="py-4 pl-3 pr-2 sm:pl-0">Coin</th>
+                  <th className="py-4 pr-2 text-right sm:text-left">Price</th>
+                  <th className="py-4 pr-3 text-right sm:pr-2 sm:text-left">24H</th>
+                  <th className="hidden py-4 pr-2 lg:table-cell">Volume</th>
+                  <th className="hidden py-4 pr-2 lg:table-cell">7D Trend</th>
+                  <th className="hidden py-4 pr-4 sm:table-cell sm:pr-6"></th>
                 </tr>
               </thead>
               <tbody>
@@ -442,7 +439,7 @@ export function Markets() {
                             : undefined
                         }
                       >
-                        <td className="relative py-5 pl-6 pr-2">
+                        <td className="relative hidden py-4 pl-4 pr-2 sm:table-cell sm:py-5 sm:pl-6">
                           <span
                             className={`pointer-events-none absolute left-0 top-1/2 h-8 w-0.5 -translate-y-1/2 rounded-r bg-[var(--brand)] transition-opacity ${
                               isActive
@@ -462,8 +459,16 @@ export function Markets() {
                             <span className="text-sm tabular-nums text-[var(--fg-muted)]">{i + 1}</span>
                           )}
                         </td>
-                        <td className="py-5 pr-2">
-                          <span className="flex items-center gap-3">
+                        <td className="relative py-3.5 pl-3 pr-2 sm:py-5 sm:pl-0">
+                          <span
+                            className={`pointer-events-none absolute left-0 top-1/2 h-8 w-0.5 -translate-y-1/2 rounded-r bg-[var(--brand)] transition-opacity sm:hidden ${
+                              isActive
+                                ? "opacity-100"
+                                : "opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100"
+                            }`}
+                            aria-hidden
+                          />
+                          <span className="flex items-center gap-2 sm:gap-3">
                             {c.image ? (
                               // eslint-disable-next-line @next/next/no-img-element
                               <img
@@ -471,12 +476,12 @@ export function Markets() {
                                 alt=""
                                 width={36}
                                 height={36}
-                                className="h-9 w-9 rounded-full bg-[var(--surface)]"
+                                className="h-7 w-7 rounded-full bg-[var(--surface)] sm:h-9 sm:w-9"
                               />
                             ) : (
                               <span
                                 aria-hidden
-                                className="grid h-9 w-9 place-items-center rounded-full text-sm font-black text-white"
+                                className="grid h-7 w-7 place-items-center rounded-full text-xs font-black text-white sm:h-9 sm:w-9 sm:text-sm"
                                 style={{
                                   background:
                                     "linear-gradient(135deg, rgba(var(--brand-rgb), 0.95), rgba(var(--brand-rgb), 0.45))",
@@ -486,26 +491,28 @@ export function Markets() {
                                 {c.sym[0]}
                               </span>
                             )}
-                            <span className="flex flex-col">
-                              <span className="font-bold leading-tight text-[var(--fg)]">{c.name}</span>
+                            <span className="flex min-w-0 flex-col">
+                              <span className="truncate text-sm font-bold leading-tight text-[var(--fg)] sm:text-base">
+                                {c.name}
+                              </span>
                               <span className="mt-0.5 inline-block w-fit rounded bg-[var(--surface)] px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[var(--fg-muted)]">
                                 {c.sym}
                               </span>
                             </span>
                           </span>
                         </td>
-                        <td className="py-5 pr-2">
+                        <td className="py-3.5 pr-2 text-right sm:py-5 sm:text-left">
                           <span
                             key={flashKey}
-                            className={`inline-block rounded px-1.5 py-1 font-semibold tabular-nums text-[var(--fg)] ${flashCls}`}
+                            className={`inline-block rounded px-1.5 py-1 text-xs font-semibold tabular-nums text-[var(--fg)] sm:text-sm ${flashCls}`}
                           >
                             {formatInr(displayPrice)}
                           </span>
                         </td>
-                        <td className="py-5 pr-2">
+                        <td className="py-3.5 pr-3 text-right sm:py-5 sm:pr-2 sm:text-left">
                           <ChangeChip value={c.ch} />
                         </td>
-                        <td className="py-5 pr-2">
+                        <td className="hidden py-4 pr-2 sm:py-5 lg:table-cell">
                           <div className="flex items-center gap-3">
                             <span className="w-14 shrink-0 text-sm tabular-nums text-[var(--fg-muted)]">
                               {c.vol} Cr
@@ -522,10 +529,10 @@ export function Markets() {
                             </span>
                           </div>
                         </td>
-                        <td className="py-5 pr-2">
+                        <td className="hidden py-4 pr-2 sm:py-5 lg:table-cell">
                           <Sparkline data={c.spark7d} seed={i + 1} positive={c.ch >= 0} />
                         </td>
-                        <td className="py-5 pr-6 text-right text-[var(--fg-subtle)]">
+                        <td className="hidden py-4 pr-4 text-right text-[var(--fg-subtle)] sm:table-cell sm:py-5 sm:pr-6">
                           <span
                             aria-hidden
                             className="inline-block transition-transform group-hover:translate-x-1 group-focus-visible:translate-x-1 group-hover:text-[var(--fg)] group-focus-visible:text-[var(--fg)]"

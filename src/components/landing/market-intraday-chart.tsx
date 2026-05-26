@@ -11,7 +11,15 @@ type MarketIntradayChartProps = {
 };
 
 const H = 200;
-const PAD = { top: 12, right: 72, bottom: 28, left: 12 };
+// Right-side gutter holds the y-axis price labels and the 68 px active-price
+// chip (drawn at `PAD.left + plotW + 4`, width 68). The pad must therefore be
+// >= 72 (4 px gap + 68 px chip) on every viewport — anything smaller and the
+// chip's right edge overflows the SVG and is clipped by its default
+// `overflow: hidden`. We keep the constant for documentation, but both
+// viewports now share the same value.
+const NARROW_RIGHT_PAD = 72;
+const WIDE_RIGHT_PAD = 72;
+const NARROW_BREAKPOINT = 640;
 
 function downsample(points: ChartPoint[], max = 120): ChartPoint[] {
   if (points.length <= max) return points;
@@ -66,6 +74,16 @@ export function MarketIntradayChart({
 
   const series = useMemo(() => (points?.length ? downsample(points) : []), [points]);
 
+  const PAD = useMemo(
+    () => ({
+      top: 12,
+      right: width < NARROW_BREAKPOINT ? NARROW_RIGHT_PAD : WIDE_RIGHT_PAD,
+      bottom: 28,
+      left: 12,
+    }),
+    [width]
+  );
+
   const plotW = width - PAD.left - PAD.right;
   const plotH = H - PAD.top - PAD.bottom;
 
@@ -93,7 +111,7 @@ export function MarketIntradayChart({
     const line = coords.map((c, i) => `${i === 0 ? "M" : "L"} ${c.x} ${c.y}`).join(" ");
     const area = `${line} L ${coords[coords.length - 1].x} ${PAD.top + plotH} L ${coords[0].x} ${PAD.top + plotH} Z`;
     return { coords, min, max, gridYs, xLabels, line, area };
-  }, [series, plotW, plotH]);
+  }, [series, plotW, plotH, PAD]);
 
   const activeIdx = hoverIdx ?? (series.length ? series.length - 1 : null);
   const active =
@@ -112,7 +130,7 @@ export function MarketIntradayChart({
 
   return (
     <div
-      className="market-intraday-chart border-t border-[var(--border)] px-6 py-5"
+      className="market-intraday-chart border-t border-[var(--border)] px-3 py-4 sm:px-6 sm:py-5"
       style={{ background: "rgba(var(--nav-bg-rgb), 0.45)" }}
       onMouseLeave={() => setHoverIdx(null)}
     >
@@ -120,14 +138,20 @@ export function MarketIntradayChart({
         {name} intraday trend
       </p>
 
-      <div ref={wrapRef} className="relative w-full select-none">
+      <div ref={wrapRef} className="relative w-full min-w-0 select-none overflow-hidden">
         {loading ? (
           <div className="h-[200px] w-full animate-pulse rounded-lg bg-[var(--surface)]" aria-hidden />
         ) : geometry ? (
+          // SVG `width="100%"` (HTML attribute) means it has no intrinsic
+          // pixel width — so it cannot push its parent <td> (and therefore
+          // the whole <table>) wider than the markets card. The geometry
+          // is still computed against the measured pixel `width` state via
+          // ResizeObserver below, and the inner coords map 1:1 with screen
+          // pixels because there's no viewBox.
           <svg
-            width={width}
+            width="100%"
             height={H}
-            className="block w-full touch-none"
+            className="block touch-none"
             role="img"
             aria-label={`${sym} intraday price chart`}
             onMouseMove={(e) => onPointer(e.clientX)}

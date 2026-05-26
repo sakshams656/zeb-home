@@ -45,7 +45,7 @@ export function ThemeToggle({ className }: { className?: string }) {
     <button
       type="button"
       onClick={toggle}
-      className={`grid h-9 w-9 place-items-center rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--fg)] transition hover:border-[var(--brand)] hover:text-[var(--brand)] ${className ?? ""}`}
+      className={`grid h-11 w-11 shrink-0 place-items-center rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--fg)] transition hover:border-[var(--brand)] hover:text-[var(--brand)] ${className ?? ""}`}
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       title={isDark ? "Switch to light mode" : "Switch to dark mode"}
     >

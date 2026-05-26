@@ -48,18 +48,12 @@ export function ProBento() {
   const sig = SIGNALS[signalIdx];
 
   return (
-    <section id="pro" ref={ref} className="scroll-mt-24 bg-[#040812] px-6 py-[120px]">
-      <div className="mx-auto max-w-[1200px]">
-        <h2 className="text-[clamp(2rem,4vw,3rem)] font-black text-[var(--fg)]">Tools for serious traders.</h2>
+    <section id="pro" ref={ref} className="scroll-mt-24 bg-[#040812] py-14 sm:py-16 lg:py-24">
+      <div className="container-zeb">
+        <h2 className="text-[clamp(2rem,5vw,3rem)] font-black text-[var(--fg)]">Tools for serious traders.</h2>
 
-        <div
-          className="bento-grid mt-12 grid gap-4"
-          style={{
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gridTemplateRows: "repeat(3, minmax(180px, auto))"
-          }}
-        >
-          <article className="bento-cell bento-ai col-span-2 row-span-2 rounded-3xl border border-[var(--border)] bg-[#0a1428] p-8">
+        <div className="bento-grid mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:auto-rows-[minmax(180px,auto)]">
+          <article className="bento-cell bento-ai rounded-3xl border border-[var(--border)] bg-[#0a1428] p-6 sm:col-span-2 sm:p-8 lg:row-span-2">
             <h3 className="text-xl font-black text-[var(--cyan)]">AI Insights</h3>
             <p className="mt-1 text-xs text-[var(--fg-muted)]">Last updated 8 min ago</p>
             <svg viewBox="0 0 200 100" className="mx-auto mt-4 w-full max-w-[200px]">
@@ -79,7 +73,7 @@ export function ProBento() {
             <p className="mt-2 text-center text-[10px] text-[var(--fg-muted)]">Confidence trend · 7d</p>
           </article>
 
-          <article className="bento-cell col-span-2 row-span-1 rounded-3xl border border-[var(--border)] bg-[#0a1a0a] p-6">
+          <article className="bento-cell rounded-3xl border border-[var(--border)] bg-[#0a1a0a] p-6 sm:col-span-2">
             <h3 className="font-black text-[var(--success)]">Expert Trades</h3>
             <div className="mt-4 flex items-center gap-3">
               <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--success)] text-sm font-bold text-[var(--navy)]">
@@ -95,7 +89,7 @@ export function ProBento() {
             <p className="mt-4 rounded-xl bg-black/30 p-4 text-sm text-white">{sig.text}</p>
           </article>
 
-          <article className="bento-cell col-span-1 row-span-1 rounded-3xl border border-[var(--border)] bg-[#1a0a0a] p-6">
+          <article className="bento-cell rounded-3xl border border-[var(--border)] bg-[#1a0a0a] p-6">
             <h3 className="font-black text-[#ff6b6b]">RMS</h3>
             <p className="mt-1 text-[10px] text-[var(--fg-muted)]">Auto TP / SL</p>
             <svg viewBox="0 0 120 80" className="mt-3 w-full">
@@ -106,7 +100,7 @@ export function ProBento() {
             </svg>
           </article>
 
-          <article className="bento-cell col-span-1 row-span-1 rounded-3xl border border-[var(--border)] bg-[#0a0f1a] p-6">
+          <article className="bento-cell rounded-3xl border border-[var(--border)] bg-[#0a0f1a] p-6">
             <h3 className="font-black text-[#5b9fff]">Sub Accounts</h3>
             <ul className="mt-4 space-y-2">
               {[
@@ -124,21 +118,21 @@ export function ProBento() {
             </ul>
           </article>
 
-          <article className="bento-cell col-span-2 row-span-1 rounded-3xl border border-[var(--border)] bg-[#080d1a] p-6">
+          <article className="bento-cell rounded-3xl border border-[var(--border)] bg-[#080d1a] p-6 sm:col-span-2">
             <div className="flex items-center justify-between">
               <h3 className="font-black text-[var(--cyan)]">APIs</h3>
-              <div className="flex gap-1 rounded-lg bg-black/40 p-0.5 text-[10px]">
+              <div className="flex gap-1 rounded-lg bg-black/40 p-0.5 text-xs">
                 <button
                   type="button"
                   onClick={() => setApiTab("python")}
-                  className={`rounded px-2 py-1 ${apiTab === "python" ? "bg-[var(--brand)] text-white" : "text-[var(--fg-muted)]"}`}
+                  className={`min-h-9 rounded px-3 py-1.5 font-semibold ${apiTab === "python" ? "bg-[var(--brand)] text-white" : "text-[var(--fg-muted)]"}`}
                 >
                   Python
                 </button>
                 <button
                   type="button"
                   onClick={() => setApiTab("curl")}
-                  className={`rounded px-2 py-1 ${apiTab === "curl" ? "bg-[var(--brand)] text-white" : "text-[var(--fg-muted)]"}`}
+                  className={`min-h-9 rounded px-3 py-1.5 font-semibold ${apiTab === "curl" ? "bg-[var(--brand)] text-white" : "text-[var(--fg-muted)]"}`}
                 >
                   cURL
                 </button>
@@ -161,7 +155,7 @@ export function ProBento() {
             </pre>
           </article>
 
-          <article className="bento-cell col-span-2 row-span-1 rounded-3xl border border-[var(--border)] bg-[#1a1400] p-6">
+          <article className="bento-cell rounded-3xl border border-[var(--border)] bg-[#1a1400] p-6 sm:col-span-2">
             <div className="flex items-start justify-between">
               <h3 className="font-black text-[var(--gold)]">Options</h3>
               <span className="rounded bg-[var(--gold)] px-2 py-0.5 text-[10px] font-extrabold text-[var(--navy)]">Coming soon</span>

@@ -44,3 +44,92 @@ session-only (defaults to dark on every page load, not persisted).
   container that should always read as on-dark regardless of website theme,
   give it the `.on-dark-surface` class (defined in globals.css) — that scopes
   the semantic tokens to their dark-mode values.
+
+# Mobile responsiveness
+
+The site is **mobile-first**. Every new component MUST render correctly at
+320 px wide and scale up — there is no "desktop-only" escape hatch. The
+default `npm run lint` script invokes
+[scripts/responsive-lint.mjs](scripts/responsive-lint.mjs) which fails CI on
+the forbidden patterns listed below.
+
+## Breakpoint policy
+
+We use Tailwind v4 defaults (no overrides in `@theme`):
+
+| Prefix | Min width | When to use                                          |
+| ------ | --------- | ---------------------------------------------------- |
+| (none) | 0 px      | Phones. This is the base case — write it first.     |
+| `sm:`  | 640 px    | Large phones / phablets.                             |
+| `md:`  | 768 px    | Tablet / phone landscape. Use it — currently scarce. |
+| `lg:`  | 1024 px   | Desktop where the layout shifts from stacked.        |
+| `xl:`  | 1280 px   | Wide-screen polish only.                             |
+
+## Required primitives
+
+- Wrap every page section in [`<Section>`](src/components/ui/section.tsx) (or
+  use `.container-zeb` for non-section containers). They enforce the
+  `px-4 py-14 sm:px-6 sm:py-16 lg:py-24` rhythm. Do NOT hand-roll
+  `px-6 py-[120px]`-style spacing on a bare `<section>`.
+- Buttons: use `.btn-primary` / `.btn-outline` / `.btn-hero-primary` from
+  globals.css — they bake in a 44 px tap floor and a `sm:` ramp.
+- Phone bezel: [`<PhoneFrame>`](src/components/ui/phone-frame.tsx) is fluid
+  (`min(290px, 80vw)`). Do NOT wrap it in `scale-[0.x]` — CSS transforms do
+  not shrink the layout box and will clip content.
+
+## Required patterns
+
+- **Headlines**: when using `clamp()`, the minimum MUST be `<= 2rem` so the
+  text fits a 320 px viewport. Example:
+  `text-[clamp(2rem,6vw,4.5rem)]`. Floors of `3rem` / `4rem` are forbidden.
+- **Tap targets**: any `<button>`, `<a>`, or interactive icon must have a hit
+  area of at least 44 x 44 px. If the visual is smaller, pad the container:
+  `<button class="grid h-11 w-11 place-items-center"><Icon class="h-5 w-5"/></button>`.
+- **Tables**: hide secondary columns below `lg:` with
+  `<th class="hidden lg:table-cell">` + `<td class="hidden lg:table-cell">`.
+  Do NOT use `min-w-[800px]` inside `overflow-x-auto` — horizontal scroll on
+  data tables is poor UX on phones.
+- **Cards / grids**: stack on phones (`grid-cols-1`), upgrade at `sm:` or
+  `md:`. Avoid pixel `w-[Npx]` on grid items; use `w-full` plus container
+  constraints.
+- **Section padding**: use the `<Section>` variants. If you must hand-write,
+  follow the formula `px-4 py-14 sm:px-6 sm:py-16 lg:py-24`.
+
+## Forbidden patterns (lint-enforced)
+
+The responsive linter rejects PRs that include any of these:
+
+- `min-h-screen` on the same element as `min-h-[Npx]` (double minimum locks
+  the viewport on mobile and clips content).
+- `py-[Npx]` where `N >= 96` without a `lg:` prefix (desktop padding leaking
+  to phones).
+- `min-w-[Npx]` where `N >= 600` outside an `overflow-x-auto` ancestor.
+- `h-[100svh]` / `h-[100vh]` / `h-[100dvh]` outside `hero.tsx` (full-viewport
+  sections do not work on phones with dynamic browser chrome).
+- `px-*` on a `<section>` whose inner wrapper is `.container-zeb`
+  (`container-zeb` already provides the page gutter; doubling it leaves
+  inner content over-padded). Either drop the `px-*` or replace the inner
+  with a plain `mx-auto max-w-[1200px]`.
+- `scale-[0.` wrapping a `<PhoneFrame>` (use the fluid frame instead).
+- **Floating-chrome hook class without `overflow-hidden`/`overflow-clip`**:
+  any element with `nav-inner` / `pill-shell` in its `className` must also
+  carry `overflow-hidden` (or `overflow-clip`). Floating chrome that shrinks
+  on scroll can otherwise have its children pushed past the rounded edges,
+  as the nav-pill hamburger bug showed. When you introduce a new floating /
+  shrinking container, give it a hook class and add it to this list.
+- **Unguarded `gsap.set` / `gsap.to` pixel-layout writes**: any call that
+  sets `left` / `right` / `top` / `bottom` / `borderRadius` as a number must
+  be inside a `gsap.matchMedia` (or `mm.add(...)`) callback so the pixel
+  math only runs at viewport sizes that can absorb it. The nav-pill bug was
+  caused by exactly this — a single `gsap.set` ramp that shrunk the pill on
+  every viewport, including 320 px. If you have a one-time pin/origin setup
+  (e.g. `gsap.set(el, { left: 0, right: 0 })`) prefix it with the comment
+  `// lint-allow: unguarded-gsap-pixel-layout` and explain why the call is
+  safe at every viewport.
+
+## Exceptions
+
+- **Phone demo screens** (inside `<PhoneFrame>`) are exempt from breakpoint
+  scaling — they always render as a portrait phone-app screenshot.
+- **Calculator simulator** (`CalcShell`) is exempt for the same reason.
+- The hero section is allowed to use `min-h-screen` (sized for fold).

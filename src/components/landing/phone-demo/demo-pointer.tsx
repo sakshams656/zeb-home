@@ -25,11 +25,17 @@ const HINTS: Partial<Record<DemoMode, Record<number, Hint>>> = {
 export function DemoPointer({
   mode,
   steps,
-  maxSteps
+  maxSteps,
+  scope = "phone-demos"
 }: {
   mode: DemoMode;
   steps: Record<DemoMode, number>;
   maxSteps: Record<DemoMode, number>;
+  // Both <ProductShowcase> and <PhoneDemos> render a `.feature-phone` on the
+  // same page, so the pointer needs an explicit scope to look up the correct
+  // one. Callers pass the parent element's id (e.g. "product-showcase" or
+  // "phone-demos") and the pointer queries `#${scope} .feature-phone`.
+  scope?: string;
 }) {
   const [placement, setPlacement] = useState<{ x: number; y: number; label: string } | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout>>(null);
@@ -41,7 +47,7 @@ export function DemoPointer({
     if (timer.current) clearTimeout(timer.current);
     if (!hint) return;
     timer.current = setTimeout(() => {
-      const root = document.querySelector("#phone-demos .feature-phone");
+      const root = document.querySelector(`#${scope} .feature-phone`);
       const el = root?.querySelector(hint.sel) ?? document.querySelector(hint.sel);
       if (!el) return;
       const r = el.getBoundingClientRect();
@@ -51,7 +57,7 @@ export function DemoPointer({
     return () => {
       if (timer.current) clearTimeout(timer.current);
     };
-  }, [mode, step, hint]);
+  }, [mode, step, hint, scope]);
 
   if (!hint || !placement || step > (maxSteps[mode] ?? 1)) return null;
 

@@ -57,7 +57,7 @@ function SocialIcon({ d, label, href }: { d: string; label: string; href: string
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}
-      className="grid h-9 w-9 place-items-center rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--fg-muted)] transition hover:border-transparent hover:bg-[var(--brand)] hover:text-white"
+      className="grid h-11 w-11 place-items-center rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--fg-muted)] transition hover:border-transparent hover:bg-[var(--brand)] hover:text-white"
     >
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
         <path d={d} />
@@ -129,7 +129,7 @@ export function Footer() {
         ref={ref}
         className="footer-globe-bg relative overflow-hidden text-[var(--fg)]"
       >
-        <div className="mx-auto flex max-w-[1200px] flex-col items-center px-6 pt-20 text-center">
+        <div className="container-zeb flex flex-col items-center pb-12 pt-20 text-center">
           <p className="text-sm font-bold uppercase tracking-widest text-[var(--brand)]">
             Start trading
           </p>
@@ -148,7 +148,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-[var(--border)]">
-          <div className="mx-auto grid max-w-[1200px] gap-10 px-6 py-12 md:grid-cols-2 lg:grid-cols-[1.3fr_repeat(4,1fr)]">
+          <div className="container-zeb grid gap-10 py-12 md:grid-cols-2 lg:grid-cols-[1.3fr_repeat(4,1fr)]">
             <div className="footer-col">
               <Logo variant="auto" width={150} height={52} className="h-auto w-[150px]" />
               <p className="mt-3 max-w-[240px] text-xs text-[var(--fg-muted)]">
@@ -200,7 +200,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-[var(--border)]">
-          <div className="mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-3 px-6 py-6 text-xs text-[var(--fg-muted)]">
+          <div className="container-zeb flex flex-wrap items-center justify-between gap-3 py-6 text-xs text-[var(--fg-muted)]">
             <div className="flex flex-wrap items-center gap-2">
               {BADGES.map((b) => (
                 <span
@@ -223,7 +223,7 @@ export function Footer() {
 
       <button
         type="button"
-        className="back-to-top fixed bottom-6 right-6 z-40 rounded-full bg-[var(--brand)] px-4 py-2 text-sm font-bold text-white opacity-0 shadow-lg"
+        className="back-to-top fixed bottom-6 right-6 z-40 inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--brand)] px-5 py-2.5 text-sm font-bold text-white opacity-0 shadow-lg"
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         aria-label="Back to top"
       >

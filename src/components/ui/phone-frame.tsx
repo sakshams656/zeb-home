@@ -7,13 +7,16 @@ export interface PhoneFrameProps {
 }
 
 export function PhoneFrame({ children, tilt = 0, className = "" }: PhoneFrameProps) {
+  // Fluid layout box: phones shrink the frame to fit the viewport (max 80vw),
+  // tablets+ get the design width. aspect-ratio keeps the 290 x 580 shape so
+  // consumers no longer need CSS `scale()` hacks that don't shrink the layout.
   return (
     <div
       className={`phone-frame relative mx-auto shrink-0 ${className}`}
       style={{
-        width: 290,
-        height: 580,
-        transform: tilt ? `perspective(1200px) rotateY(${tilt}deg)` : undefined
+        width: "min(290px, 80vw)",
+        aspectRatio: "29 / 58",
+        transform: tilt ? `perspective(1200px) rotateY(${tilt}deg)` : undefined,
       }}
     >
       <div

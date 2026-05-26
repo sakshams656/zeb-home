@@ -143,7 +143,7 @@ function Field({ label, value, onChange, prefix, suffix, step, min, max }: Field
   return (
     <label className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
       <span className="text-sm font-medium text-[var(--fg)]">{label}</span>
-      <span className="flex w-full items-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3.5 py-2.5 transition focus-within:border-[var(--brand)] focus-within:ring-2 focus-within:ring-[rgba(var(--brand-rgb),0.35)] sm:w-[60%]">
+      <span className="flex min-h-11 w-full items-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3.5 py-3 transition focus-within:border-[var(--brand)] focus-within:ring-2 focus-within:ring-[rgba(var(--brand-rgb),0.35)] sm:w-[60%]">
         {prefix && <span className="text-sm text-[var(--fg-subtle)]">{prefix}</span>}
         <input
           type="number"
@@ -183,7 +183,7 @@ function Segment<T extends string>({
               key={o.value}
               type="button"
               onClick={() => onChange(o.value)}
-              className={`rounded-lg px-3 py-2 text-sm font-semibold transition ${
+              className={`min-h-10 rounded-lg px-3 py-2.5 text-sm font-semibold transition ${
                 active
                   ? "bg-[var(--brand)] text-white shadow-[0_4px_16px_rgba(var(--brand-rgb),0.35)]"
                   : "text-[var(--fg-muted)] hover:text-white"
@@ -222,7 +222,7 @@ function SelectChips<T extends number | string>({
               key={String(o)}
               type="button"
               onClick={() => onChange(o)}
-              className={`flex-1 rounded-lg px-2 py-2 text-sm font-semibold transition ${
+              className={`flex-1 min-h-10 rounded-lg px-2 py-2.5 text-sm font-semibold transition ${
                 active
                   ? "bg-[var(--brand)] text-white shadow-[0_4px_16px_rgba(var(--brand-rgb),0.35)]"
                   : "text-[var(--fg-muted)] hover:text-white"
@@ -303,7 +303,12 @@ function LineChart({
 
   return (
     <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-3 sm:p-4">
-      <svg viewBox={`0 0 ${W} ${H}`} className="w-full" style={{ height }} preserveAspectRatio="none">
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        className="block aspect-[16/10] w-full sm:aspect-[16/7]"
+        style={{ maxHeight: height }}
+        preserveAspectRatio="none"
+      >
         <defs>
           <linearGradient id="calc-area-grad" x1="0" x2="0" y1="0" y2="1">
             <stop offset="0%" stopColor="rgba(var(--brand-rgb),0.55)" />
@@ -592,7 +597,7 @@ export function CalculatorHub() {
     <section
       id="calculators"
       ref={sectionRef}
-      className="calculator-hub scroll-mt-24 px-6 py-16 lg:py-24"
+      className="calculator-hub scroll-mt-24 px-4 py-14 sm:px-6 sm:py-16 lg:py-24"
     >
       <div className="mx-auto max-w-[1200px]">
         <h2 className="text-[clamp(1.75rem,3.5vw,2.75rem)] font-black text-[var(--fg)]">
@@ -602,18 +607,18 @@ export function CalculatorHub() {
           Every product, real formulas, instant projections.
         </p>
 
-        <div className="mt-8 grid gap-6 lg:mt-10 lg:grid-cols-[260px_1fr] lg:gap-8">
-          <aside className="lg:sticky lg:top-24 lg:self-start">
-            <ul className="-mx-6 flex flex-row gap-2 overflow-x-auto px-6 pb-2 lg:mx-0 lg:flex-col lg:overflow-visible lg:px-0 lg:pb-0">
+        <div className="mt-8 grid gap-6 lg:mt-10 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-8">
+          <aside className="min-w-0 lg:sticky lg:top-24 lg:self-start">
+            <ul className="-mx-4 flex flex-row gap-2 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:px-6 lg:mx-0 lg:flex-col lg:overflow-visible lg:px-0 lg:pb-0">
               {META.map((m) => {
                 const active = tab === m.id;
                 return (
-                  <li key={m.id} className="shrink-0 lg:shrink">
+                  <li key={m.id} className="flex shrink-0 lg:shrink">
                     <button
                       type="button"
                       onClick={() => switchTab(m.id)}
                       aria-pressed={active}
-                      className={`calc-tab group flex w-[220px] items-start gap-3 rounded-2xl p-3.5 text-left transition lg:w-full ${
+                      className={`calc-tab group flex h-full w-[180px] items-start gap-2.5 rounded-2xl border p-3 text-left transition sm:w-[220px] sm:gap-3 sm:p-3.5 lg:w-full ${
                         active
                           ? isDark
                             ? "bg-[linear-gradient(135deg,rgba(var(--brand-rgb),0.95),rgba(var(--brand-rgb),0.55))] text-white shadow-[0_10px_30px_rgba(var(--brand-rgb),0.35)]"
@@ -621,13 +626,13 @@ export function CalculatorHub() {
                           : "border border-[var(--border)] bg-[var(--surface)] text-[var(--fg)] hover:border-[var(--border-strong)] hover:bg-[var(--surface-strong)]"
                       }`}
                     >
-                      <span className="grid h-9 w-9 shrink-0 place-items-center overflow-hidden rounded-xl transition">
+                      <span className="grid h-8 w-8 shrink-0 place-items-center overflow-hidden rounded-xl transition sm:h-9 sm:w-9">
                         <CalcIcon id={m.id} />
                       </span>
                       <span className="min-w-0 flex-1">
                         <span className="block text-sm font-bold leading-snug">{m.label}</span>
                         <span
-                          className={`mt-0.5 block text-xs leading-snug ${
+                          className={`mt-0.5 block text-[11px] leading-snug sm:text-xs ${
                             active
                               ? isDark
                                 ? "text-white/80"
@@ -645,18 +650,20 @@ export function CalculatorHub() {
             </ul>
           </aside>
 
-          <div className="calc-body rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 backdrop-blur-sm sm:p-6 lg:p-7">
+          <div className="calc-body min-w-0 rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-4 backdrop-blur-sm sm:p-6 lg:p-7">
             <header className="flex items-start gap-3 border-b border-[var(--border)] pb-4 sm:gap-4 sm:pb-5">
-              <span className="grid h-11 w-11 shrink-0 place-items-center overflow-hidden rounded-2xl sm:h-12 sm:w-12">
+              <span className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-xl sm:h-12 sm:w-12 sm:rounded-2xl">
                 <CalcIcon id={meta.id} size={48} />
               </span>
               <div className="min-w-0">
-                <h3 className="text-lg font-black text-[var(--fg)] sm:text-xl lg:text-2xl">{meta.title}</h3>
-                <p className="mt-0.5 text-xs text-[var(--fg-muted)] sm:mt-1 sm:text-sm">{meta.subtitle}</p>
+                <h3 className="text-base font-black leading-tight text-[var(--fg)] sm:text-xl lg:text-2xl">
+                  {meta.title}
+                </h3>
+                <p className="mt-1 text-xs text-[var(--fg-muted)] sm:text-sm">{meta.subtitle}</p>
               </div>
             </header>
 
-            <div className="mt-5 grid gap-5 lg:grid-cols-[1fr_1.05fr] lg:gap-7">
+            <div className="mt-5 grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-7">
               <div className="space-y-3.5">
                 {tab === "spot" && (
                   <>
