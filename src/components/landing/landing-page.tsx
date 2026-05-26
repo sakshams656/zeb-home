@@ -20,7 +20,7 @@ import { Footer } from "./footer";
 
 export function LandingPage() {
   return (
-    <div className="landing-page bg-[#040812] text-[var(--text-on-dark)]">
+    <div className="landing-page">
       <OrganizationJsonLd />
       <Nav />
       <main>

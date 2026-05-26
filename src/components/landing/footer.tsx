@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRef, type ReactNode } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger, ZEB_EASE, prefersReducedMotion } from "@/lib/gsap";
+import { Logo } from "./logo";
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://zebpay.com";
 
@@ -160,12 +161,12 @@ function GlobeScene() {
             <stop offset="100%" stopColor="#040812" />
           </radialGradient>
           <radialGradient id="globe-halo" cx="50%" cy="50%" r="50%">
-            <stop offset="60%" stopColor="rgba(27,85,224,0)" />
-            <stop offset="80%" stopColor="rgba(27,85,224,0.18)" />
-            <stop offset="100%" stopColor="rgba(27,85,224,0)" />
+            <stop offset="60%" stopColor="rgba(var(--brand-rgb),0)" />
+            <stop offset="80%" stopColor="rgba(var(--brand-rgb),0.18)" />
+            <stop offset="100%" stopColor="rgba(var(--brand-rgb),0)" />
           </radialGradient>
           <linearGradient id="streak-grad" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0%" stopColor="rgba(27,85,224,0)" />
+            <stop offset="0%" stopColor="rgba(var(--brand-rgb),0)" />
             <stop offset="50%" stopColor="rgba(80,150,255,0.85)" />
             <stop offset="100%" stopColor="rgba(80,150,255,0)" />
           </linearGradient>
@@ -260,7 +261,7 @@ function SocialIcon({ d, label, href }: { d: string; label: string; href: string
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}
-      className="grid h-9 w-9 place-items-center rounded-full border border-white/[0.08] bg-white/[0.04] text-white/65 transition hover:border-transparent hover:bg-[var(--brand)] hover:text-white"
+      className="grid h-9 w-9 place-items-center rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--fg-muted)] transition hover:border-transparent hover:bg-[var(--brand)] hover:text-white"
     >
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
         <path d={d} />
@@ -342,16 +343,16 @@ export function Footer() {
     <>
       <footer
         ref={ref}
-        className="footer-globe-bg relative overflow-hidden text-white"
+        className="footer-globe-bg relative overflow-hidden text-[var(--fg)]"
       >
         <div className="mx-auto flex max-w-[1200px] flex-col items-center px-6 pb-12 pt-20 text-center">
           <p className="text-sm font-bold uppercase tracking-widest text-[var(--brand)]">
             Start trading
           </p>
-          <h2 className="mt-2 text-[clamp(2rem,4vw,3.25rem)] font-black text-white">
+          <h2 className="mt-2 text-[clamp(2rem,4vw,3.25rem)] font-black text-[var(--fg)]">
             Crypto, from India to the world.
           </h2>
-          <p className="mt-3 max-w-xl text-sm text-white/55 sm:text-base">
+          <p className="mt-3 max-w-xl text-sm text-[var(--fg-muted)] sm:text-base">
             India&apos;s most trusted crypto exchange. 6M+ users, ₹2T+ traded, 200+ assets.
           </p>
           <a href={`${APP_URL}/signup`} className="btn-primary mt-6">
@@ -362,11 +363,11 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-white/[0.06]">
+        <div className="border-t border-[var(--border)]">
           <div className="mx-auto grid max-w-[1200px] gap-10 px-6 py-12 md:grid-cols-2 lg:grid-cols-[1.3fr_repeat(4,1fr)]">
             <div className="footer-col">
-              <p className="text-2xl font-black tracking-tight">ZebPay</p>
-              <p className="mt-2 max-w-[240px] text-xs text-white/55">
+              <Logo variant="auto" width={150} height={52} className="h-auto w-[150px]" />
+              <p className="mt-3 max-w-[240px] text-xs text-[var(--fg-muted)]">
                 India&apos;s most trusted crypto exchange since 2014. Trade, save and invest in 200+ assets.
               </p>
               <div className="mt-4 flex gap-2">
@@ -394,7 +395,7 @@ export function Footer() {
             </div>
             {COLS.map((col) => (
               <div key={col.title} className="footer-col">
-                <h4 className="text-xs font-semibold uppercase tracking-wider text-white/70">
+                <h4 className="text-xs font-semibold uppercase tracking-wider text-[var(--fg)]">
                   {col.title}
                 </h4>
                 <ul className="mt-3 space-y-2">
@@ -402,7 +403,7 @@ export function Footer() {
                     <li key={l}>
                       <Link
                         href="#"
-                        className="text-sm text-white/55 transition-colors hover:text-[var(--brand)]"
+                        className="text-sm text-[var(--fg-muted)] transition-colors hover:text-[var(--brand)]"
                       >
                         {l}
                       </Link>
@@ -414,13 +415,13 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-white/[0.06]">
-          <div className="mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-3 px-6 py-6 text-xs text-white/55">
+        <div className="border-t border-[var(--border)]">
+          <div className="mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-3 px-6 py-6 text-xs text-[var(--fg-muted)]">
             <div className="flex flex-wrap items-center gap-2">
               {BADGES.map((b) => (
                 <span
                   key={b}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/[0.04] px-2.5 py-1"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1"
                 >
                   <span className="text-[var(--success)]">
                     <CheckIcon />

@@ -16,12 +16,15 @@ const COINS = [
 
 function CoinChip({ sym, price, ch }: { sym: string; price: number; ch: number }) {
   return (
-    <span className="ticker-chip inline-flex shrink-0 items-center gap-2 rounded-full border border-[var(--border-dark)] bg-[var(--surface-dark)] px-4 py-2 text-sm font-semibold tabular-nums">
-      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--navy-mid)] text-[10px] font-black text-[var(--cyan)]">
+    <span className="ticker-chip inline-flex shrink-0 items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-4 py-2 text-sm font-semibold tabular-nums">
+      <span
+        className="flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-black text-[var(--fg)]"
+        style={{ background: "rgba(var(--brand-rgb), 0.9)" }}
+      >
         {sym[0]}
       </span>
-      <span className="text-[var(--text-on-dark)]">{sym}</span>
-      <span className="ticker-price text-[var(--text-muted-dark)]">{formatInr(price)}</span>
+      <span className="text-[var(--fg)]">{sym}</span>
+      <span className="ticker-price text-[var(--fg-muted)]">{formatInr(price)}</span>
       <span className="font-bold" style={{ color: ch >= 0 ? "var(--success)" : "var(--danger)" }}>
         {ch >= 0 ? "↑" : "↓"} {formatPercent(ch)}
       </span>
@@ -53,7 +56,7 @@ export function PriceTicker() {
           if (!prices?.length) return;
           const el = prices[Math.floor(Math.random() * prices.length)] as HTMLElement;
           const coin = COINS[Math.floor(Math.random() * COINS.length)];
-          const color = coin.ch >= 0 ? "#00b07a" : "#e33e5c";
+          const color = coin.ch >= 0 ? "var(--success)" : "var(--danger)";
           gsap.to(el, { color, duration: 0.15, yoyo: true, repeat: 1 });
         }, 3000);
         return () => clearInterval(id);
@@ -75,7 +78,7 @@ export function PriceTicker() {
   }, []);
 
   return (
-    <div ref={ref} className="price-ticker overflow-hidden border-y border-[var(--border-dark)] bg-[#040812] py-4">
+    <div ref={ref} className="price-ticker overflow-hidden border-y border-[var(--border)] bg-[var(--bg)] py-4">
       <TickerRow />
       <TickerRow reverse />
     </div>

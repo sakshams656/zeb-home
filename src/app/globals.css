@@ -1,7 +1,24 @@
 @import "tailwindcss";
 
-/* ZebPay design tokens — light/dark via .dark on html */
+/* Tailwind v4 defaults the `dark:` variant to the `prefers-color-scheme`
+   media query. Our theme toggle controls a `.dark` class on <html> instead,
+   so retarget the variant at the class. Now `dark:block` etc. respect the
+   in-app toggle. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------------------------------------------------------------------------
+   ZebPay design tokens
+   ---------------------------------------------------------------------------
+   The website's theme is a single boolean — `html.dark` (on) vs not.
+   Every chrome color reads from a semantic CSS variable defined twice below:
+   once in :root (light, default for new theme) and overridden in .dark.
+
+   Phone-demo screens (faux iOS app) and the calculator simulator are
+   intentionally NOT theme-aware — they always look like the real phone app.
+   --------------------------------------------------------------------------- */
+
 :root {
+  /* Brand (theme-invariant) */
   --navy: #0a0f2e;
   --navy-mid: #122968;
   --navy-light: #1a3580;
@@ -16,54 +33,179 @@
   --success: #00b07a;
   --danger: #e33e5c;
   --blue: var(--zeb-logo-blue);
-  --text-on-dark: #f0f4ff;
-  --text-muted-dark: rgba(240, 244, 255, 0.55);
-  --surface-dark: rgba(255, 255, 255, 0.05);
-  --border-dark: rgba(255, 255, 255, 0.08);
+
+  /* Surfaces (light defaults) */
   --bg: #f6f8fc;
   --bg-elevated: #ffffff;
-  --surface: #eef2f9;
-  --text: #0a0f2e;
-  --text-muted: #5a6478;
-  --border: rgba(10, 15, 46, 0.1);
+  --surface: rgba(10, 15, 46, 0.04);
+  --surface-strong: rgba(10, 15, 46, 0.07);
+
+  /* Foreground (light defaults) */
+  --fg: #0a0f2e;
+  --fg-muted: rgba(10, 15, 46, 0.62);
+  --fg-subtle: rgba(10, 15, 46, 0.42);
+
+  /* Borders (light defaults) */
+  --border: rgba(10, 15, 46, 0.08);
+  --border-strong: rgba(10, 15, 46, 0.14);
+
+  /* Backwards-compatible aliases (keep older components working) */
+  --text: var(--fg);
+  --text-muted: var(--fg-muted);
+  --text-on-dark: var(--fg);
+  --text-muted-dark: var(--fg-muted);
+  --surface-dark: var(--surface);
+  --border-dark: var(--border);
   --accent: var(--brand);
   --accent-text: #ffffff;
-  --shadow: 0 8px 32px rgba(10, 15, 46, 0.08);
-  --shadow-lg: 0 20px 60px rgba(10, 15, 46, 0.12);
-  --hero-gradient: linear-gradient(135deg, #f6f8fc 0%, #e8eef9 50%, #dce8ff 100%);
-  --card-gradient: linear-gradient(145deg, #ffffff, #f0f4fc);
-  --sim-gradient: linear-gradient(145deg, #06112b, #122968);
-  --hero-landing-gradient:
-    radial-gradient(ellipse 85% 65% at 78% 12%, rgba(27, 85, 224, 0.42) 0%, transparent 52%),
-    radial-gradient(ellipse 55% 45% at 8% 88%, rgba(27, 85, 224, 0.18) 0%, transparent 48%),
-    linear-gradient(165deg, #0c1d52 0%, #0a1538 28%, #070f24 58%, #040812 100%);
+
+  /* Effects (light) — soft brand-tinted */
+  --shadow: 0 8px 32px rgba(27, 85, 224, 0.08);
+  --shadow-lg: 0 24px 72px rgba(10, 15, 46, 0.12);
+
+  /* Card / hero gradients (theme-aware) */
+  --hero-gradient:
+    linear-gradient(135deg, #f6f8fc 0%, #eef3fc 55%, #e1ebff 100%);
+  --card-gradient:
+    linear-gradient(145deg, #ffffff, #f1f4fb);
+
+  /* Calculator simulator — INVARIANT, always dark "screen" */
+  --sim-gradient:
+    linear-gradient(145deg, #06112b, #122968);
+
+  /* Section ambient backgrounds (light) — clean Stripe/Linear-style.
+     Multiple very-low-opacity brand-blue radial washes over near-white. */
+  --section-bg-landing:
+    radial-gradient(70% 50% at 80% 10%, rgba(27, 85, 224, 0.06) 0%, transparent 60%),
+    radial-gradient(60% 45% at 10% 90%, rgba(27, 85, 224, 0.05) 0%, transparent 60%),
+    linear-gradient(180deg, #f6f8fc 0%, #ffffff 50%, #f6f8fc 100%);
+  --section-bg-hero:
+    radial-gradient(ellipse 85% 65% at 78% 12%, rgba(27, 85, 224, 0.10) 0%, transparent 55%),
+    radial-gradient(ellipse 55% 45% at 8% 88%, rgba(27, 85, 224, 0.06) 0%, transparent 50%),
+    linear-gradient(165deg, #ffffff 0%, #f6f8fc 50%, #eef3fc 100%);
+  --section-bg-1:
+    radial-gradient(55% 45% at 15% 18%, rgba(27, 85, 224, 0.07) 0%, transparent 60%),
+    radial-gradient(45% 40% at 85% 82%, rgba(27, 85, 224, 0.05) 0%, transparent 60%),
+    linear-gradient(180deg, #f6f8fc 0%, #ffffff 50%, #f6f8fc 100%);
+  --section-bg-2:
+    radial-gradient(55% 45% at 85% 18%, rgba(27, 85, 224, 0.07) 0%, transparent 60%),
+    radial-gradient(45% 40% at 12% 82%, rgba(27, 85, 224, 0.05) 0%, transparent 60%),
+    linear-gradient(180deg, #ffffff 0%, #f6f8fc 50%, #ffffff 100%);
+  --section-bg-glow:
+    radial-gradient(40% 60% at 50% 50%, rgba(27, 85, 224, 0.08) 0%, transparent 65%),
+    linear-gradient(180deg, #f6f8fc 0%, #ffffff 50%, #f6f8fc 100%);
+  --section-bg-footer:
+    radial-gradient(40% 35% at 50% 35%, rgba(27, 85, 224, 0.10) 0%, transparent 65%),
+    radial-gradient(50% 30% at 50% 8%, rgba(120, 70, 255, 0.05) 0%, transparent 60%),
+    linear-gradient(180deg, #ffffff 0%, #f1f5fc 60%, #ffffff 100%);
+  --section-bg-faq:
+    radial-gradient(45% 40% at 50% 0%, rgba(27, 85, 224, 0.08) 0%, transparent 60%),
+    radial-gradient(35% 30% at 12% 75%, rgba(27, 85, 224, 0.04) 0%, transparent 65%),
+    radial-gradient(35% 30% at 88% 25%, rgba(120, 70, 255, 0.04) 0%, transparent 65%),
+    linear-gradient(180deg, #f6f8fc 0%, #ffffff 50%, #f6f8fc 100%);
+  --section-bg-testimonials:
+    radial-gradient(40% 50% at 20% 20%, rgba(27, 85, 224, 0.07) 0%, transparent 65%),
+    radial-gradient(40% 50% at 80% 80%, rgba(120, 70, 255, 0.05) 0%, transparent 65%),
+    linear-gradient(180deg, #f6f8fc 0%, #ffffff 50%, #f6f8fc 100%);
+  --faq-grid-color: rgba(10, 15, 46, 0.05);
+
+  /* Nav scroll-progress colors (used per-frame by GSAP).
+     Exposed as RGB triples so the alpha can be interpolated by scroll progress
+     while the base color still flips with the theme. */
+  --nav-bg-rgb: 246, 248, 252;
+  --nav-tint-rgb: var(--brand-rgb);
+  --nav-shadow-rgb: 10, 15, 46;
+  --nav-inset-rgb: 10, 15, 46;
+
+  /* Legacy hero-landing-gradient kept for compatibility */
+  --hero-landing-gradient: var(--section-bg-hero);
 }
 
 .dark {
+  /* Surfaces */
   --bg: #0a0f2e;
   --bg-elevated: #0f1638;
-  --surface: #141c42;
-  --text: #f0f4ff;
-  --text-muted: rgba(240, 244, 255, 0.65);
+  --surface: rgba(255, 255, 255, 0.05);
+  --surface-strong: rgba(255, 255, 255, 0.08);
+
+  /* Foreground */
+  --fg: #f0f4ff;
+  --fg-muted: rgba(240, 244, 255, 0.65);
+  --fg-subtle: rgba(240, 244, 255, 0.45);
+
+  /* Borders */
   --border: rgba(255, 255, 255, 0.08);
-  --accent: var(--brand);
-  --accent-text: #ffffff;
+  --border-strong: rgba(255, 255, 255, 0.14);
+
+  /* Effects */
   --shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
   --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.45);
-  --hero-gradient: linear-gradient(180deg, #0a0f2e 0%, #0d1235 60%, #121a48 100%);
-  --card-gradient: linear-gradient(145deg, #141c42, #0f1638);
-  --sim-gradient: linear-gradient(145deg, #06112b, #122968);
+
+  /* Card / hero gradients */
+  --hero-gradient:
+    linear-gradient(180deg, #0a0f2e 0%, #0d1235 60%, #121a48 100%);
+  --card-gradient:
+    linear-gradient(145deg, #141c42, #0f1638);
+
+  /* Section backgrounds — the original deep-navy + brand-blue glow look */
+  --section-bg-landing: #040812;
+  --section-bg-hero:
+    radial-gradient(ellipse 85% 65% at 78% 12%, rgba(27, 85, 224, 0.42) 0%, transparent 52%),
+    radial-gradient(ellipse 55% 45% at 8% 88%, rgba(27, 85, 224, 0.18) 0%, transparent 48%),
+    linear-gradient(165deg, #0c1d52 0%, #0a1538 28%, #070f24 58%, #040812 100%);
+  --section-bg-1:
+    radial-gradient(60% 50% at 15% 18%, rgba(27, 85, 224, 0.28) 0%, transparent 62%),
+    radial-gradient(45% 40% at 85% 82%, rgba(27, 85, 224, 0.18) 0%, transparent 62%),
+    linear-gradient(180deg, #040812 0%, #08122e 50%, #040812 100%);
+  --section-bg-2:
+    radial-gradient(50% 40% at 88% 18%, rgba(27, 85, 224, 0.20) 0%, transparent 60%),
+    radial-gradient(40% 35% at 12% 82%, rgba(27, 85, 224, 0.14) 0%, transparent 60%),
+    linear-gradient(180deg, #040812 0%, #06102a 50%, #040812 100%);
+  --section-bg-glow:
+    radial-gradient(40% 60% at 50% 50%, rgba(27, 85, 224, 0.18) 0%, transparent 65%),
+    linear-gradient(180deg, #040812 0%, #06102a 50%, #040812 100%);
+  --section-bg-footer:
+    radial-gradient(40% 35% at 50% 35%, rgba(27, 85, 224, 0.30) 0%, transparent 65%),
+    radial-gradient(50% 30% at 50% 8%, rgba(120, 70, 255, 0.18) 0%, transparent 60%),
+    linear-gradient(180deg, #040812 0%, #08102a 38%, #040812 100%);
+  --section-bg-faq:
+    radial-gradient(45% 40% at 50% 0%, rgba(27, 85, 224, 0.22) 0%, transparent 60%),
+    radial-gradient(35% 30% at 12% 75%, rgba(27, 85, 224, 0.10) 0%, transparent 65%),
+    radial-gradient(35% 30% at 88% 25%, rgba(120, 70, 255, 0.10) 0%, transparent 65%),
+    linear-gradient(180deg, #040812 0%, #06102a 50%, #040812 100%);
+  --section-bg-testimonials:
+    radial-gradient(40% 50% at 20% 20%, rgba(27, 85, 224, 0.18) 0%, transparent 65%),
+    radial-gradient(40% 50% at 80% 80%, rgba(120, 70, 255, 0.12) 0%, transparent 65%),
+    linear-gradient(180deg, #040812 0%, #06102a 50%, #040812 100%);
+  --faq-grid-color: rgba(120, 150, 255, 0.045);
+
+  /* Nav scroll-progress */
+  --nav-bg-rgb: 10, 15, 46;
+  --nav-tint-rgb: var(--brand-rgb);
+  --nav-shadow-rgb: 0, 0, 0;
+  --nav-inset-rgb: 255, 255, 255;
+
+  /* Legacy alias */
+  --hero-landing-gradient: var(--section-bg-hero);
 }
 
 @theme inline {
   --color-bg: var(--bg);
-  --color-text: var(--text);
+  --color-text: var(--fg);
+  --color-fg: var(--fg);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --color-brand: var(--brand);
   --font-sans: var(--font-lato);
 }
 
 html {
   color-scheme: light dark;
   scroll-behavior: smooth;
+}
+
+html.dark {
+  color-scheme: dark;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -81,13 +223,14 @@ html {
 
 body {
   background: var(--bg);
-  color: var(--text);
+  color: var(--fg);
   font-family: var(--font-lato), system-ui, sans-serif;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 .landing-page {
-  background: #040812;
-  color: var(--text-on-dark);
+  background: var(--section-bg-landing);
+  color: var(--fg);
   overflow-x: clip;
 }
 
@@ -97,55 +240,35 @@ body {
 }
 
 .hero-section {
-  background: var(--hero-landing-gradient);
+  background: var(--section-bg-hero);
 }
 
 .product-showcase {
-  background:
-    radial-gradient(60% 50% at 15% 18%, rgba(27, 85, 224, 0.28) 0%, transparent 62%),
-    radial-gradient(45% 40% at 85% 82%, rgba(27, 85, 224, 0.18) 0%, transparent 62%),
-    linear-gradient(180deg, #040812 0%, #08122e 50%, #040812 100%);
+  background: var(--section-bg-1);
 }
 
 .calculator-hub {
-  background:
-    radial-gradient(55% 45% at 85% 15%, rgba(27, 85, 224, 0.22) 0%, transparent 60%),
-    radial-gradient(45% 40% at 12% 88%, rgba(27, 85, 224, 0.14) 0%, transparent 60%),
-    linear-gradient(180deg, #040812 0%, #06102a 45%, #040812 100%);
+  background: var(--section-bg-2);
 }
 
 .markets-section {
-  background:
-    radial-gradient(50% 40% at 12% 18%, rgba(27, 85, 224, 0.20) 0%, transparent 60%),
-    radial-gradient(40% 35% at 88% 80%, rgba(27, 85, 224, 0.14) 0%, transparent 60%),
-    linear-gradient(180deg, #040812 0%, #06102a 50%, #040812 100%);
+  background: var(--section-bg-1);
 }
 
 .discover-more {
-  background:
-    radial-gradient(50% 40% at 88% 18%, rgba(27, 85, 224, 0.20) 0%, transparent 60%),
-    radial-gradient(40% 35% at 12% 82%, rgba(27, 85, 224, 0.14) 0%, transparent 60%),
-    linear-gradient(180deg, #040812 0%, #06102a 50%, #040812 100%);
+  background: var(--section-bg-2);
 }
 
 .security-section {
-  background:
-    radial-gradient(45% 35% at 18% 18%, rgba(27, 85, 224, 0.20) 0%, transparent 60%),
-    radial-gradient(40% 35% at 85% 78%, rgba(27, 85, 224, 0.14) 0%, transparent 60%),
-    linear-gradient(180deg, #040812 0%, #06102a 50%, #040812 100%);
+  background: var(--section-bg-1);
 }
 
 .social-proof-section {
-  background:
-    radial-gradient(40% 60% at 50% 50%, rgba(27, 85, 224, 0.18) 0%, transparent 65%),
-    linear-gradient(180deg, #040812 0%, #06102a 50%, #040812 100%);
+  background: var(--section-bg-glow);
 }
 
 .footer-globe-bg {
-  background:
-    radial-gradient(40% 35% at 50% 35%, rgba(27, 85, 224, 0.30) 0%, transparent 65%),
-    radial-gradient(50% 30% at 50% 8%, rgba(120, 70, 255, 0.18) 0%, transparent 60%),
-    linear-gradient(180deg, #040812 0%, #08102a 38%, #040812 100%);
+  background: var(--section-bg-footer);
 }
 
 @keyframes footer-orbit-spin {
@@ -199,16 +322,12 @@ body {
 }
 
 .faq-section {
-  background:
-    radial-gradient(45% 40% at 50% 0%, rgba(27, 85, 224, 0.22) 0%, transparent 60%),
-    radial-gradient(35% 30% at 12% 75%, rgba(27, 85, 224, 0.10) 0%, transparent 65%),
-    radial-gradient(35% 30% at 88% 25%, rgba(120, 70, 255, 0.10) 0%, transparent 65%),
-    linear-gradient(180deg, #040812 0%, #06102a 50%, #040812 100%);
+  background: var(--section-bg-faq);
 }
 .faq-grid {
   background-image:
-    linear-gradient(rgba(120, 150, 255, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(120, 150, 255, 0.045) 1px, transparent 1px);
+    linear-gradient(var(--faq-grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--faq-grid-color) 1px, transparent 1px);
   background-size: 56px 56px;
   -webkit-mask-image: radial-gradient(60% 60% at 50% 40%, #000 0%, transparent 75%);
   mask-image: radial-gradient(60% 60% at 50% 40%, #000 0%, transparent 75%);
@@ -232,10 +351,7 @@ body {
 }
 
 .testimonials-section {
-  background:
-    radial-gradient(40% 50% at 20% 20%, rgba(27, 85, 224, 0.18) 0%, transparent 65%),
-    radial-gradient(40% 50% at 80% 80%, rgba(120, 70, 255, 0.12) 0%, transparent 65%),
-    linear-gradient(180deg, #040812 0%, #06102a 50%, #040812 100%);
+  background: var(--section-bg-testimonials);
 }
 @keyframes testimonial-progress {
   from {
@@ -312,6 +428,15 @@ body {
 }
 .market-flash-down {
   animation: market-flash-down 0.9s ease-out;
+}
+
+.market-row:hover,
+.market-row:focus-visible {
+  background: linear-gradient(
+    90deg,
+    rgba(var(--brand-rgb), 0.10),
+    rgba(var(--brand-rgb), 0) 70%
+  );
 }
 
 html.lenis,
@@ -401,12 +526,12 @@ html.lenis body {
   font-weight: 700;
   font-size: 0.9375rem;
   border: 1px solid var(--border);
-  color: var(--text);
+  color: var(--fg);
   background: var(--bg-elevated);
   transition: border-color 0.2s, background 0.2s;
 }
 .btn-outline:hover {
-  border-color: var(--cyan);
+  border-color: var(--brand);
 }
 
 @keyframes ticker {
@@ -453,7 +578,7 @@ html.lenis body {
   bottom: -2px;
   height: 2px;
   width: var(--underline-width, 0);
-  background: var(--cyan);
+  background: var(--brand);
   transition: width 0.25s ease;
 }
 
@@ -489,6 +614,7 @@ html.lenis body {
   }
 }
 
+/* Phone-demo internals (intentionally not theme-aware) */
 .qt-sm-btn,
 .qt-pct-btn {
   border: 1px solid #e0e5f7;
@@ -498,4 +624,19 @@ html.lenis body {
   font-size: 11px;
   font-weight: 600;
   cursor: pointer;
+}
+
+/* `.on-dark-surface` — apply to any container that is intentionally always
+   rendered on a dark background (the calculator simulator, etc.).
+   Semantic tokens are redefined inside the scope so descendant chrome reads
+   correct on-dark alphas regardless of website theme. */
+.on-dark-surface {
+  --fg: #f0f4ff;
+  --fg-muted: rgba(240, 244, 255, 0.65);
+  --fg-subtle: rgba(240, 244, 255, 0.45);
+  --surface: rgba(255, 255, 255, 0.05);
+  --surface-strong: rgba(255, 255, 255, 0.10);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
+  --bg-elevated: rgba(255, 255, 255, 0.05);
 }

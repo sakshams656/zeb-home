@@ -63,8 +63,8 @@ function FaqRow({ item, index, open, onToggle }: RowProps) {
     <li
       className={`faq-card relative overflow-hidden rounded-2xl border backdrop-blur-sm transition-colors ${
         open
-          ? "is-open border-[color:var(--brand)]/40 bg-white/[0.035] shadow-[0_18px_60px_-30px_rgba(27,85,224,0.7)]"
-          : "border-white/[0.07] bg-white/[0.025] hover:border-white/[0.14]"
+          ? "is-open border-[color:var(--brand)]/40 bg-[var(--bg-elevated)] shadow-[0_18px_60px_-30px_rgba(var(--brand-rgb),0.7)]"
+          : "border-[var(--border)] bg-[var(--bg-elevated)] hover:border-[var(--border-strong)]"
       }`}
     >
       <span
@@ -72,7 +72,7 @@ function FaqRow({ item, index, open, onToggle }: RowProps) {
         className="faq-glow-ring pointer-events-none absolute inset-0 rounded-2xl opacity-0"
         style={{
           background:
-            "radial-gradient(60% 100% at 50% 0%, rgba(27, 85, 224, 0.18) 0%, transparent 70%)",
+            "radial-gradient(60% 100% at 50% 0%, rgba(var(--brand-rgb), 0.18) 0%, transparent 70%)",
           opacity: open ? 1 : 0
         }}
       />
@@ -83,12 +83,12 @@ function FaqRow({ item, index, open, onToggle }: RowProps) {
         onClick={onToggle}
         className="relative flex w-full items-center justify-between gap-4 px-5 py-5 text-left sm:px-6 sm:py-6"
       >
-        <span className="text-base font-semibold text-white sm:text-lg">{item.q}</span>
+        <span className="text-base font-semibold text-[var(--fg)] sm:text-lg">{item.q}</span>
         <span
           className={`grid h-9 w-9 shrink-0 place-items-center rounded-full border transition-colors ${
             open
-              ? "border-[color:var(--brand)]/60 bg-[color:var(--brand)]/15 text-white"
-              : "border-white/[0.10] bg-white/[0.04] text-white/75"
+              ? "border-[color:var(--brand)]/60 bg-[color:var(--brand)]/15 text-[var(--brand)]"
+              : "border-[var(--border)] bg-[var(--surface)] text-[var(--fg-muted)]"
           }`}
         >
           <span className="relative block h-3 w-3">
@@ -102,7 +102,7 @@ function FaqRow({ item, index, open, onToggle }: RowProps) {
         className="faq-body relative"
         style={{ height: 0, overflow: "hidden" }}
       >
-        <p className="px-5 pb-5 text-sm leading-relaxed text-white/65 sm:px-6 sm:pb-6">
+        <p className="px-5 pb-5 text-sm leading-relaxed text-[var(--fg-muted)] sm:px-6 sm:pb-6">
           {item.a}
         </p>
       </div>
@@ -201,13 +201,13 @@ export function Faq() {
         className="faq-grid pointer-events-none absolute inset-0"
       />
       <div className="relative mx-auto max-w-[820px] text-center">
-        <span className="faq-eyebrow inline-flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/[0.04] px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-white/75">
+        <span className="faq-eyebrow inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--fg-muted)]">
           <HelpIcon /> FAQ
         </span>
-        <h2 className="faq-heading mt-4 text-[clamp(2.25rem,5vw,3.75rem)] font-black leading-[1.05] text-white">
+        <h2 className="faq-heading mt-4 text-[clamp(2.25rem,5vw,3.75rem)] font-black leading-[1.05] text-[var(--fg)]">
           Frequently Asked Questions
         </h2>
-        <p className="faq-sub mt-3 text-sm text-white/55 sm:text-base">
+        <p className="faq-sub mt-3 text-sm text-[var(--fg-muted)] sm:text-base">
           Quick answers about ZebPay&apos;s products, security and fees.
         </p>
       </div>

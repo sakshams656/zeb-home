@@ -112,16 +112,17 @@ export function MarketIntradayChart({
 
   return (
     <div
-      className="market-intraday-chart border-t border-white/[0.06] bg-[rgba(4,8,18,0.65)] px-6 py-5"
+      className="market-intraday-chart border-t border-[var(--border)] px-6 py-5"
+      style={{ background: "rgba(var(--nav-bg-rgb), 0.45)" }}
       onMouseLeave={() => setHoverIdx(null)}
     >
-      <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">
+      <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--fg-subtle)]">
         {name} intraday trend
       </p>
 
       <div ref={wrapRef} className="relative w-full select-none">
         {loading ? (
-          <div className="h-[200px] w-full animate-pulse rounded-lg bg-white/[0.04]" aria-hidden />
+          <div className="h-[200px] w-full animate-pulse rounded-lg bg-[var(--surface)]" aria-hidden />
         ) : geometry ? (
           <svg
             width={width}
@@ -137,8 +138,8 @@ export function MarketIntradayChart({
           >
             <defs>
               <linearGradient id={gradId} x1="0" x2="0" y1="0" y2="1">
-                <stop offset="0%" stopColor="rgba(27, 85, 224, 0.45)" />
-                <stop offset="100%" stopColor="rgba(27, 85, 224, 0)" />
+                <stop offset="0%" stopColor="rgba(var(--brand-rgb), 0.45)" />
+                <stop offset="100%" stopColor="rgba(var(--brand-rgb), 0)" />
               </linearGradient>
             </defs>
 
@@ -149,13 +150,13 @@ export function MarketIntradayChart({
                   x2={PAD.left + plotW}
                   y1={y}
                   y2={y}
-                  stroke="rgba(255,255,255,0.06)"
+                  stroke="var(--border)"
                   strokeWidth={1}
                 />
                 <text
                   x={PAD.left + plotW + 8}
                   y={y + 4}
-                  fill="rgba(255,255,255,0.35)"
+                  fill="var(--fg-subtle)"
                   fontSize={10}
                   fontFamily="inherit"
                 >
@@ -170,7 +171,7 @@ export function MarketIntradayChart({
                 x={x}
                 y={H - 8}
                 textAnchor="middle"
-                fill="rgba(255,255,255,0.35)"
+                fill="var(--fg-subtle)"
                 fontSize={10}
                 fontFamily="inherit"
               >
@@ -195,7 +196,7 @@ export function MarketIntradayChart({
                   x2={active.x}
                   y1={PAD.top}
                   y2={PAD.top + plotH}
-                  stroke="rgba(255,255,255,0.35)"
+                  stroke="var(--border-strong)"
                   strokeWidth={1}
                   strokeDasharray="4 4"
                 />
@@ -204,11 +205,18 @@ export function MarketIntradayChart({
                   x2={PAD.left + plotW}
                   y1={active.y}
                   y2={active.y}
-                  stroke="rgba(255,255,255,0.35)"
+                  stroke="var(--border-strong)"
                   strokeWidth={1}
                   strokeDasharray="4 4"
                 />
-                <circle cx={active.x} cy={active.y} r={4} fill="var(--brand)" stroke="#fff" strokeWidth={1.5} />
+                <circle
+                  cx={active.x}
+                  cy={active.y}
+                  r={4}
+                  fill="var(--brand)"
+                  stroke="var(--bg-elevated)"
+                  strokeWidth={1.5}
+                />
 
                 <g transform={`translate(${Math.max(PAD.left, active.x - 52)}, ${H - 26})`}>
                   <rect
@@ -217,10 +225,10 @@ export function MarketIntradayChart({
                     width={104}
                     height={20}
                     rx={4}
-                    fill="rgba(12,18,40,0.92)"
-                    stroke="rgba(255,255,255,0.12)"
+                    fill="rgba(var(--nav-bg-rgb), 0.92)"
+                    stroke="var(--border-strong)"
                   />
-                  <text x={52} y={14} textAnchor="middle" fill="rgba(255,255,255,0.85)" fontSize={10}>
+                  <text x={52} y={14} textAnchor="middle" fill="var(--fg)" fontSize={10}>
                     {formatTooltipDate(active.t)}
                   </text>
                 </g>
@@ -232,8 +240,8 @@ export function MarketIntradayChart({
                     width={68}
                     height={22}
                     rx={4}
-                    fill="rgba(27,85,224,0.25)"
-                    stroke="rgba(27,85,224,0.5)"
+                    fill="rgba(var(--brand-rgb), 0.25)"
+                    stroke="rgba(var(--brand-rgb), 0.5)"
                   />
                   <text x={34} y={15} textAnchor="middle" fill="var(--brand)" fontSize={10} fontWeight={700}>
                     {active.p.toLocaleString("en-IN", { maximumFractionDigits: 2 })}
@@ -250,8 +258,8 @@ export function MarketIntradayChart({
                   width={68}
                   height={22}
                   rx={4}
-                  fill="rgba(27,85,224,0.2)"
-                  stroke="rgba(27,85,224,0.45)"
+                  fill="rgba(var(--brand-rgb), 0.2)"
+                  stroke="rgba(var(--brand-rgb), 0.45)"
                 />
                 <text x={34} y={15} textAnchor="middle" fill="var(--brand)" fontSize={10} fontWeight={700}>
                   {active.p.toLocaleString("en-IN", { maximumFractionDigits: 2 })}
@@ -260,7 +268,7 @@ export function MarketIntradayChart({
             ) : null}
           </svg>
         ) : (
-          <p className="py-12 text-center text-xs text-white/40">Chart unavailable</p>
+          <p className="py-12 text-center text-xs text-[var(--fg-subtle)]">Chart unavailable</p>
         )}
       </div>
     </div>

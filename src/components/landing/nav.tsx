@@ -7,6 +7,7 @@ import { gsap, ScrollTrigger, ZEB_EASE, prefersReducedMotion } from "@/lib/gsap"
 import { Logo } from "./logo";
 import { NAV_ALL_GROUPS, NAV_COMPANY, NAV_MENU_GROUPS } from "./nav-config";
 import { NavDropdown } from "./nav-dropdown";
+import { ThemeToggle } from "./theme-toggle";
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://zebpay.com";
 
@@ -39,12 +40,12 @@ export function Nav() {
           left: inset,
           right: inset,
           borderRadius: p * 36,
-          background: `rgba(10,15,46,${p * 0.55})`,
+          background: `rgba(var(--nav-bg-rgb), ${p * 0.55})`,
           backdropFilter: p > 0.02 ? `blur(${p * 28}px) saturate(${100 + p * 80}%)` : "none",
-          border: `1px solid rgba(27,85,224,${p * 0.2})`,
+          border: `1px solid rgba(var(--nav-tint-rgb), ${p * 0.2})`,
           boxShadow:
             p > 0.08
-              ? `0 ${p * 8}px ${p * 32}px rgba(0,0,0,${p * 0.35}), inset 0 1px 0 rgba(255,255,255,${p * 0.08})`
+              ? `0 ${p * 8}px ${p * 32}px rgba(var(--nav-shadow-rgb), ${p * 0.35}), inset 0 1px 0 rgba(var(--nav-inset-rgb), ${p * 0.08})`
               : "none"
         });
       };
@@ -84,7 +85,7 @@ export function Nav() {
         >
           <div className="flex h-[72px] w-full items-center justify-between gap-3 px-4 sm:gap-4 sm:px-6 lg:px-8">
             <Link href="/" className="nav-logo flex shrink-0 items-center">
-              <Logo />
+              <Logo priority />
             </Link>
 
             <ul className="nav-menus hidden flex-1 items-center justify-center gap-0 lg:flex">
@@ -97,12 +98,13 @@ export function Nav() {
               <ul className="hidden lg:flex">
                 <NavDropdown group={NAV_COMPANY} openId={openId} setOpenId={setOpenId} align="right" />
               </ul>
+              <ThemeToggle />
               <a href={`${APP_URL}/signup`} className="btn-primary hidden text-sm sm:inline-flex">
                 Get started
               </a>
               <button
                 type="button"
-                className="flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--border-dark)] text-[var(--text-on-dark)] lg:hidden"
+                className="flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--border)] text-[var(--fg)] lg:hidden"
                 onClick={() => setMenuOpen(true)}
                 aria-label="Open menu"
               >
@@ -114,30 +116,36 @@ export function Nav() {
       </header>
 
       {menuOpen && (
-        <div className="fixed inset-0 z-[60] overflow-y-auto bg-[#040812]/98 backdrop-blur-md lg:hidden">
-          <button
-            type="button"
-            className="absolute right-6 top-6 text-2xl text-[var(--text-on-dark)]"
-            onClick={closeMobile}
-            aria-label="Close menu"
-          >
-            ✕
-          </button>
+        <div
+          className="fixed inset-0 z-[60] overflow-y-auto backdrop-blur-md lg:hidden"
+          style={{ background: "rgba(var(--nav-bg-rgb), 0.98)" }}
+        >
+          <div className="absolute right-6 top-6 flex items-center gap-3">
+            <ThemeToggle />
+            <button
+              type="button"
+              className="text-2xl text-[var(--fg)]"
+              onClick={closeMobile}
+              aria-label="Close menu"
+            >
+              ✕
+            </button>
+          </div>
           <nav className="flex min-h-full flex-col px-6 pb-10 pt-20">
             <div className="flex flex-col gap-2">
               {NAV_ALL_GROUPS.map((group) => {
                 const expanded = mobileGroup === group.id;
                 return (
-                  <div key={group.id} className="mobile-nav-group border-b border-[var(--border-dark)] pb-2">
+                  <div key={group.id} className="mobile-nav-group border-b border-[var(--border)] pb-2">
                     <button
                       type="button"
-                      className="flex w-full items-center justify-between py-4 text-left text-lg font-bold text-[var(--text-on-dark)]"
+                      className="flex w-full items-center justify-between py-4 text-left text-lg font-bold text-[var(--fg)]"
                       aria-expanded={expanded}
                       onClick={() => setMobileGroup(expanded ? null : group.id)}
                     >
                       {group.label}
                       <svg
-                        className="h-5 w-5 shrink-0 text-[var(--text-muted-dark)] transition-transform"
+                        className="h-5 w-5 shrink-0 text-[var(--fg-muted)] transition-transform"
                         viewBox="0 0 16 16"
                         fill="none"
                         aria-hidden
@@ -158,7 +166,7 @@ export function Nav() {
                           <li key={item.label}>
                             <a
                               href={item.href}
-                              className="mobile-nav-link block rounded-lg px-3 py-2.5 text-base text-[var(--text-muted-dark)] hover:bg-white/5 hover:text-[var(--cyan)]"
+                              className="mobile-nav-link block rounded-lg px-3 py-2.5 text-base text-[var(--fg-muted)] hover:bg-[var(--surface)] hover:text-[var(--brand)]"
                               onClick={closeMobile}
                             >
                               {item.label}

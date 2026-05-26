@@ -11,7 +11,7 @@ export function CalcShell({
 }) {
   return (
     <div
-      className="relative overflow-hidden rounded-2xl p-6 text-white"
+      className="on-dark-surface relative overflow-hidden rounded-2xl p-6 text-white"
       style={{ background: "var(--sim-gradient)" }}
     >
       <span className="pointer-events-none absolute -right-12 -top-12 block h-48 w-48 rounded-full bg-[radial-gradient(circle,rgba(0,184,230,0.2),transparent_70%)]" />

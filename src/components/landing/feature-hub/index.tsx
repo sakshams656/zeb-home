@@ -67,12 +67,12 @@ function Chart({ data, id }: { data: number[]; id: string }) {
     <svg viewBox="0 0 400 120" className="mt-2 h-[120px] w-full" preserveAspectRatio="none">
       <defs>
         <linearGradient id={id} x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stopColor="#00B8E6" stopOpacity="0.4" />
-          <stop offset="100%" stopColor="#00B8E6" stopOpacity="0" />
+          <stop offset="0%" stopColor="var(--brand)" stopOpacity="0.4" />
+          <stop offset="100%" stopColor="var(--brand)" stopOpacity="0" />
         </linearGradient>
       </defs>
       <path d={area} fill={`url(#${id})`} />
-      <path d={line} fill="none" stroke="#00B8E6" strokeWidth={2} />
+      <path d={line} fill="none" stroke="var(--brand)" strokeWidth={2} />
     </svg>
   );
 }
@@ -90,7 +90,7 @@ function SpotPanel() {
             key={s}
             type="button"
             onClick={() => setSide(s)}
-            className={`flex-1 rounded-lg py-2 text-sm font-bold capitalize ${side === s ? "bg-[var(--cyan)] text-[var(--navy)]" : "bg-white/10"}`}
+            className={`flex-1 rounded-lg py-2 text-sm font-bold capitalize ${side === s ? "bg-[var(--cyan)] text-[var(--navy)]" : "bg-[var(--surface-strong)]"}`}
           >
             {s}
           </button>
@@ -116,7 +116,7 @@ function FuturesPanel() {
     <CalcShell label="PnL simulator" title="Leveraged futures trade">
       <div className="mb-3 flex gap-2">
         {(["LONG", "SHORT"] as const).map((d) => (
-          <button key={d} type="button" onClick={() => setDir(d)} className={`flex-1 rounded-lg py-2 text-sm font-bold ${dir === d ? (d === "LONG" ? "bg-[var(--cyan)] text-[var(--navy)]" : "bg-[var(--danger)]") : "bg-white/10"}`}>
+          <button key={d} type="button" onClick={() => setDir(d)} className={`flex-1 rounded-lg py-2 text-sm font-bold ${dir === d ? (d === "LONG" ? "bg-[var(--cyan)] text-[var(--navy)]" : "bg-[var(--danger)]") : "bg-[var(--surface-strong)]"}`}>
             {d}
           </button>
         ))}
@@ -140,7 +140,7 @@ function EarnPanel() {
   const r = earnApyCalc({ principal: amt, apyPercent: apy, months: dur });
   return (
     <CalcShell label="APY calculator" title="Projected earnings">
-      <select value={apy} onChange={(e) => setApy(parseFloat(e.target.value))} className="mb-3 w-full rounded-lg border border-white/15 bg-white/10 px-3 py-2 text-sm">
+      <select value={apy} onChange={(e) => setApy(parseFloat(e.target.value))} className="mb-3 w-full rounded-lg border border-white/15 bg-[var(--surface-strong)] px-3 py-2 text-sm">
         <option value={8.5}>USDT — 8.5% APY</option>
         <option value={6}>BTC — 6% APY</option>
         <option value={5}>ETH — 5% APY</option>
@@ -166,7 +166,7 @@ function PacksPanel() {
     <CalcShell label="Pack estimator" title={p.name}>
       <div className="mb-3 grid grid-cols-2 gap-2">
         {(Object.keys(PACKS) as PackId[]).map((k) => (
-          <button key={k} type="button" onClick={() => setPack(k)} className={`rounded-lg border p-2 text-left text-xs font-bold ${pack === k ? "border-[var(--cyan)] bg-white/10" : "border-transparent bg-white/5"}`}>
+          <button key={k} type="button" onClick={() => setPack(k)} className={`rounded-lg border p-2 text-left text-xs font-bold ${pack === k ? "border-[var(--cyan)] bg-[var(--surface-strong)]" : "border-transparent bg-[var(--surface)]"}`}>
             {PACKS[k].name}
             <span className="block text-[var(--success)]">+{PACKS[k].ret}% YTD</span>
           </button>
@@ -238,9 +238,9 @@ function AiPanel() {
   const [sentiment, setSentiment] = useState(72);
   return (
     <CalcShell label="Live preview" title="AI market insights">
-      <p className="mb-4 text-sm text-white/70">Interactive sentiment demo — full analysis in the ZebPay app.</p>
+      <p className="mb-4 text-sm text-[var(--fg-muted)]">Interactive sentiment demo — full analysis in the ZebPay app.</p>
       <RangeField label="BTC sentiment score" value={sentiment} display={`${sentiment}/100`} min={0} max={100} onChange={setSentiment} />
-      <div className="mt-4 h-3 overflow-hidden rounded-full bg-white/10">
+      <div className="mt-4 h-3 overflow-hidden rounded-full bg-[var(--surface-strong)]">
         <div className="h-full rounded-full bg-gradient-to-r from-[var(--danger)] via-[var(--gold)] to-[var(--success)] transition-all" style={{ width: `${sentiment}%` }} />
       </div>
       <p className="mt-4 text-sm font-bold">
@@ -260,7 +260,7 @@ function ApiPanel() {
     <CalcShell label="Developer" title="Trading APIs">
       <div className="mb-3 flex gap-2">
         {(["py", "js", "curl"] as const).map((l) => (
-          <button key={l} type="button" onClick={() => setLang(l)} className={`rounded px-3 py-1 text-xs font-bold uppercase ${lang === l ? "bg-[var(--cyan)] text-[var(--navy)]" : "bg-white/10"}`}>
+          <button key={l} type="button" onClick={() => setLang(l)} className={`rounded px-3 py-1 text-xs font-bold uppercase ${lang === l ? "bg-[var(--cyan)] text-[var(--navy)]" : "bg-[var(--surface-strong)]"}`}>
             {l}
           </button>
         ))}
@@ -284,7 +284,7 @@ function RmsPanel() {
     <CalcShell label="RMS demo" title="Set your safety net">
       <RangeField label="Take-profit" value={tp} display={`+${tp}%`} min={1} max={30} onChange={setTp} />
       <RangeField label="Stop-loss" value={sl} display={`-${sl}%`} min={1} max={20} onChange={setSl} />
-      <div className="relative my-4 h-2 rounded bg-white/10">
+      <div className="relative my-4 h-2 rounded bg-[var(--surface-strong)]">
         <div className="absolute inset-y-0 left-0 rounded bg-gradient-to-r from-[var(--danger)] via-[var(--gold)] to-[var(--success)] transition-all" style={{ width: `${r.progressPercent}%` }} />
       </div>
       <ResultBox>
@@ -304,7 +304,7 @@ function SubAccountsPanel() {
   const { allocations } = subAccountSplitCalc({ totalInr: total, weights: [w1, w2, w3] });
   return (
     <CalcShell label="Capital split" title="Sub account allocator">
-      <p className="mb-3 text-xs text-white/65">Separate trading, earn, and bot wallets with isolated API keys.</p>
+      <p className="mb-3 text-xs text-[var(--fg-muted)]">Separate trading, earn, and bot wallets with isolated API keys.</p>
       <RangeField label="Total capital (₹)" value={total} display={formatInr(total)} min={50000} max={5000000} step={50000} onChange={setTotal} />
       <RangeField label="Trading %" value={w1} display={`${w1}%`} min={10} max={80} onChange={setW1} />
       <RangeField label="Earn %" value={w2} display={`${w2}%`} min={10} max={80} onChange={setW2} />

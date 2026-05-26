@@ -56,8 +56,8 @@ export function CryptoPacks() {
   return (
     <section id="packs" ref={ref} className="scroll-mt-24 bg-[#040812] px-6 py-[120px]">
       <div className="mx-auto max-w-[1200px]">
-        <h2 className="text-[clamp(2rem,4vw,3rem)] font-black text-[var(--text-on-dark)]">Invest in themes, not tickers.</h2>
-        <p className="mt-4 text-xl text-[var(--text-muted-dark)]">4 curated packs built for every kind of investor.</p>
+        <h2 className="text-[clamp(2rem,4vw,3rem)] font-black text-[var(--fg)]">Invest in themes, not tickers.</h2>
+        <p className="mt-4 text-xl text-[var(--fg-muted)]">4 curated packs built for every kind of investor.</p>
 
         <div className="packs-grid mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
           {IDS.map((id) => {
@@ -73,7 +73,7 @@ export function CryptoPacks() {
                   {p.coins.slice(0, 3).map((c) => (
                     <span
                       key={c}
-                      className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#0a0f2e] bg-[var(--surface-dark)] text-xs font-bold"
+                      className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#0a0f2e] bg-[var(--surface)] text-xs font-bold"
                       style={{ color: meta.accent }}
                     >
                       {c[0]}
@@ -81,13 +81,13 @@ export function CryptoPacks() {
                   ))}
                 </div>
                 <div>
-                  <h3 className="text-2xl font-black text-white">{p.name}</h3>
-                  <p className="mt-2 text-sm text-[var(--text-muted-dark)]">Decentralised finance themes</p>
-                  <p className="mt-4 text-sm text-[var(--text-muted-dark)]">{p.coins.length} coins</p>
+                  <h3 className="text-2xl font-black text-[var(--fg)]">{p.name}</h3>
+                  <p className="mt-2 text-sm text-[var(--fg-muted)]">Decentralised finance themes</p>
+                  <p className="mt-4 text-sm text-[var(--fg-muted)]">{p.coins.length} coins</p>
                   <p className="mt-2 inline-block rounded-full px-3 py-1 text-sm font-bold" style={{ color: meta.accent, background: `${meta.accent}22` }}>
                     ↑ {p.ret}% this year
                   </p>
-                  <button type="button" className="mt-6 rounded-full border border-white/20 px-5 py-2 text-sm font-bold text-white hover:border-[var(--cyan)]">
+                  <button type="button" className="mt-6 rounded-full border border-[var(--border)] px-5 py-2 text-sm font-bold text-[var(--fg)] hover:border-[var(--brand)]">
                     Invest →
                   </button>
                 </div>

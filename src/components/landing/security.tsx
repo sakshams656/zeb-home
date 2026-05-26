@@ -84,13 +84,13 @@ function ShieldVisual() {
       >
         <defs>
           <linearGradient id="security-shield-fill" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0%" stopColor="rgba(27,85,224,0.55)" />
-            <stop offset="60%" stopColor="rgba(27,85,224,0.18)" />
+            <stop offset="0%" stopColor="rgba(var(--brand-rgb),0.55)" />
+            <stop offset="60%" stopColor="rgba(var(--brand-rgb),0.18)" />
             <stop offset="100%" stopColor="rgba(27,85,224,0.04)" />
           </linearGradient>
           <radialGradient id="security-core-glow" cx="50%" cy="50%" r="50%">
             <stop offset="0%" stopColor="rgba(27,85,224,0.75)" />
-            <stop offset="100%" stopColor="rgba(27,85,224,0)" />
+            <stop offset="100%" stopColor="rgba(var(--brand-rgb),0)" />
           </radialGradient>
         </defs>
 
@@ -100,7 +100,7 @@ function ShieldVisual() {
             cy={185}
             r={140}
             fill="none"
-            stroke="rgba(27,85,224,0.25)"
+            stroke="rgba(var(--brand-rgb),0.25)"
             strokeWidth={1}
             strokeDasharray="4 8"
           />
@@ -111,7 +111,7 @@ function ShieldVisual() {
             cy={185}
             r={112}
             fill="none"
-            stroke="rgba(255,255,255,0.08)"
+            stroke="var(--border-strong)"
             strokeWidth={1}
             strokeDasharray="2 6"
           />
@@ -133,8 +133,8 @@ function ShieldVisual() {
         <path
           className="shield-facet"
           d="M150 60 L220 95 V175 L150 210 L80 175 V95 Z"
-          fill="rgba(27,85,224,0.10)"
-          stroke="rgba(27,85,224,0.35)"
+          fill="rgba(var(--brand-rgb),0.10)"
+          stroke="rgba(var(--brand-rgb),0.35)"
           strokeWidth={1}
         />
 
@@ -143,8 +143,8 @@ function ShieldVisual() {
           <path
             className="shield-facet"
             d="M150 145 L190 168 V210 L150 232 L110 210 V168 Z"
-            fill="rgba(27,85,224,0.35)"
-            stroke="rgba(27,85,224,0.65)"
+            fill="rgba(var(--brand-rgb),0.35)"
+            stroke="rgba(var(--brand-rgb),0.65)"
             strokeWidth={1}
           />
         </g>
@@ -259,17 +259,26 @@ export function Security() {
           <p className="text-sm font-bold uppercase tracking-widest text-[var(--brand)]">
             Security
           </p>
-          <h2 className="mt-2 text-[clamp(1.75rem,3.5vw,2.75rem)] font-black text-[var(--text-on-dark)]">
+          <h2 className="mt-2 text-[clamp(1.75rem,3.5vw,2.75rem)] font-black text-[var(--fg)]">
             Built like a fortress.
           </h2>
-          <p className="mt-2 text-sm text-white/55 sm:text-base">
+          <p className="mt-2 text-sm text-[var(--fg-muted)] sm:text-base">
             Zero hacks since 2014. FIU-IND registered. ISO 27001. SOC 2 Type II.
           </p>
         </div>
 
-        <div className="mt-10 grid gap-6 overflow-hidden rounded-3xl border border-white/[0.08] bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.015))] p-5 backdrop-blur-sm sm:p-6 lg:grid-cols-[1fr_1.1fr] lg:gap-8 lg:p-8">
+        <div
+          className="mt-10 grid gap-6 overflow-hidden rounded-3xl border border-[var(--border)] p-5 backdrop-blur-sm sm:p-6 lg:grid-cols-[1fr_1.1fr] lg:gap-8 lg:p-8"
+          style={{ background: "var(--surface)" }}
+        >
           <div className="relative flex items-center justify-center">
-            <div className="absolute inset-0 -z-10 rounded-2xl bg-[radial-gradient(60%_50%_at_50%_50%,rgba(27,85,224,0.18)_0%,transparent_70%)]" />
+            <div
+              className="absolute inset-0 -z-10 rounded-2xl"
+              style={{
+                background:
+                  "radial-gradient(60% 50% at 50% 50%, rgba(var(--brand-rgb), 0.18) 0%, transparent 70%)"
+              }}
+            />
             <ShieldVisual />
           </div>
 
@@ -278,29 +287,33 @@ export function Security() {
               {STATS.map((s) => (
                 <div
                   key={s.label}
-                  className="security-stat rounded-xl border border-white/[0.08] bg-white/[0.025] p-4"
+                  className="security-stat rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] p-4"
                 >
                   <p
                     className={`text-2xl font-black tabular-nums sm:text-3xl ${
-                      s.tone === "success" ? "text-[var(--success)]" : "text-white"
+                      s.tone === "success" ? "text-[var(--success)]" : "text-[var(--fg)]"
                     }`}
                   >
                     {s.num}
                   </p>
-                  <p className="mt-1 text-xs text-white/55 sm:text-sm">{s.label}</p>
+                  <p className="mt-1 text-xs text-[var(--fg-muted)] sm:text-sm">{s.label}</p>
                 </div>
               ))}
             </div>
 
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-wider text-white/45">
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-[var(--fg-subtle)]">
                 Compliance &amp; certifications
               </p>
               <div className="mt-2 flex flex-wrap gap-2">
                 {BADGES.map((b) => (
                   <span
                     key={b}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-[rgba(27,85,224,0.35)] bg-[rgba(27,85,224,0.10)] px-2.5 py-1 text-xs font-semibold text-white"
+                    className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold text-[var(--fg)]"
+                    style={{
+                      border: "1px solid rgba(var(--brand-rgb), 0.35)",
+                      background: "rgba(var(--brand-rgb), 0.10)"
+                    }}
                   >
                     <CheckIcon className="h-3 w-3 text-[var(--success)]" />
                     {b}
@@ -311,7 +324,7 @@ export function Security() {
 
             <a
               href="#"
-              className="inline-flex items-center gap-1.5 self-start text-sm font-semibold text-[var(--brand)] transition-colors hover:text-white"
+              className="inline-flex items-center gap-1.5 self-start text-sm font-semibold text-[var(--brand)] transition-colors hover:text-[var(--fg)]"
             >
               View security report
               <span aria-hidden>→</span>
@@ -323,17 +336,27 @@ export function Security() {
           {PILLARS.map((p) => (
             <article
               key={p.title}
-              className="security-pillar group relative overflow-hidden rounded-2xl border border-white/[0.08] bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.015))] p-5 transition hover:border-white/[0.16]"
+              className="security-pillar group relative overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)] p-5 transition hover:border-[var(--border-strong)]"
             >
               <span
                 aria-hidden
-                className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(27,85,224,0.18),rgba(27,85,224,0)_60%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                style={{
+                  background:
+                    "linear-gradient(135deg, rgba(var(--brand-rgb), 0.18), rgba(var(--brand-rgb), 0) 60%)"
+                }}
               />
-              <span className="relative grid h-10 w-10 place-items-center rounded-xl border border-[rgba(27,85,224,0.35)] bg-[rgba(27,85,224,0.16)] text-[var(--brand)]">
+              <span
+                className="relative grid h-10 w-10 place-items-center rounded-xl text-[var(--brand)]"
+                style={{
+                  border: "1px solid rgba(var(--brand-rgb), 0.35)",
+                  background: "rgba(var(--brand-rgb), 0.16)"
+                }}
+              >
                 {p.icon}
               </span>
-              <h3 className="relative mt-3 text-base font-bold text-white">{p.title}</h3>
-              <p className="relative mt-1.5 text-sm text-white/60">{p.body}</p>
+              <h3 className="relative mt-3 text-base font-bold text-[var(--fg)]">{p.title}</h3>
+              <p className="relative mt-1.5 text-sm text-[var(--fg-muted)]">{p.body}</p>
             </article>
           ))}
         </div>
