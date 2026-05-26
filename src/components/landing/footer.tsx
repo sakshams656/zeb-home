@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, type ReactNode } from "react";
+import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
+import { useTheme } from "@/context/theme-context";
 import { gsap, ScrollTrigger, ZEB_EASE, prefersReducedMotion } from "@/lib/gsap";
 import { Logo } from "./logo";
 
@@ -29,228 +30,23 @@ const COLS = [
 
 const BADGES = ["FIU-IND registered", "ISO 27001", "SOC 2 Type II"];
 
-type CoinKey = "BTC" | "ETH" | "SOL" | "USDT" | "DOGE" | "BAT";
+function FooterGlobe() {
+  const { isDark } = useTheme();
+  const src = isDark
+    ? "/footer/zebpay-hero-globe-dark.gif"
+    : "/footer/zebpay-hero-globe-light.gif";
 
-function BtcGlyph() {
   return (
-    <svg viewBox="0 0 24 24" width="60%" height="60%" aria-hidden>
-      <text
-        x="12"
-        y="17.5"
-        textAnchor="middle"
-        fontFamily="inherit"
-        fontWeight="900"
-        fontSize="18"
-        fill="white"
-      >
-        ₿
-      </text>
-    </svg>
-  );
-}
-function EthGlyph() {
-  return (
-    <svg viewBox="0 0 24 24" width="55%" height="55%" aria-hidden fill="white">
-      <path d="M12 2L5.5 12.3L12 16l6.5-3.7L12 2z" opacity={0.92} />
-      <path d="M12 17.3L5.5 13.5L12 22l6.5-8.5L12 17.3z" opacity={0.7} />
-    </svg>
-  );
-}
-function SolGlyph() {
-  return (
-    <svg viewBox="0 0 24 24" width="62%" height="62%" aria-hidden fill="white">
-      <path d="M5.5 16.5l2-2h11l-2 2h-11zM5.5 12l2-2h11l-2 2h-11zM5.5 7.5l2-2h11l-2 2h-11z" />
-    </svg>
-  );
-}
-function UsdtGlyph() {
-  return (
-    <svg viewBox="0 0 24 24" width="65%" height="65%" aria-hidden>
-      <text
-        x="12"
-        y="17"
-        textAnchor="middle"
-        fontFamily="inherit"
-        fontWeight="900"
-        fontSize="14"
-        fill="white"
-      >
-        ₮
-      </text>
-    </svg>
-  );
-}
-function DogeGlyph() {
-  return (
-    <svg viewBox="0 0 24 24" width="65%" height="65%" aria-hidden>
-      <text
-        x="12"
-        y="17.5"
-        textAnchor="middle"
-        fontFamily="inherit"
-        fontWeight="900"
-        fontSize="16"
-        fill="white"
-      >
-        Ð
-      </text>
-    </svg>
-  );
-}
-function BatGlyph() {
-  return (
-    <svg viewBox="0 0 24 24" width="60%" height="60%" aria-hidden fill="white">
-      <path d="M12 4L20 19H4L12 4z" opacity={0.9} />
-      <path d="M12 9L16 17H8L12 9z" fill="rgba(0,0,0,0.35)" />
-    </svg>
-  );
-}
-
-const COIN_STYLE: Record<CoinKey, { color: string; glyph: ReactNode }> = {
-  BTC: { color: "#f7931a", glyph: <BtcGlyph /> },
-  ETH: { color: "#627eea", glyph: <EthGlyph /> },
-  SOL: { color: "#9945ff", glyph: <SolGlyph /> },
-  USDT: { color: "#26a17b", glyph: <UsdtGlyph /> },
-  DOGE: { color: "#c2a633", glyph: <DogeGlyph /> },
-  BAT: { color: "#ff5000", glyph: <BatGlyph /> }
-};
-
-type CoinSlot = { coin: CoinKey; size: number; top: string; left: string };
-const COIN_SLOTS: CoinSlot[] = [
-  { coin: "BTC", size: 72, top: "8%", left: "62%" },
-  { coin: "ETH", size: 60, top: "20%", left: "14%" },
-  { coin: "SOL", size: 54, top: "58%", left: "4%" },
-  { coin: "USDT", size: 64, top: "70%", left: "80%" },
-  { coin: "DOGE", size: 48, top: "78%", left: "38%" },
-  { coin: "BAT", size: 52, top: "30%", left: "88%" }
-];
-
-function CoinDisc({ coin, size, top, left }: CoinSlot) {
-  const { color, glyph } = COIN_STYLE[coin];
-  return (
-    <span
-      className="coin-orb absolute grid place-items-center rounded-full"
-      style={{
-        width: size,
-        height: size,
-        top,
-        left,
-        background: `radial-gradient(circle at 30% 30%, rgba(255,255,255,0.85) 0%, ${color} 35%, #0a0f2e 100%)`,
-        boxShadow: `0 12px 36px ${color}55, inset 0 -6px 18px rgba(0,0,0,0.35)`,
-        border: `1px solid ${color}80`
-      }}
-      aria-label={coin}
-    >
-      {glyph}
-    </span>
-  );
-}
-
-function GlobeScene() {
-  return (
-    <div className="relative mx-auto aspect-square w-full max-w-[280px] sm:max-w-[460px]">
-      <svg
-        viewBox="0 0 480 480"
-        className="absolute inset-0 h-full w-full"
-        aria-hidden
-      >
-        <defs>
-          <radialGradient id="globe-fill" cx="38%" cy="32%" r="68%">
-            <stop offset="0%" stopColor="#1a3580" />
-            <stop offset="55%" stopColor="#0a1a4e" />
-            <stop offset="100%" stopColor="#040812" />
-          </radialGradient>
-          <radialGradient id="globe-halo" cx="50%" cy="50%" r="50%">
-            <stop offset="60%" stopColor="rgba(var(--brand-rgb),0)" />
-            <stop offset="80%" stopColor="rgba(var(--brand-rgb),0.18)" />
-            <stop offset="100%" stopColor="rgba(var(--brand-rgb),0)" />
-          </radialGradient>
-          <linearGradient id="streak-grad" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0%" stopColor="rgba(var(--brand-rgb),0)" />
-            <stop offset="50%" stopColor="rgba(80,150,255,0.85)" />
-            <stop offset="100%" stopColor="rgba(80,150,255,0)" />
-          </linearGradient>
-        </defs>
-
-        <circle cx={240} cy={240} r={220} fill="url(#globe-halo)" />
-        <circle cx={240} cy={240} r={160} fill="url(#globe-fill)" />
-        <circle
-          cx={240}
-          cy={240}
-          r={160}
-          fill="none"
-          stroke="rgba(80,140,255,0.35)"
-          strokeWidth={1}
-        />
-
-        <g
-          className="footer-globe-rotate"
-          style={{ transformOrigin: "240px 240px" }}
-          stroke="rgba(80,140,255,0.40)"
-          strokeWidth={1}
-          fill="none"
-        >
-          <ellipse cx={240} cy={240} rx={160} ry={50} />
-          <ellipse cx={240} cy={240} rx={160} ry={95} />
-          <ellipse cx={240} cy={240} rx={160} ry={140} />
-          <ellipse cx={240} cy={240} rx={50} ry={160} />
-          <ellipse cx={240} cy={240} rx={95} ry={160} />
-          <ellipse cx={240} cy={240} rx={140} ry={160} />
-        </g>
-
-        <g>
-          {[-100, -60, -25, 15, 55, 95].map((dx, i) => (
-            <rect
-              key={i}
-              x={240 + dx - 1.5}
-              y={120}
-              width={3}
-              height={120}
-              rx={1.5}
-              fill="url(#streak-grad)"
-              className="footer-streak"
-              style={{ animationDelay: `${i * 0.35}s` }}
-            />
-          ))}
-        </g>
-
-        <g fill="rgba(180,210,255,0.9)">
-          {[
-            { cx: 80, cy: 96, r: 3 },
-            { cx: 420, cy: 110, r: 2.5 },
-            { cx: 60, cy: 320, r: 2 },
-            { cx: 430, cy: 360, r: 3 },
-            { cx: 180, cy: 50, r: 2 },
-            { cx: 350, cy: 430, r: 2.5 }
-          ].map((s, i) => (
-            <g
-              key={i}
-              className="footer-star"
-              style={{
-                animationDelay: `${i * 0.4}s`,
-                transformOrigin: `${s.cx}px ${s.cy}px`
-              }}
-            >
-              <circle cx={s.cx} cy={s.cy} r={s.r} />
-              <path
-                d={`M${s.cx} ${s.cy - s.r * 2.5} L${s.cx + 0.6} ${s.cy} L${s.cx} ${s.cy + s.r * 2.5} L${s.cx - 0.6} ${s.cy} Z`}
-                opacity={0.85}
-              />
-              <path
-                d={`M${s.cx - s.r * 2.5} ${s.cy} L${s.cx} ${s.cy + 0.6} L${s.cx + s.r * 2.5} ${s.cy} L${s.cx} ${s.cy - 0.6} Z`}
-                opacity={0.85}
-              />
-            </g>
-          ))}
-        </g>
-      </svg>
-
-      <div className="absolute inset-0">
-        {COIN_SLOTS.map((slot) => (
-          <CoinDisc key={slot.coin} {...slot} />
-        ))}
-      </div>
-    </div>
+    // eslint-disable-next-line @next/next/no-img-element -- animated GIF
+    <img
+      src={src}
+      alt=""
+      width={800}
+      height={480}
+      className="mx-auto h-auto w-full max-w-[800px]"
+      decoding="async"
+      aria-hidden
+    />
   );
 }
 
@@ -314,18 +110,6 @@ export function Footer() {
         }
       );
 
-      const orbs = root.querySelectorAll(".coin-orb");
-      orbs.forEach((el, i) => {
-        gsap.to(el, {
-          y: -10,
-          duration: 2.6 + i * 0.2,
-          yoyo: true,
-          repeat: -1,
-          ease: "sine.inOut",
-          delay: i * 0.15
-        });
-      });
-
       ScrollTrigger.create({
         start: "top -300",
         onEnter: () =>
@@ -358,8 +142,8 @@ export function Footer() {
           <a href={`${APP_URL}/signup`} className="btn-primary mt-6">
             Get started →
           </a>
-          <div className="relative mt-6 w-full max-w-[520px] sm:mt-8">
-            <GlobeScene />
+          <div className="relative mt-6 w-full max-w-[800px] sm:mt-8">
+            <FooterGlobe />
           </div>
         </div>
 
