@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import "lenis/dist/lenis.css";
-import { CookieConsent } from "@/components/cookie-consent";
 import { destroyLenis, initLenis } from "@/lib/lenis";
 import { prefersReducedMotion } from "@/lib/gsap";
 import { ThemeProvider } from "@/context/theme-context";
