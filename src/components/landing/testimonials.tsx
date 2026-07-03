@@ -75,6 +75,7 @@ export function Testimonials() {
   useEffect(() => {
     if (prefersReducedMotion()) return;
     const id = window.setTimeout(() => {
+      if (document.activeElement?.closest(".testimonials-section")) return;
       goTo((indexRef.current + 1) % ITEMS.length);
     }, SLIDE_MS);
     return () => window.clearTimeout(id);
@@ -105,12 +106,12 @@ export function Testimonials() {
           Loved by traders
         </span>
 
-        <div ref={contentRef} className="testimonial-content mt-6">
+        <div ref={contentRef} className="testimonial-content mt-6" aria-live="polite">
           <blockquote className="text-[clamp(1.25rem,2.6vw,1.9rem)] font-normal italic leading-relaxed text-[var(--fg)]">
             &ldquo;{t.quote}&rdquo;
           </blockquote>
           <footer className="mt-6 flex items-center justify-center gap-3">
-            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--brand)] text-sm font-bold text-white">
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--brand-tint)] text-sm font-bold text-[var(--brand)]">
               {t.name
                 .split(" ")
                 .map((w) => w[0])
@@ -138,7 +139,7 @@ export function Testimonials() {
               <span
                 className={`block h-2 rounded-full transition-all ${
                   i === index
-                    ? "w-6 bg-[var(--brand)]"
+                    ? "w-6 bg-[var(--accent)]"
                     : "w-2 bg-[var(--surface-strong)] hover:bg-[var(--border-strong)]"
                 }`}
                 aria-hidden

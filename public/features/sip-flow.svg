@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="400" viewBox="0 0 640 400" fill="none">
+  <path d="M80 300 L160 260 L240 270 L320 210 L400 230 L480 170 L560 190" stroke="#1b55e0" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M80 300 L560 300" stroke="#d4dce8" stroke-width="1"/>
+  <rect x="80" y="48" width="480" height="120" rx="16" fill="none" stroke="#d4dce8" stroke-width="2"/>
+  <text x="120" y="88" font-family="system-ui,sans-serif" font-size="13" font-weight="700" fill="#5c6578">2018</text>
+  <text x="120" y="120" font-family="system-ui,sans-serif" font-size="20" font-weight="800" fill="#0a0f2e">$3,800</text>
+  <text x="400" y="88" font-family="system-ui,sans-serif" font-size="13" font-weight="700" fill="#5c6578">2025</text>
+  <text x="400" y="120" font-family="system-ui,sans-serif" font-size="20" font-weight="800" fill="#f0b84c">$100,000+</text>
+  <rect x="80" y="320" width="480" height="48" rx="12" fill="none"/>
+  <text x="320" y="350" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14" font-weight="700" fill="#1b55e0">Rupee cost averaging smooths volatility</text>
+</svg>

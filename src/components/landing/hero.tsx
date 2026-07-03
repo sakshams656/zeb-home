@@ -9,6 +9,26 @@ import { LINKS } from "@/lib/links";
 
 type Dot = { x: number; y: number; vx: number; vy: number };
 
+const COMPLIANCE_TAGS = ["FIU-IND Registered", "ISO 27001:2022"] as const;
+
+function CheckIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      width={12}
+      height={12}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M20 6L9 17l-5-5" />
+    </svg>
+  );
+}
 function TrustBadge() {
   return (
     <svg width={18} height={18} viewBox="0 0 24 24" fill="none" aria-hidden className="shrink-0 text-[var(--brand)]">
@@ -141,7 +161,7 @@ export function Hero() {
       const root = contentRef.current;
       if (prefersReducedMotion() || !root) return;
 
-      gsap.set([".hero-trust", ".hero-h1-line", ".hero-h1-accent", ".hero-cta", ".hero-phone"], {
+      gsap.set([".hero-trust", ".hero-tags", ".hero-h1-line", ".hero-h1-accent", ".hero-cta", ".hero-phone"], {
         opacity: 0,
         y: 28
       });
@@ -149,6 +169,7 @@ export function Hero() {
       const tl = gsap.timeline({ defaults: { ease: ZEB_EASE } });
 
       tl.to(".hero-trust", { opacity: 1, y: 0, duration: 0.45 }, 0);
+      tl.to(".hero-tags", { opacity: 1, y: 0, duration: 0.45 }, 0.12);
       tl.to(".hero-h1-line", { opacity: 1, y: 0, duration: 0.55 }, 0.08);
       tl.to(".hero-h1-accent", { opacity: 1, y: 0, duration: 0.55 }, 0.16);
       tl.to(".hero-cta", { opacity: 1, y: 0, duration: 0.5 }, 0.28);
@@ -178,15 +199,26 @@ export function Hero() {
 
             <h1 className="mt-6 font-black leading-[1.06] tracking-tight">
               <span className="hero-h1-line block text-[clamp(2rem,7vw,4.6rem)] text-[var(--fg)]">
-                India&apos;s Oldest and Most Trusted
+                India&apos;s Most Trusted
               </span>
-              <span className="hero-h1-accent mt-1 block text-[clamp(1.75rem,6vw,4.5rem)] text-[var(--brand)]">
+              <span className="hero-h1-accent mt-1 block text-[clamp(1.75rem,6vw,4.5rem)] text-[var(--accent)]">
                 Crypto Trading Platform
               </span>
             </h1>
 
-            <a href={LINKS.getStarted} className="hero-cta btn-hero-primary mt-10">
-              Get started
+            <ul className="hero-tags mt-6 flex flex-wrap gap-2" aria-label="Compliance certifications">
+              {COMPLIANCE_TAGS.map((tag) => (
+                <li key={tag}>
+                  <span className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-[var(--brand-tint-border)] bg-[var(--brand-tint)] px-3 py-1.5 text-xs font-semibold text-[var(--fg)] sm:text-sm">
+                    <CheckIcon className="shrink-0 text-[var(--success)]" />
+                    {tag}
+                  </span>
+                </li>
+              ))}
+            </ul>
+
+            <a href={LINKS.createAccount} className="hero-cta btn-hero-primary mt-8">
+              Create account
               <span className="text-[1.15em] leading-none" aria-hidden>
                 →
               </span>

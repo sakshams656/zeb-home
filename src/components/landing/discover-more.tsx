@@ -89,7 +89,7 @@ function EventFeatured({
 
   const content = (
     <div className="flex h-full flex-col justify-center gap-3 border-l-4 border-[var(--brand)] bg-[var(--bg-elevated)] p-6 sm:gap-4 sm:p-8 lg:p-10">
-      <p className="text-xs font-bold uppercase tracking-widest text-[var(--brand)]">
+      <p className="text-xs font-bold uppercase tracking-widest text-[var(--fg-subtle)]">
         Event
       </p>
       <h3 className="text-xl font-black leading-tight text-[var(--fg)] sm:text-2xl lg:text-3xl">
@@ -335,7 +335,7 @@ export function DiscoverMore({ section }: DiscoverMoreProps) {
       <div className="mx-auto max-w-[1200px]">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-sm font-bold uppercase tracking-widest text-[var(--brand)]">
+            <p className="text-sm font-bold uppercase tracking-widest text-[var(--fg-subtle)]">
               {sectionTitle}
             </p>
             <h2 className="mt-2 text-[clamp(1.75rem,3.5vw,2.75rem)] font-black text-[var(--fg)]">
@@ -356,7 +356,7 @@ export function DiscoverMore({ section }: DiscoverMoreProps) {
                   aria-pressed={active}
                   className={`min-h-11 rounded-full px-4 py-2.5 text-sm font-semibold transition ${
                     active
-                      ? "bg-[var(--brand)] text-white shadow-[0_4px_16px_rgba(var(--brand-rgb),0.35)]"
+                      ? "bg-[var(--accent)] text-[var(--accent-text)] shadow-[0_4px_16px_rgba(var(--accent-rgb),0.35)]"
                       : "text-[var(--fg-muted)] hover:text-[var(--fg)]"
                   }`}
                 >
@@ -369,10 +369,9 @@ export function DiscoverMore({ section }: DiscoverMoreProps) {
 
         <div className="mt-8 grid gap-5 lg:grid-cols-[1.6fr_1fr] lg:gap-7">
           <div
-            className={`discover-feature relative overflow-hidden rounded-3xl border border-[var(--border)] backdrop-blur-sm ${
+            className={`discover-feature relative overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface)] ${
               isEventTab ? "min-h-[360px] lg:min-h-[400px]" : "aspect-video"
             }`}
-            style={{ background: "var(--surface)" }}
           >
             {isEventTab && activeItem ? (
               <EventFeatured
@@ -406,7 +405,7 @@ export function DiscoverMore({ section }: DiscoverMoreProps) {
                     }}
                   />
                   <span className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.1)_35%,rgba(0,0,0,0.55)_70%,rgba(0,0,0,0.88)_100%)]" />
-                  <span className="absolute left-1/2 top-1/2 grid h-16 w-16 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-[var(--brand)] text-white shadow-[0_10px_40px_rgba(var(--brand-rgb),0.55)] transition-transform group-hover:scale-110 sm:h-20 sm:w-20">
+                  <span className="absolute left-1/2 top-1/2 grid h-16 w-16 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-[var(--accent)] text-[var(--accent-text)] shadow-[0_10px_40px_rgba(var(--accent-rgb),0.55)] transition-transform group-hover:scale-110 sm:h-20 sm:w-20">
                     <PlayIcon className="h-7 w-7 translate-x-0.5 sm:h-8 sm:w-8" />
                   </span>
                   <span className="absolute bottom-0 left-0 right-0 flex items-end justify-between gap-4 p-5 text-left sm:p-6">
@@ -447,7 +446,7 @@ export function DiscoverMore({ section }: DiscoverMoreProps) {
                         {featuredSubtitle}
                       </span>
                     ) : null}
-                    <span className="mt-4 inline-flex rounded-full bg-[var(--brand)] px-4 py-2 text-xs font-bold text-white">
+                    <span className="mt-4 inline-flex rounded-full bg-[var(--accent)] px-4 py-2 text-xs font-bold text-[var(--accent-text)]">
                       {activeGroup.source === "blogs" ? "Read article" : "View details"}
                     </span>
                   </span>
@@ -475,10 +474,7 @@ export function DiscoverMore({ section }: DiscoverMoreProps) {
             ) : null}
           </div>
 
-          <div
-            className="flex max-h-[min(520px,65vh)] flex-col rounded-3xl border border-[var(--border)] p-3 backdrop-blur-sm sm:p-4"
-            style={{ background: "var(--surface)" }}
-          >
+          <div className="flex max-h-[min(520px,65vh)] flex-col rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-3 sm:p-4">
             <div className="flex shrink-0 items-center justify-between px-1 pb-2 text-[11px] font-semibold uppercase tracking-wider text-[var(--fg-subtle)]">
               <span>{activeGroup.title}</span>
               <span>

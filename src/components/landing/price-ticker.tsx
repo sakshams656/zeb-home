@@ -15,12 +15,14 @@ type TickerCoin = {
 
 const FALLBACK: TickerCoin[] = TICKER_COINS;
 
-function CoinChip({ sym, price, ch, image }: TickerCoin) {
+function CoinChip({ sym, price, ch, image, duplicate }: TickerCoin & { duplicate?: boolean }) {
   const positive = ch >= 0;
   return (
     <a
       href={exchangePairUrl(sym)}
-      aria-label={`Trade ${sym} on ZebPay`}
+      aria-label={duplicate ? undefined : `Trade ${sym} on ZebPay`}
+      aria-hidden={duplicate || undefined}
+      tabIndex={duplicate ? -1 : undefined}
       className="ticker-chip inline-flex shrink-0 items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-4 py-2 text-sm font-semibold tabular-nums transition-colors hover:border-[var(--brand)] hover:bg-[var(--surface-strong)] focus-visible:border-[var(--brand)] focus-visible:outline-none"
     >
       {image ? (
@@ -36,8 +38,7 @@ function CoinChip({ sym, price, ch, image }: TickerCoin) {
       ) : (
         <span
           aria-hidden
-          className="grid h-6 w-6 place-items-center rounded-full text-[10px] font-black text-white"
-          style={{ background: "rgba(var(--brand-rgb), 0.9)" }}
+          className="grid h-6 w-6 place-items-center rounded-full bg-[var(--brand-tint)] text-[10px] font-black text-[var(--brand)]"
         >
           {sym[0]}
         </span>
@@ -112,7 +113,7 @@ export function PriceTicker() {
     >
       <div className="ticker-row flex w-max gap-4">
         {items.map((c, i) => (
-          <CoinChip key={`${c.sym}-${i}`} {...c} />
+          <CoinChip key={`${c.sym}-${i}`} {...c} duplicate={i >= coins.length} />
         ))}
       </div>
     </div>

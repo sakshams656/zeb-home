@@ -6,6 +6,7 @@ import { useGSAP } from "@gsap/react";
 import { useTheme } from "@/context/theme-context";
 import { gsap, ScrollTrigger, ZEB_EASE, prefersReducedMotion } from "@/lib/gsap";
 import { LINKS, converterUrl } from "@/lib/links";
+import { ROUTES } from "@/lib/routes";
 import { Logo } from "./logo";
 
 // Items with `href: "#"` are awaiting real URLs. Replace `#` with the
@@ -14,6 +15,8 @@ const COLS = [
   {
     title: "Product",
     links: [
+      { label: "Markets", href: ROUTES.markets },
+      { label: "Calculators", href: ROUTES.calculators },
       { label: "Spot", href: LINKS.exchange },
       { label: "Futures", href: LINKS.futures },
       { label: "SIP", href: LINKS.sip },
@@ -36,6 +39,7 @@ const COLS = [
     links: [
       { label: "About", href: LINKS.about },
       { label: "Blog", href: LINKS.blog },
+      { label: "Events", href: ROUTES.events },
       { label: "Careers", href: LINKS.careers },
       { label: "Mission & vision", href: LINKS.missionVision }
     ]
@@ -68,6 +72,7 @@ function FooterGlobe() {
       height={480}
       className="mx-auto h-auto w-full max-w-[800px]"
       decoding="async"
+      loading="lazy"
       aria-hidden
     />
   );
@@ -80,7 +85,7 @@ function SocialIcon({ d, label, href }: { d: string; label: string; href: string
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}
-      className="grid h-11 w-11 place-items-center rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--fg-muted)] transition hover:border-transparent hover:bg-[var(--brand)] hover:text-white"
+      className="grid h-11 w-11 place-items-center rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--fg-muted)] transition hover:border-transparent hover:bg-[var(--accent)] hover:text-[var(--accent-text)]"
     >
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
         <path d={d} />
@@ -109,6 +114,7 @@ function CheckIcon() {
 
 export function Footer() {
   const ref = useRef<HTMLElement>(null);
+  const backTopRef = useRef<HTMLButtonElement>(null);
 
   useGSAP(
     () => {
@@ -135,10 +141,14 @@ export function Footer() {
 
       ScrollTrigger.create({
         start: "top -300",
-        onEnter: () =>
-          gsap.to(".back-to-top", { opacity: 1, y: 0, duration: 0.3 }),
-        onLeaveBack: () =>
-          gsap.to(".back-to-top", { opacity: 0, y: 20, duration: 0.3 })
+        onEnter: () => {
+          gsap.to(".back-to-top", { opacity: 1, y: 0, duration: 0.3 });
+          backTopRef.current?.setAttribute("tabindex", "0");
+        },
+        onLeaveBack: () => {
+          gsap.to(".back-to-top", { opacity: 0, y: 20, duration: 0.3 });
+          backTopRef.current?.setAttribute("tabindex", "-1");
+        }
       });
     },
     { scope: ref }
@@ -153,7 +163,7 @@ export function Footer() {
         className="footer-globe-bg relative overflow-hidden text-[var(--fg)]"
       >
         <div className="container-zeb flex flex-col items-center pt-20 text-center">
-          <p className="text-sm font-bold uppercase tracking-widest text-[var(--brand)]">
+          <p className="text-sm font-bold uppercase tracking-widest text-[var(--fg-subtle)]">
             Start trading
           </p>
           <h2 className="mt-2 text-[clamp(2rem,4vw,3.25rem)] font-black text-[var(--fg)]">
@@ -257,8 +267,10 @@ export function Footer() {
       </footer>
 
       <button
+        ref={backTopRef}
         type="button"
-        className="back-to-top fixed bottom-6 right-6 z-40 inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--brand)] px-5 py-2.5 text-sm font-bold text-white opacity-0 shadow-lg"
+        tabIndex={-1}
+        className="back-to-top fixed bottom-6 right-6 z-40 inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--accent)] px-5 py-2.5 text-sm font-bold text-[var(--accent-text)] opacity-0 shadow-lg"
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         aria-label="Back to top"
       >

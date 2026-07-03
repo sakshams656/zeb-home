@@ -12,6 +12,7 @@ import {
   parseAnnouncementCards
 } from "@/lib/home-screen-layout";
 import { gsap, ZEB_EASE, prefersReducedMotion } from "@/lib/gsap";
+import { Section } from "@/components/ui/section";
 
 type AnnouncementsProps = {
   section: HomeScreenBodySection | null;
@@ -107,25 +108,22 @@ export function Announcements({ section }: AnnouncementsProps) {
   );
 
   return (
-    <section
+    <Section
       ref={ref}
-      className="announcements-section scroll-mt-24 px-6 py-12 lg:py-16"
-      style={{ background: "var(--section-bg-1)" }}
+      className="announcements-section"
       aria-labelledby="announcements-heading"
     >
-      <div className="mx-auto max-w-[1200px]">
-        <h2
-          id="announcements-heading"
-          className="text-xs font-bold uppercase tracking-widest text-[var(--brand)]"
-        >
-          {heading}
-        </h2>
-        <div className="mt-5 flex gap-5 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {cards.map((card, i) => (
-            <AnnouncementItem key={`${card.title}-${i}`} card={card} />
-          ))}
-        </div>
+      <h2
+        id="announcements-heading"
+        className="text-xs font-bold uppercase tracking-widest text-[var(--fg-subtle)]"
+      >
+        {heading}
+      </h2>
+      <div className="mt-5 flex gap-5 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {cards.map((card, i) => (
+          <AnnouncementItem key={`${card.title}-${i}`} card={card} />
+        ))}
       </div>
-    </section>
+    </Section>
   );
 }

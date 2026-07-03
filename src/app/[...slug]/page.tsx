@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Nav } from "@/components/landing/nav";
+import { CmsContent } from "@/components/cms/cms-content";
 import { Footer } from "@/components/landing/footer";
 import { getAllPageSlugs, getPageBySlug, isWordPressConfigured } from "@/lib/wordpress";
 
@@ -47,10 +48,7 @@ export default async function CmsPage({ params }: Props) {
       <main className="container-zeb py-16">
         <article>
           <h1 className="mb-6 text-3xl font-black text-[var(--text)]">{page.title}</h1>
-          <div
-            className="prose prose-slate max-w-none dark:prose-invert prose-headings:text-[var(--text)] prose-a:text-[var(--cyan)]"
-            dangerouslySetInnerHTML={{ __html: page.content }}
-          />
+          <CmsContent html={page.content} className="max-w-none" />
         </article>
       </main>
       <Footer />

@@ -1,4 +1,4 @@
-import type { ElementType, ReactNode } from "react";
+import { forwardRef, type ElementType, type ReactNode } from "react";
 
 /**
  * Canonical section wrapper for the landing page.
@@ -40,21 +40,29 @@ export interface SectionProps {
   "aria-labelledby"?: string;
 }
 
-export function Section({
-  children,
-  variant = "standard",
-  className = "",
-  innerClassName = "",
-  as,
-  id,
-  ...aria
-}: SectionProps) {
+export const Section = forwardRef<HTMLElement, SectionProps>(function Section(
+  {
+    children,
+    variant = "standard",
+    className = "",
+    innerClassName = "",
+    as,
+    id,
+    ...aria
+  },
+  ref
+) {
   const Tag = (as ?? "section") as ElementType;
   return (
-    <Tag id={id} className={`scroll-mt-24 ${VARIANT_PADDING[variant]} ${className}`.trim()} {...aria}>
+    <Tag
+      ref={ref}
+      id={id}
+      className={`scroll-mt-24 ${VARIANT_PADDING[variant]} ${className}`.trim()}
+      {...aria}
+    >
       <div className={`mx-auto w-full max-w-[1200px] ${innerClassName}`.trim()}>{children}</div>
     </Tag>
   );
-}
+});
 
 export { VARIANT_PADDING as SECTION_PADDING_BY_VARIANT };

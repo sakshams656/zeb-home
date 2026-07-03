@@ -241,7 +241,6 @@ export function Markets() {
   }, []);
 
   useEffect(() => {
-    if (!activeCoin?.cgId) return;
     void loadChart(activeCoin.cgId);
   }, [activeCoin?.cgId, loadChart]);
 
@@ -346,7 +345,7 @@ export function Markets() {
       <div className="mx-auto max-w-[1200px]">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-sm font-bold uppercase tracking-widest text-[var(--brand)]">Markets</p>
+            <p className="text-sm font-bold uppercase tracking-widest text-[var(--fg-subtle)]">Markets</p>
             <h2 className="mt-2 text-[clamp(2rem,4vw,3rem)] font-black text-[var(--fg)]">
               What&apos;s moving today
             </h2>
@@ -363,9 +362,9 @@ export function Markets() {
                   type="button"
                   onClick={() => setTab(t.id)}
                   aria-pressed={active}
-                  className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
+                  className={`min-h-11 rounded-full px-4 py-2 text-sm font-semibold transition ${
                     active
-                      ? "bg-[var(--brand)] text-white shadow-[0_4px_16px_rgba(var(--brand-rgb),0.35)]"
+                      ? "bg-[var(--accent)] text-[var(--accent-text)] shadow-[0_4px_16px_rgba(var(--accent-rgb),0.35)]"
                       : "text-[var(--fg-muted)] hover:text-[var(--fg)]"
                   }`}
                 >
@@ -377,14 +376,12 @@ export function Markets() {
         </div>
 
         <div
-          className="markets-table mt-8 overflow-hidden rounded-3xl border border-[var(--border)] backdrop-blur-sm"
-          style={{ background: "var(--surface)" }}
+          className="markets-table mt-8 overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface)]"
         >
           <div>
             <table className="w-full text-sm">
               <thead
-                className="sticky top-0 z-10 backdrop-blur"
-                style={{ background: "rgba(var(--nav-bg-rgb), 0.85)" }}
+                className="sticky top-0 z-10 bg-[var(--bg-elevated)]"
               >
                 <tr className="border-b border-[var(--border)] text-left text-[11px] font-semibold uppercase tracking-wider text-[var(--fg-subtle)]">
                   <th className="hidden py-4 pl-4 pr-2 sm:table-cell sm:pl-6">#</th>
@@ -442,7 +439,7 @@ export function Markets() {
                       >
                         <td className="relative hidden py-4 pl-4 pr-2 sm:table-cell sm:py-5 sm:pl-6">
                           <span
-                            className={`pointer-events-none absolute left-0 top-1/2 h-8 w-0.5 -translate-y-1/2 rounded-r bg-[var(--brand)] transition-opacity ${
+                            className={`pointer-events-none absolute left-0 top-1/2 h-8 w-0.5 -translate-y-1/2 rounded-r bg-[var(--accent)] transition-opacity ${
                               isActive
                                 ? "opacity-100"
                                 : "opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100"
@@ -451,8 +448,7 @@ export function Markets() {
                           />
                           {i < 3 ? (
                             <span
-                              className="inline-flex items-center justify-center rounded-md px-1.5 py-0.5 text-xs font-bold text-[var(--brand)] tabular-nums"
-                              style={{ background: "rgba(var(--brand-rgb), 0.16)" }}
+                              className="inline-flex items-center justify-center rounded-md bg-[var(--brand-tint)] px-1.5 py-0.5 text-xs font-bold text-[var(--brand)] tabular-nums"
                             >
                               {i + 1}
                             </span>
@@ -462,7 +458,7 @@ export function Markets() {
                         </td>
                         <td className="relative py-3.5 pl-3 pr-2 sm:py-5 sm:pl-0">
                           <span
-                            className={`pointer-events-none absolute left-0 top-1/2 h-8 w-0.5 -translate-y-1/2 rounded-r bg-[var(--brand)] transition-opacity sm:hidden ${
+                            className={`pointer-events-none absolute left-0 top-1/2 h-8 w-0.5 -translate-y-1/2 rounded-r bg-[var(--accent)] transition-opacity sm:hidden ${
                               isActive
                                 ? "opacity-100"
                                 : "opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100"
@@ -482,12 +478,7 @@ export function Markets() {
                             ) : (
                               <span
                                 aria-hidden
-                                className="grid h-7 w-7 place-items-center rounded-full text-xs font-black text-white sm:h-9 sm:w-9 sm:text-sm"
-                                style={{
-                                  background:
-                                    "linear-gradient(135deg, rgba(var(--brand-rgb), 0.95), rgba(var(--brand-rgb), 0.45))",
-                                  boxShadow: "0 4px 14px rgba(var(--brand-rgb), 0.35)"
-                                }}
+                                className="grid h-7 w-7 place-items-center rounded-full bg-[var(--brand-tint)] text-xs font-black text-[var(--brand)] sm:h-9 sm:w-9 sm:text-sm"
                               >
                                 {c.sym[0]}
                               </span>

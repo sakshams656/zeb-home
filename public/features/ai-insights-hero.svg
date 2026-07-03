@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="400" viewBox="0 0 640 400" fill="none">
+  <rect x="80" y="56" width="480" height="288" rx="20" fill="none" stroke="#2a3558" stroke-width="2"/>
+  <path d="M320 96 L328 120 L352 120 L332 136 L340 160 L320 148 L300 160 L308 136 L288 120 L312 120 Z" fill="#f0b84c"/>
+  <text x="320" y="200" text-anchor="middle" font-family="system-ui,sans-serif" font-size="48" font-weight="800" fill="#f0b84c">62%</text>
+  <text x="320" y="232" text-anchor="middle" font-family="system-ui,sans-serif" font-size="16" font-weight="700" fill="#00a872">Bullish</text>
+  <path d="M120 280 L200 280 L200 240 A40 40 0 0 1 280 240 L280 280" stroke="#6ba8ff" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <line x1="200" y1="280" x2="280" y2="280" stroke="#6ba8ff" stroke-width="8" stroke-linecap="round"/>
+  <line x1="240" y1="240" x2="260" y2="210" stroke="#f0b84c" stroke-width="3" stroke-linecap="round"/>
+  <text x="320" y="320" text-anchor="middle" font-family="system-ui,sans-serif" font-size="13" fill="#5c6578">BTC/INR · Updated 8 min ago</text>
+</svg>

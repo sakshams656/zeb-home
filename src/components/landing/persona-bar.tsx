@@ -26,7 +26,7 @@ export function PersonaBar() {
   return (
     <div className="border-b border-[var(--border)] bg-[var(--surface)]">
       <div ref={barRef} className="container-zeb flex flex-wrap items-center justify-center gap-2 py-2 text-sm">
-        <span className="text-[var(--text-muted)]">I am a</span>
+        <span className="text-[var(--fg-muted)]">I am a</span>
         <div className="persona-toggle relative flex rounded-full border border-[var(--border)] bg-[var(--bg-elevated)] p-1">
           <span
             ref={indicatorRef}
@@ -44,7 +44,7 @@ export function PersonaBar() {
               type="button"
               onClick={() => setPersona(p.id)}
               className={`relative z-10 rounded-full px-4 py-1.5 font-bold transition-colors ${
-                persona === p.id ? "text-[var(--navy)]" : "text-[var(--text-muted)]"
+                persona === p.id ? "text-white" : "text-[var(--fg-muted)]"
               }`}
             >
               {p.icon} {p.label}

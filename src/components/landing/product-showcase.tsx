@@ -1,12 +1,14 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { PhoneFrame } from "@/components/ui/phone-frame";
 import { DemoPointer } from "./phone-demo/demo-pointer";
 import type { DemoMode } from "./phone-demo/types";
 import { gsap, ZEB_EASE, prefersReducedMotion } from "@/lib/gsap";
+import { getFeatureRouteForShowcaseMode } from "@/lib/product-features";
 
 const AiFlow = dynamic(() => import("./phone-demo/ai-flow").then((m) => ({ default: m.AiFlow })), { ssr: false });
 
@@ -26,49 +28,42 @@ const AUTO_ADVANCE_MS = 30000;
 
 const PANELS: {
   id: string;
-  num: string;
   title: string;
   body: string;
   mode: PanelMode;
 }[] = [
   {
     id: "spot",
-    num: "01",
-    title: "Spot Trade",
-    body: "The fastest way to buy and sell crypto. Up to 400+ pairs.",
+    title: "Quick Trade",
+    body: "Effortlessly invest in 300+ pairs instantly using Quick Trade. Place orders using the Market or Limit functionality with minimum slippage and best fees.",
     mode: "qt"
   },
   {
     id: "futures",
-    num: "02",
     title: "Futures",
-    body: "Trade perpetuals with up to 25x leverage and RMS protection.",
+    body: "Trade Crypto-INR and Crypto-USDT Perpetual futures seamlessly on ZebPay. Endless opportunities are a click away.",
     mode: "ft"
   },
   {
     id: "sip",
-    num: "03",
     title: "SIP",
-    body: "Invest on autopilot. Daily, weekly, or monthly in any coin.",
+    body: "Automate your bitcoin & crypto investing the disciplined way",
     mode: "sip"
   },
   {
     id: "packs",
-    num: "04",
     title: "CryptoPacks",
     body: "Expert-curated baskets — DeFi, L1s, AI, and more.",
     mode: "cp"
   },
   {
     id: "earn",
-    num: "05",
     title: "Earn",
-    body: "Put idle crypto to work. Up to 8.5% APY on stablecoins.",
+    body: "Use ZebPay Earn to get fixed earnings of up to 8.5% Earn from your crypto holdings for a fixed term.",
     mode: "exchange"
   },
   {
     id: "ai",
-    num: "06",
     title: "AI Insights",
     body: "Sentiment, opportunities, and risks for every major pair.",
     mode: "ai"
@@ -84,6 +79,15 @@ const MAX_STEPS: Record<PanelMode, number> = {
   ai: 1
 };
 
+const PANEL_LINKS: Record<PanelMode, string> = {
+  qt: getFeatureRouteForShowcaseMode("qt"),
+  ft: getFeatureRouteForShowcaseMode("ft"),
+  sip: getFeatureRouteForShowcaseMode("sip"),
+  cp: getFeatureRouteForShowcaseMode("cp"),
+  exchange: getFeatureRouteForShowcaseMode("exchange"),
+  ai: getFeatureRouteForShowcaseMode("ai")
+};
+
 const INITIAL_STEPS: Record<PanelMode, number> = {
   qt: 1,
   cp: 1,
@@ -94,7 +98,7 @@ const INITIAL_STEPS: Record<PanelMode, number> = {
 };
 
 function ScreenFallback() {
-  return <div className="flex h-full items-center justify-center text-xs text-[#888]">Loading…</div>;
+  return <div className="flex h-full items-center justify-center text-xs text-[var(--fg-muted)]">Loading…</div>;
 }
 
 function PanelVideo({
@@ -137,7 +141,7 @@ function PanelVideo({
       muted
       playsInline
       autoPlay
-      preload="auto"
+      preload="metadata"
       onEnded={onEnded}
       aria-hidden
     />
@@ -193,7 +197,7 @@ export function ProductShowcase() {
       if (!copy || !phone) return;
 
       gsap.fromTo(
-        copy.querySelectorAll(".panel-number, .panel-title, .panel-body, .learn-cta"),
+        copy.querySelectorAll(".panel-title, .panel-body, .learn-cta"),
         { opacity: 0, y: 14 },
         { opacity: 1, y: 0, stagger: 0.05, duration: 0.4, ease: ZEB_EASE, overwrite: true }
       );
@@ -252,25 +256,31 @@ export function ProductShowcase() {
     >
       <div id="product-showcase" className="relative mx-auto w-full max-w-[1200px]">
         <div>
-          <p className="text-xs font-bold uppercase tracking-widest text-[var(--brand)] sm:text-sm">Products</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-[var(--fg-subtle)] sm:text-sm">Products</p>
           <h2 className="mt-1.5 max-w-3xl text-[clamp(1.5rem,5vw,2.25rem)] font-black leading-tight text-[var(--fg)]">
             Built for every kind of crypto journey.
           </h2>
         </div>
 
         <div className="mt-8 grid items-center gap-8 lg:mt-10 lg:grid-cols-2 lg:gap-10">
-          <div ref={copyRef} className="panel-copy">
-            <p className="panel-number text-[clamp(48px,9vw,72px)] font-black leading-none text-[var(--brand)] opacity-90">
-              {active.num}
-            </p>
-            <h3 className="panel-title mt-1 text-[clamp(1.5rem,5vw,2.25rem)] font-black text-[var(--fg)]">
+          <div
+            ref={copyRef}
+            id={`showcase-panel-${active.id}`}
+            role="tabpanel"
+            aria-labelledby={`showcase-tab-${active.id}`}
+            className="panel-copy"
+          >
+            <h3 className="panel-title text-[clamp(1.8rem,6vw,2.7rem)] font-black text-[var(--fg)]">
               {active.title}
             </h3>
             <p className="panel-body mt-3 max-w-md text-sm text-[var(--fg-muted)] sm:text-base">{active.body}</p>
-            <a href="#" className="btn-primary learn-cta mt-5 text-sm">
+            {/* {LIVE_PRICE_MODES.has(activeMode) ? <FeatureLivePairsStrip /> : null} */}
+            <Link href={PANEL_LINKS[activeMode]} className="btn-primary learn-cta mt-5">
               Learn more
-              <span aria-hidden>→</span>
-            </a>
+              <span aria-hidden className="learn-cta-arrow">
+                →
+              </span>
+            </Link>
           </div>
 
           <div ref={phoneRef} className="flex items-center justify-center lg:justify-end">
@@ -300,19 +310,18 @@ export function ProductShowcase() {
             return (
               <button
                 key={p.id}
+                id={`showcase-tab-${p.id}`}
                 type="button"
                 role="tab"
                 aria-selected={isActive}
+                aria-controls={`showcase-panel-${p.id}`}
                 onClick={() => selectPanel(p.mode)}
-                className={`showcase-tab inline-flex shrink-0 snap-start items-center gap-1.5 rounded-full border px-4 py-2.5 text-sm font-semibold transition-colors sm:px-4 sm:py-2.5 ${
+                className={`showcase-tab inline-flex shrink-0 snap-start items-center rounded-full border px-4 py-2.5 text-sm font-semibold transition-colors sm:px-4 sm:py-2.5 ${
                   isActive
-                    ? "border-transparent bg-[var(--brand)] text-white shadow-[0_8px_24px_rgba(var(--brand-rgb),0.35)]"
+                    ? "border-transparent bg-[var(--accent)] text-[var(--accent-text)] shadow-[0_8px_24px_rgba(var(--accent-rgb),0.35)]"
                     : "border-[var(--border)] bg-[var(--surface)] text-[var(--fg-muted)] hover:border-[var(--brand)] hover:text-[var(--fg)]"
                 }`}
               >
-                <span className={`tab-num text-xs font-black ${isActive ? "text-[var(--fg)]" : "text-[var(--brand)]"}`}>
-                  {p.num}
-                </span>
                 {p.title}
               </button>
             );

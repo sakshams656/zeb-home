@@ -31,7 +31,7 @@ export function Earn() {
   );
 
   return (
-    <section id="earn" ref={ref} className="scroll-mt-24 bg-[#0a0f2e] py-14 sm:py-16 lg:py-24">
+    <section id="earn" ref={ref} className="scroll-mt-24 bg-[var(--bg)] py-14 sm:py-16 lg:py-24">
       <div className="container-zeb grid gap-12 lg:grid-cols-2">
         <div>
           <h2 className="text-[clamp(2rem,6vw,3.5rem)] font-black leading-tight text-[var(--fg)]">

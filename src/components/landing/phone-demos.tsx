@@ -89,7 +89,7 @@ export function PhoneDemos() {
                 className={`w-44 shrink-0 snap-start rounded-2xl border p-3 text-left transition lg:w-auto ${
                   feat === tab.id
                     ? "border-[var(--cyan)] bg-[var(--bg-elevated)] shadow-[var(--shadow)]"
-                    : "border-[var(--border)] bg-[var(--bg-elevated)]/50"
+                    : "border-[var(--border)] bg-[var(--bg-elevated)]"
                 }`}
               >
                 <span className="text-xl">{tab.emoji}</span>

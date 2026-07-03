@@ -64,7 +64,7 @@ export function Comparison() {
               <tr className="text-[var(--fg-muted)]">
                 <th className="p-3 text-left font-semibold sm:p-4">Feature</th>
                 <th className="relative p-3 text-center sm:p-4">
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[var(--brand)] px-3 py-0.5 text-[10px] font-extrabold text-white">
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[var(--accent)] px-3 py-0.5 text-[10px] font-extrabold text-[var(--accent-text)]">
                     Recommended
                   </span>
                   <span className="font-black text-[var(--fg)]">ZebPay</span>

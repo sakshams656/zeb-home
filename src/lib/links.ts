@@ -5,6 +5,9 @@
  */
 export const LINKS = {
   getStarted: "https://zebpay.com/app",
+  createAccount: "https://zebpay.com/app",
+  login: "https://zebpay.com/login",
+  quickTrade: "https://zebpay.com/exchange",
   exchange: "https://zebpay.com/exchange",
   futures: "https://zebpay.com/futures/trade/BTC-USDT",
   sip: "https://sip.zebpay.com/sip",
@@ -12,13 +15,18 @@ export const LINKS = {
   cryptopacks: "https://zebpay.com/app/cryptoPacks",
   apidocs: "https://apidocs.zebpay.com/",
   blog: "https://zebpay.com/in/blog",
+  blogMarketAnalysis: "https://zebpay.com/in/blog",
+  blogCryptoAssets: "https://zebpay.com/in/blog",
+  blogCryptoNews: "https://zebpay.com/in/blog",
   convertor: "https://zebpay.com/in/converter/BTC/INR",
   about: "https://zebpay.com/in/about-us",
   careers: "https://zebpay.com/careers",
   missionVision: "https://zebpay.com/vision-mission-values",
   terms: "https://zebpay.com/in/legal-privacy#terms-of-use",
   privacy: "https://zebpay.com/in/legal-privacy#privacy-policy",
-  riskDisclosure: "https://zebpay.com/in/legal-privacy#risk-disclosure"
+  riskDisclosure: "https://zebpay.com/in/legal-privacy#risk-disclosure",
+  /** HNI & institutional enquiry inbox (homepage + business flows). */
+  hniEnquiryEmail: "institution@zebpay.com"
 } as const;
 
 /** Per-coin spot pair page (used by the Markets table to deep-link a row). */

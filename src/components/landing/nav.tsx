@@ -1,171 +1,114 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useState } from "react";
-import { useGSAP } from "@gsap/react";
-import { gsap, ScrollTrigger, ZEB_EASE, prefersReducedMotion } from "@/lib/gsap";
+import { useEffect, useRef, useState } from "react";
 import { Logo } from "./logo";
-import { NAV_ALL_GROUPS, NAV_MENU_GROUPS } from "./nav-config";
-// NAV_COMPANY temporarily hidden — see nav-config.ts
+import { NAV_ALL_GROUPS, NAV_MENU_GROUPS, navGroupEntries } from "./nav-config";
 import { NavMenuBar } from "./nav-dropdown";
 import { ThemeToggle } from "./theme-toggle";
 import { LINKS } from "@/lib/links";
 
+const SCROLL_THRESHOLD = 12;
+
 export function Nav() {
+  const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [openId, setOpenId] = useState<string | null>(null);
   const [mobileGroup, setMobileGroup] = useState<string | null>(null);
-  const navRef = useRef<HTMLElement>(null);
-  const innerRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
 
-  useGSAP(
-    () => {
-      const header = navRef.current;
-      const inner = innerRef.current;
-      if (prefersReducedMotion() || !header || !inner) return;
-
-      gsap.from(".nav-logo", { opacity: 0, y: -10, duration: 0.6, ease: ZEB_EASE });
-      gsap.from(".nav-dropdown-trigger", { opacity: 0, y: -8, stagger: 0.05, duration: 0.45, ease: ZEB_EASE, delay: 0.1 });
-
-      const SCROLL_RANGE = 80;
-      const SCROLL_INSET = 16;
-
-      // lint-allow: unguarded-gsap-pixel-layout — initial pin at 0/0/0 only
-      // establishes the absolute origin; the per-viewport pill animation is
-      // gated through gsap.matchMedia below.
-      gsap.set(inner, { position: "absolute", top: 0, left: 0, right: 0 });
-
-      const mm = gsap.matchMedia();
-
-      // <640px: flat full-bleed header. No insets / radius / border — just a
-      // translucent backdrop on scroll. Pixel-layout writes here would shrink
-      // the pill below the natural width of [logo | toggle | hamburger] and
-      // push the hamburger past the rounded right edge (bug fix).
-      mm.add("(max-width: 639px)", () => {
-        const applyMobileProgress = (progress: number) => {
-          const p = gsap.utils.clamp(0, 1, progress);
-          gsap.set(inner, {
-            background: `rgba(var(--nav-bg-rgb), ${p * 0.55})`,
-            backdropFilter: p > 0.02 ? `blur(${p * 18}px) saturate(${100 + p * 60}%)` : "none",
-            boxShadow:
-              p > 0.08
-                ? `0 ${p * 6}px ${p * 18}px rgba(var(--nav-shadow-rgb), ${p * 0.25})`
-                : "none"
-          });
-        };
-
-        applyMobileProgress(Math.min(1, window.scrollY / SCROLL_RANGE));
-
-        const st = ScrollTrigger.create({
-          start: "top top",
-          end: `+=${SCROLL_RANGE}`,
-          scrub: 0.4,
-          onUpdate: (self) => applyMobileProgress(self.progress),
-          onRefresh: (self) => applyMobileProgress(self.progress)
-        });
-
-        return () => {
-          st.kill();
-          gsap.set(inner, { clearProps: "background,backdropFilter,boxShadow" });
-        };
-      });
-
-      // >=640px: full floating-pill effect with insets, radius, border, shadow.
-      mm.add("(min-width: 640px)", () => {
-        const applyDesktopProgress = (progress: number) => {
-          const p = gsap.utils.clamp(0, 1, progress);
-          const inset = p * SCROLL_INSET;
-          gsap.set(header, { top: p * 12 });
-          gsap.set(inner, {
-            left: inset,
-            right: inset,
-            borderRadius: p * 36,
-            background: `rgba(var(--nav-bg-rgb), ${p * 0.55})`,
-            backdropFilter: p > 0.02 ? `blur(${p * 28}px) saturate(${100 + p * 80}%)` : "none",
-            border: `1px solid rgba(var(--nav-tint-rgb), ${p * 0.2})`,
-            boxShadow:
-              p > 0.08
-                ? `0 ${p * 8}px ${p * 32}px rgba(var(--nav-shadow-rgb), ${p * 0.35}), inset 0 1px 0 rgba(var(--nav-inset-rgb), ${p * 0.08})`
-                : "none"
-          });
-        };
-
-        applyDesktopProgress(Math.min(1, window.scrollY / SCROLL_RANGE));
-
-        const st = ScrollTrigger.create({
-          start: "top top",
-          end: `+=${SCROLL_RANGE}`,
-          scrub: 0.4,
-          onUpdate: (self) => applyDesktopProgress(self.progress),
-          onRefresh: (self) => applyDesktopProgress(self.progress)
-        });
-
-        return () => {
-          st.kill();
-          gsap.set(header, { clearProps: "top" });
-          gsap.set(inner, {
-            clearProps: "left,right,borderRadius,background,backdropFilter,border,boxShadow"
-          });
-        };
-      });
-    },
-    { scope: navRef }
-  );
-
-  useGSAP(
-    () => {
-      if (!menuOpen || prefersReducedMotion()) return;
-      gsap.from(".mobile-nav-group", { opacity: 0, y: 16, stagger: 0.06, duration: 0.4, ease: ZEB_EASE });
-    },
-    { dependencies: [menuOpen] }
-  );
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > SCROLL_THRESHOLD);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const closeMobile = () => {
     setMenuOpen(false);
     setMobileGroup(null);
   };
 
+  useEffect(() => {
+    if (!menuOpen) return;
+    const root = mobileMenuRef.current;
+    if (!root) return;
+
+    const focusable = root.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    );
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    first?.focus();
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        closeMobile();
+        return;
+      }
+      if (e.key !== "Tab" || focusable.length === 0) return;
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last?.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first?.focus();
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = "";
+      menuButtonRef.current?.focus();
+    };
+  }, [menuOpen]);
+
   return (
     <>
-      <header ref={navRef} className="nav-header fixed left-0 right-0 top-0 z-50 h-[72px] w-full">
-        <nav
-          ref={innerRef}
-          className="nav-inner overflow-hidden border border-transparent will-change-[border-radius,box-shadow,left,right]"
-        >
-          <div className="flex h-[72px] w-full items-center justify-between gap-2 px-3 sm:gap-4 sm:px-6 lg:px-8">
+      <header
+        className={`nav-header fixed left-0 right-0 top-0 z-50 w-full overflow-visible transition-[background-color,box-shadow] duration-300 ${
+          scrolled
+            ? "bg-[var(--bg)] shadow-[var(--shadow)]"
+            : "bg-transparent shadow-none"
+        }`}
+      >
+        <nav className="overflow-visible">
+          <div className="mx-auto flex h-[72px] w-full max-w-[1200px] items-center justify-between gap-2 px-4 sm:gap-4 sm:px-6">
             <Link href="/" className="nav-logo flex shrink-0 items-center">
-              <Logo priority className="h-auto w-[110px] sm:w-[140px] lg:w-[180px]" />
+              <Logo priority className="h-auto w-[100px] sm:w-[140px] lg:w-[180px]" />
             </Link>
 
             <NavMenuBar
               groups={NAV_MENU_GROUPS}
               openId={openId}
               setOpenId={setOpenId}
-              className="nav-menus hidden flex-1 items-center justify-center gap-0 lg:flex"
+              className="nav-menus hidden flex-1 items-center justify-center gap-1 overflow-visible lg:flex"
             />
 
-            <div className="flex min-w-0 items-center gap-2 sm:gap-3">
-              {/* Company dropdown temporarily hidden — restore NAV_COMPANY in nav-config.ts
-              <NavMenuBar
-                groups={[NAV_COMPANY]}
-                openId={openId}
-                setOpenId={setOpenId}
-                align="right"
-                className="hidden lg:flex"
-              />
-              */}
+            <div className="flex min-w-0 shrink-0 items-center gap-2 sm:gap-3">
               <ThemeToggle />
               <a
-                href={LINKS.getStarted}
+                href={LINKS.login}
+                className="btn-outline hidden whitespace-nowrap text-sm lg:inline-flex"
+              >
+                Login
+              </a>
+              <a
+                href={LINKS.createAccount}
                 className="btn-primary hidden whitespace-nowrap text-sm lg:inline-flex"
               >
-                Get started
+                Create account
               </a>
               <button
+                ref={menuButtonRef}
                 type="button"
-                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[var(--border)] text-[var(--fg)] lg:hidden"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[var(--border)] text-xl leading-none text-[var(--fg)] lg:hidden"
                 onClick={() => setMenuOpen(true)}
                 aria-label="Open menu"
+                aria-expanded={menuOpen}
               >
                 ☰
               </button>
@@ -174,31 +117,40 @@ export function Nav() {
         </nav>
       </header>
 
-      {menuOpen && (
+      {menuOpen ? (
         <div
-          className="fixed inset-0 z-[60] overflow-y-auto backdrop-blur-md lg:hidden"
-          style={{ background: "rgba(var(--nav-bg-rgb), 0.98)" }}
+          ref={mobileMenuRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Mobile navigation"
+          className="fixed inset-0 z-[60] overflow-y-auto overscroll-contain bg-[var(--bg)] lg:hidden"
         >
-          <div className="absolute right-4 top-4 flex items-center gap-2 sm:right-6 sm:top-6 sm:gap-3">
-            <ThemeToggle />
-            <button
-              type="button"
-              className="grid h-11 w-11 place-items-center rounded-lg text-2xl leading-none text-[var(--fg)] hover:bg-[var(--surface)]"
-              onClick={closeMobile}
-              aria-label="Close menu"
-            >
-              ✕
-            </button>
+          <div className="sticky top-0 z-10 flex items-center justify-between bg-[var(--bg)] px-4 py-3">
+            <Link href="/" className="flex shrink-0 items-center" onClick={closeMobile}>
+              <Logo className="h-auto w-[100px]" />
+            </Link>
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
+              <button
+                type="button"
+                className="grid h-11 w-11 place-items-center rounded-full border border-[var(--border)] text-xl leading-none text-[var(--fg)]"
+                onClick={closeMobile}
+                aria-label="Close menu"
+              >
+                ✕
+              </button>
+            </div>
           </div>
-          <nav className="flex min-h-full flex-col px-6 pb-10 pt-20">
-            <div className="flex flex-col gap-2">
+
+          <nav className="flex flex-col px-4 pb-10 pt-2">
+            <div className="flex flex-col">
               {NAV_ALL_GROUPS.map((group) => {
                 const expanded = mobileGroup === group.id;
                 return (
-                  <div key={group.id} className="mobile-nav-group border-b border-[var(--border)] pb-2">
+                  <div key={group.id} className="border-b border-[var(--border)]">
                     <button
                       type="button"
-                      className="flex w-full items-center justify-between py-4 text-left text-lg font-bold text-[var(--fg)]"
+                      className="flex min-h-11 w-full items-center justify-between py-3 text-left text-base font-bold text-[var(--fg)]"
                       aria-expanded={expanded}
                       onClick={() => setMobileGroup(expanded ? null : group.id)}
                     >
@@ -219,35 +171,69 @@ export function Nav() {
                         />
                       </svg>
                     </button>
-                    {expanded && (
-                      <ul className="mb-2 space-y-1 pl-1">
-                        {group.items.map((item) => (
-                          <li key={item.label}>
-                            <a
-                              href={item.href}
-                              className="mobile-nav-link block min-h-11 rounded-lg px-3 py-3 text-base text-[var(--fg-muted)] hover:bg-[var(--surface)] hover:text-[var(--brand)]"
-                              onClick={closeMobile}
-                            >
-                              {item.label}
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+                    {expanded ? (
+                      <div className="pb-3">
+                        {group.sections
+                          ? group.sections.map((section) => (
+                              <div key={section.title} className="mt-1">
+                                <p className="px-3 py-1.5 text-xs font-bold uppercase tracking-widest text-[var(--fg-subtle)]">
+                                  {section.title}
+                                </p>
+                                <ul>
+                                  {section.items.map((item) => (
+                                    <li key={item.label}>
+                                      <a
+                                        href={item.href}
+                                        className="mobile-nav-link block min-h-11 rounded-lg px-3 py-3 text-base text-[var(--fg-muted)] hover:bg-[var(--surface)] hover:text-[var(--brand)]"
+                                        onClick={closeMobile}
+                                      >
+                                        {item.label}
+                                      </a>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            ))
+                          : (
+                              <ul>
+                                {navGroupEntries(group).map((item) => (
+                                  <li key={item.label}>
+                                    <a
+                                      href={item.href}
+                                      className="mobile-nav-link block min-h-11 rounded-lg px-3 py-3 text-base text-[var(--fg-muted)] hover:bg-[var(--surface)] hover:text-[var(--brand)]"
+                                      onClick={closeMobile}
+                                    >
+                                      {item.label}
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                      </div>
+                    ) : null}
                   </div>
                 );
               })}
             </div>
-            <a
-              href={LINKS.getStarted}
-              className="btn-primary mobile-nav-link mt-8 w-full justify-center text-center"
-              onClick={closeMobile}
-            >
-              Get started
-            </a>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              <a
+                href={LINKS.createAccount}
+                className="btn-primary mobile-nav-link w-full justify-center text-center"
+                onClick={closeMobile}
+              >
+                Create account
+              </a>
+              <a
+                href={LINKS.login}
+                className="btn-outline mobile-nav-link w-full justify-center text-center"
+                onClick={closeMobile}
+              >
+                Login
+              </a>
+            </div>
           </nav>
         </div>
-      )}
+      ) : null}
     </>
   );
 }

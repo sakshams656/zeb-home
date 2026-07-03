@@ -58,7 +58,7 @@ const META: CalcMeta[] = [
     label: "Spot fees",
     rail: "Buy/sell cost breakdown",
     title: "Spot Trading Calculator",
-    subtitle: "See the exact cost, fee and net amount on every spot trade."
+    subtitle: "See the exact cost, fee and net amount on every Quick trade."
   },
   {
     id: "futures",
@@ -153,6 +153,7 @@ function Field({ label, value, onChange, prefix, suffix, step, min, max }: Field
           max={max}
           value={Number.isFinite(value) ? value : 0}
           onChange={(e) => onChange(+e.target.value)}
+          // lint-allow: outline-none — native number input; focus ring on parent label via focus-within
           className="ml-auto w-full appearance-none bg-transparent text-right font-semibold tabular-nums text-[var(--fg)] outline-none [-moz-appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
         />
         {suffix && <span className="text-sm text-[var(--fg-subtle)]">{suffix}</span>}
@@ -185,8 +186,8 @@ function Segment<T extends string>({
               onClick={() => onChange(o.value)}
               className={`min-h-10 rounded-lg px-3 py-2.5 text-sm font-semibold transition ${
                 active
-                  ? "bg-[var(--brand)] text-white shadow-[0_4px_16px_rgba(var(--brand-rgb),0.35)]"
-                  : "text-[var(--fg-muted)] hover:text-white"
+                  ? "bg-[var(--accent)] text-[var(--accent-text)] shadow-[0_4px_16px_rgba(var(--accent-rgb),0.35)]"
+                  : "text-[var(--fg-muted)] hover:text-[var(--fg)]"
               }`}
             >
               {o.label}
@@ -224,8 +225,8 @@ function SelectChips<T extends number | string>({
               onClick={() => onChange(o)}
               className={`flex-1 min-h-10 rounded-lg px-2 py-2.5 text-sm font-semibold transition ${
                 active
-                  ? "bg-[var(--brand)] text-white shadow-[0_4px_16px_rgba(var(--brand-rgb),0.35)]"
-                  : "text-[var(--fg-muted)] hover:text-white"
+                  ? "bg-[var(--accent)] text-[var(--accent-text)] shadow-[0_4px_16px_rgba(var(--accent-rgb),0.35)]"
+                  : "text-[var(--fg-muted)] hover:text-[var(--fg)]"
               }`}
             >
               {formatOption ? formatOption(o) : String(o)}
@@ -496,7 +497,7 @@ function RmsTrack({
           style={{ left: `${pct(tp)}%` }}
         />
         <span
-          className="absolute top-1/2 -ml-2 -mt-2 h-4 w-4 rounded-full border-2 border-[var(--bg-elevated)] bg-[var(--brand)] shadow-[0_0_0_4px_rgba(var(--brand-rgb),0.25)] transition-all"
+          className="absolute top-1/2 -ml-2 -mt-2 h-4 w-4 rounded-full border-2 border-[var(--bg-elevated)] bg-[var(--accent)] shadow-[0_0_0_4px_rgba(var(--accent-rgb),0.25)] transition-all"
           style={{ left: `${pct(current)}%` }}
         />
       </div>
@@ -620,9 +621,7 @@ export function CalculatorHub() {
                       aria-pressed={active}
                       className={`calc-tab group flex h-full w-[180px] items-start gap-2.5 rounded-2xl border p-3 text-left transition sm:w-[220px] sm:gap-3 sm:p-3.5 lg:w-full ${
                         active
-                          ? isDark
-                            ? "bg-[linear-gradient(135deg,rgba(var(--brand-rgb),0.95),rgba(var(--brand-rgb),0.55))] text-white shadow-[0_10px_30px_rgba(var(--brand-rgb),0.35)]"
-                            : "bg-[linear-gradient(90deg,#ffffff_0%,#f4f7ff_32%,rgba(var(--brand-rgb),0.22)_58%,rgba(var(--brand-rgb),0.78)_100%)] text-[var(--fg)] shadow-[0_10px_28px_rgba(var(--brand-rgb),0.22)]"
+                          ? "border-transparent bg-[var(--accent)] text-[var(--accent-text)] shadow-[0_10px_30px_rgba(var(--accent-rgb),0.35)]"
                           : "border border-[var(--border)] bg-[var(--surface)] text-[var(--fg)] hover:border-[var(--border-strong)] hover:bg-[var(--surface-strong)]"
                       }`}
                     >
@@ -634,9 +633,7 @@ export function CalculatorHub() {
                         <span
                           className={`mt-0.5 block text-[11px] leading-snug sm:text-xs ${
                             active
-                              ? isDark
-                                ? "text-white/80"
-                                : "text-[var(--fg-muted)]"
+                              ? "text-[var(--accent-text)]/80"
                               : "text-[var(--fg-muted)]"
                           }`}
                         >
@@ -650,7 +647,7 @@ export function CalculatorHub() {
             </ul>
           </aside>
 
-          <div className="calc-body min-w-0 rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-4 backdrop-blur-sm sm:p-6 lg:p-7">
+          <div className="calc-body min-w-0 rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-4 sm:p-6 lg:p-7">
             <header className="flex items-start gap-3 border-b border-[var(--border)] pb-4 sm:gap-4 sm:pb-5">
               <span className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-xl sm:h-12 sm:w-12 sm:rounded-2xl">
                 <CalcIcon id={meta.id} size={48} />

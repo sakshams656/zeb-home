@@ -29,10 +29,10 @@ class on `<html>` before first paint to avoid a flash.
   `border-white/[0.08]`.
 - For inline brand-tinted gradients/shadows use `rgba(var(--brand-rgb), 0.x)`
   instead of `rgba(27, 85, 224, 0.x)`.
-- Text on a solid colored button (`bg-[var(--brand)]`, `bg-[var(--success)]`,
-  `bg-[var(--danger)]`, brand gradient) should remain literal `text-white`
-  because the button background is opaque-colored, not chrome.
+- `text-white` only on opaque `--accent`, `--success`, or `--danger` button backgrounds
 - Always test both themes via the nav toggle before shipping.
+
+**Color harmony (v3):** Dark **navy** `#0a0f2e` + **slate panels** `#10182e`. Light **warm cream** + blue structure. Gold CTAs; ZebPay blue links. [docs/DESIGN.md](docs/DESIGN.md).
 
 ## Exceptions (do NOT theme-swap these)
 
@@ -135,3 +135,10 @@ The responsive linter rejects PRs that include any of these:
   scaling — they always render as a portrait phone-app screenshot.
 - **Calculator simulator** (`CalcShell`) is exempt for the same reason.
 - The hero section is allowed to use `min-h-screen` (sized for fold).
+
+# UI/UX
+
+Before adding or changing landing UI, read
+[`.cursor/skills/web-app-ux-2026/SKILL.md`](.cursor/skills/web-app-ux-2026/SKILL.md)
+and [color-theory.md](.cursor/skills/web-app-ux-2026/color-theory.md) for harmony-based color review in the design phase.
+Run `npm run lint` (includes responsive + UX audit).

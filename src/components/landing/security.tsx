@@ -5,6 +5,7 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { useTheme } from "@/context/theme-context";
 import { gsap, ZEB_EASE, prefersReducedMotion } from "@/lib/gsap";
+import { LINKS } from "@/lib/links";
 
 type PillarId = "cold-storage" | "multi-sig" | "insurance-fund" | "zero-hacks";
 
@@ -186,7 +187,7 @@ export function Security() {
     >
       <div className="mx-auto max-w-[1200px]">
         <div className="text-center">
-          <p className="text-sm font-bold uppercase tracking-widest text-[var(--brand)]">
+          <p className="text-sm font-bold uppercase tracking-widest text-[var(--fg-subtle)]">
             Security
           </p>
           <h2 className="mt-2 text-[clamp(1.75rem,3.5vw,2.75rem)] font-black text-[var(--fg)]">
@@ -198,8 +199,7 @@ export function Security() {
         </div>
 
         <div
-          className="mt-10 grid gap-6 overflow-hidden rounded-3xl border border-[var(--border)] p-5 backdrop-blur-sm sm:p-6 lg:grid-cols-[1fr_1.1fr] lg:gap-8 lg:p-8"
-          style={{ background: "var(--surface)" }}
+          className="mt-10 grid gap-6 overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6 lg:grid-cols-[1fr_1.1fr] lg:gap-8 lg:p-8"
         >
           <div className="relative flex items-center justify-center">
             <div
@@ -239,11 +239,7 @@ export function Security() {
                 {BADGES.map((b) => (
                   <span
                     key={b}
-                    className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold text-[var(--fg)]"
-                    style={{
-                      border: "1px solid rgba(var(--brand-rgb), 0.35)",
-                      background: "rgba(var(--brand-rgb), 0.10)"
-                    }}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-[var(--brand-tint-border)] bg-[var(--brand-tint)] px-2.5 py-1 text-xs font-semibold text-[var(--fg)]"
                   >
                     <CheckIcon className="h-3 w-3 text-[var(--success)]" />
                     {b}
@@ -253,7 +249,7 @@ export function Security() {
             </div>
 
             <a
-              href="#"
+              href={LINKS.about}
               className="inline-flex min-h-11 items-center gap-1.5 self-start py-2 text-sm font-semibold text-[var(--brand)] transition-colors hover:text-[var(--fg)]"
             >
               View security report

@@ -61,9 +61,9 @@ type RowProps = {
 function FaqRow({ item, index, open, onToggle }: RowProps) {
   return (
     <li
-      className={`faq-card relative overflow-hidden rounded-2xl border backdrop-blur-sm transition-colors ${
+      className={`faq-card relative overflow-hidden rounded-2xl border transition-colors ${
         open
-          ? "is-open border-[color:var(--brand)]/40 bg-[var(--bg-elevated)] shadow-[0_18px_60px_-30px_rgba(var(--brand-rgb),0.7)]"
+          ? "is-open border-[var(--brand-tint-border)] bg-[var(--bg-elevated)] shadow-[var(--shadow)]"
           : "border-[var(--border)] bg-[var(--bg-elevated)] hover:border-[var(--border-strong)]"
       }`}
     >
@@ -87,7 +87,7 @@ function FaqRow({ item, index, open, onToggle }: RowProps) {
         <span
           className={`grid h-9 w-9 shrink-0 place-items-center rounded-full border transition-colors ${
             open
-              ? "border-[color:var(--brand)]/60 bg-[color:var(--brand)]/15 text-[var(--brand)]"
+                ? "border-[var(--brand-tint-border)] bg-[var(--brand-tint)] text-[var(--brand)]"
               : "border-[var(--border)] bg-[var(--surface)] text-[var(--fg-muted)]"
           }`}
         >
@@ -204,7 +204,7 @@ export function Faq() {
         <span className="faq-eyebrow inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--fg-muted)]">
           <HelpIcon /> FAQ
         </span>
-        <h2 className="faq-heading mt-4 text-[clamp(2.25rem,5vw,3.75rem)] font-black leading-[1.05] text-[var(--fg)]">
+        <h2 className="faq-heading mt-4 text-[clamp(2rem,5vw,3.75rem)] font-black leading-[1.05] text-[var(--fg)]">
           Frequently Asked Questions
         </h2>
         <p className="faq-sub mt-3 text-sm text-[var(--fg-muted)] sm:text-base">

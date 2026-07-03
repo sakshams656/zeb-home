@@ -54,7 +54,7 @@ export function CryptoPacks() {
   );
 
   return (
-    <section id="packs" ref={ref} className="scroll-mt-24 bg-[#040812] py-14 sm:py-16 lg:py-24">
+    <section id="packs" ref={ref} className="scroll-mt-24 bg-[var(--bg)] py-14 sm:py-16 lg:py-24">
       <div className="container-zeb">
         <h2 className="text-[clamp(2rem,5vw,3rem)] font-black text-[var(--fg)]">Invest in themes, not tickers.</h2>
         <p className="mt-4 text-base text-[var(--fg-muted)] sm:text-xl">4 curated packs built for every kind of investor.</p>

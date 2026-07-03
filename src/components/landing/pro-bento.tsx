@@ -48,12 +48,12 @@ export function ProBento() {
   const sig = SIGNALS[signalIdx];
 
   return (
-    <section id="pro" ref={ref} className="scroll-mt-24 bg-[#040812] py-14 sm:py-16 lg:py-24">
+    <section id="pro" ref={ref} className="scroll-mt-24 bg-[var(--bg)] py-14 sm:py-16 lg:py-24">
       <div className="container-zeb">
         <h2 className="text-[clamp(2rem,5vw,3rem)] font-black text-[var(--fg)]">Tools for serious traders.</h2>
 
         <div className="bento-grid mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:auto-rows-[minmax(180px,auto)]">
-          <article className="bento-cell bento-ai rounded-3xl border border-[var(--border)] bg-[#0a1428] p-6 sm:col-span-2 sm:p-8 lg:row-span-2">
+          <article className="bento-cell bento-ai rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6 sm:col-span-2 sm:p-8 lg:row-span-2">
             <h3 className="text-xl font-black text-[var(--cyan)]">AI Insights</h3>
             <p className="mt-1 text-xs text-[var(--fg-muted)]">Last updated 8 min ago</p>
             <svg viewBox="0 0 200 100" className="mx-auto mt-4 w-full max-w-[200px]">
@@ -73,40 +73,40 @@ export function ProBento() {
             <p className="mt-2 text-center text-[10px] text-[var(--fg-muted)]">Confidence trend · 7d</p>
           </article>
 
-          <article className="bento-cell rounded-3xl border border-[var(--border)] bg-[#0a1a0a] p-6 sm:col-span-2">
+          <article className="bento-cell rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6 sm:col-span-2">
             <h3 className="font-black text-[var(--success)]">Expert Trades</h3>
             <div className="mt-4 flex items-center gap-3">
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--success)] text-sm font-bold text-[var(--navy)]">
+              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--success)] text-sm font-bold text-white">
                 {sig.trader[0]}
               </span>
               <div>
                 <p className="font-bold text-[var(--fg)]">{sig.trader}</p>
-                <span className="rounded bg-[var(--success)]/20 px-2 py-0.5 text-[10px] font-bold text-[var(--success)]">
+                <span className="rounded border border-[var(--success)] bg-[var(--surface-strong)] px-2 py-0.5 text-[10px] font-bold text-[var(--success)]">
                   {sig.win} win rate
                 </span>
               </div>
             </div>
-            <p className="mt-4 rounded-xl bg-black/30 p-4 text-sm text-white">{sig.text}</p>
+            <p className="mt-4 rounded-xl border border-[var(--border)] bg-[var(--surface-strong)] p-4 text-sm text-[var(--fg)]">{sig.text}</p>
           </article>
 
-          <article className="bento-cell rounded-3xl border border-[var(--border)] bg-[#1a0a0a] p-6">
-            <h3 className="font-black text-[#ff6b6b]">RMS</h3>
+          <article className="bento-cell rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6">
+            <h3 className="font-black text-[var(--danger)]">RMS</h3>
             <p className="mt-1 text-[10px] text-[var(--fg-muted)]">Auto TP / SL</p>
             <svg viewBox="0 0 120 80" className="mt-3 w-full">
               <circle cx={35} cy={45} r={28} fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth={6} />
-              <circle cx={35} cy={45} r={28} fill="none" stroke="#ff4d6a" strokeWidth={6} strokeDasharray="90 176" transform="rotate(-90 35 45)" />
+              <circle cx={35} cy={45} r={28} fill="none" stroke="var(--danger)" strokeWidth={6} strokeDasharray="90 176" transform="rotate(-90 35 45)" />
               <circle cx={85} cy={45} r={28} fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth={6} />
-              <circle cx={85} cy={45} r={28} fill="none" stroke="#00b07a" strokeWidth={6} strokeDasharray="120 176" transform="rotate(-90 85 45)" />
+              <circle cx={85} cy={45} r={28} fill="none" stroke="var(--success)" strokeWidth={6} strokeDasharray="120 176" transform="rotate(-90 85 45)" />
             </svg>
           </article>
 
-          <article className="bento-cell rounded-3xl border border-[var(--border)] bg-[#0a0f1a] p-6">
-            <h3 className="font-black text-[#5b9fff]">Sub Accounts</h3>
+          <article className="bento-cell rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6">
+            <h3 className="font-black text-[var(--brand)]">Sub Accounts</h3>
             <ul className="mt-4 space-y-2">
               {[
-                { name: "Trading", bal: 62, color: "#1b55e0" },
-                { name: "Earn", bal: 28, color: "#2a66e8" },
-                { name: "SIP", bal: 10, color: "#00b07a" }
+                { name: "Trading", bal: 62, color: "var(--brand)" },
+                { name: "Earn", bal: 28, color: "var(--brand-hover)" },
+                { name: "SIP", bal: 10, color: "var(--success)" }
               ].map((w) => (
                 <li key={w.name} className="flex items-center gap-2 text-xs">
                   <span className="w-14 text-[var(--fg-muted)]">{w.name}</span>
@@ -118,27 +118,27 @@ export function ProBento() {
             </ul>
           </article>
 
-          <article className="bento-cell rounded-3xl border border-[var(--border)] bg-[#080d1a] p-6 sm:col-span-2">
+          <article className="bento-cell rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6 sm:col-span-2">
             <div className="flex items-center justify-between">
               <h3 className="font-black text-[var(--cyan)]">APIs</h3>
-              <div className="flex gap-1 rounded-lg bg-black/40 p-0.5 text-xs">
+              <div className="flex gap-1 rounded-lg border border-[var(--border)] bg-[var(--surface-strong)] p-0.5 text-xs">
                 <button
                   type="button"
                   onClick={() => setApiTab("python")}
-                  className={`min-h-9 rounded px-3 py-1.5 font-semibold ${apiTab === "python" ? "bg-[var(--brand)] text-white" : "text-[var(--fg-muted)]"}`}
+                  className={`min-h-9 rounded px-3 py-1.5 font-semibold ${apiTab === "python" ? "bg-[var(--accent)] text-[var(--accent-text)]" : "text-[var(--fg-muted)]"}`}
                 >
                   Python
                 </button>
                 <button
                   type="button"
                   onClick={() => setApiTab("curl")}
-                  className={`min-h-9 rounded px-3 py-1.5 font-semibold ${apiTab === "curl" ? "bg-[var(--brand)] text-white" : "text-[var(--fg-muted)]"}`}
+                  className={`min-h-9 rounded px-3 py-1.5 font-semibold ${apiTab === "curl" ? "bg-[var(--accent)] text-[var(--accent-text)]" : "text-[var(--fg-muted)]"}`}
                 >
                   cURL
                 </button>
               </div>
             </div>
-            <pre className="mt-3 overflow-x-auto rounded-lg bg-black/40 p-3 text-[10px] leading-relaxed">
+            <pre className="mt-3 overflow-x-auto rounded-lg border border-[var(--border)] bg-[var(--surface-strong)] p-3 text-[10px] leading-relaxed text-[var(--fg-muted)]">
               {apiTab === "python" ? (
                 <>
                   <span className="text-[#c792ea]">from</span> zebpay <span className="text-[#c792ea]">import</span> Client{"\n"}
@@ -155,7 +155,7 @@ export function ProBento() {
             </pre>
           </article>
 
-          <article className="bento-cell rounded-3xl border border-[var(--border)] bg-[#1a1400] p-6 sm:col-span-2">
+          <article className="bento-cell rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6 sm:col-span-2">
             <div className="flex items-start justify-between">
               <h3 className="font-black text-[var(--gold)]">Options</h3>
               <span className="rounded bg-[var(--gold)] px-2 py-0.5 text-[10px] font-extrabold text-[var(--navy)]">Coming soon</span>
@@ -164,7 +164,7 @@ export function ProBento() {
               <path d="M0 60 Q70 10 140 35 T280 25" fill="none" stroke="var(--gold)" strokeWidth={2.5} />
               <circle cx={140} cy={35} r={5} fill="var(--gold)" />
               <circle cx={200} cy={28} r={4} fill="#fff" opacity={0.6} />
-              <text x={138} y={52} textAnchor="middle" fill="#888" fontSize={9}>
+              <text x={138} y={52} textAnchor="middle" fill="var(--fg-muted)" fontSize={9}>
                 Strike
               </text>
             </svg>

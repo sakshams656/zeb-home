@@ -18,7 +18,10 @@
    --------------------------------------------------------------------------- */
 
 :root {
-  /* Brand (theme-invariant) */
+  /* -------------------------------------------------------------------------
+     Brand family (60% / 30% — ZebPay blue navy, analogous depth)
+     --brand = structural: links, charts. NOT primary CTAs (--accent).
+     ------------------------------------------------------------------------- */
   --navy: #0a0f2e;
   --navy-mid: #122968;
   --navy-light: #1a3580;
@@ -27,165 +30,173 @@
   --brand-hover: #1648c7;
   --brand-dim: #1648c7;
   --brand-rgb: 27, 85, 224;
-  --cyan: var(--zeb-logo-blue);
+  --cyan: var(--brand);
   --cyan-dim: var(--brand-dim);
-  --gold: #f5a623;
-  --success: #00b07a;
+  --blue: var(--brand);
+
+  /* Accent (10% — warm gold #F0B84C, CTAs & rare pop moments ONLY) */
+  --accent: #f0b84c;
+  --accent-hover: #e0a438;
+  --accent-rgb: 240, 184, 76;
+  --accent-text: #0a0f2e;
+
+  /* Semantic (data only — never confused with --accent) */
+  --success: #00a872;
   --danger: #e33e5c;
-  --blue: var(--zeb-logo-blue);
+  --gold: #e8a830;
 
-  /* Surfaces (light defaults) */
-  --bg: #f6f8fc;
-  --bg-elevated: #ffffff;
-  --surface: rgba(10, 15, 46, 0.04);
-  --surface-strong: rgba(10, 15, 46, 0.07);
+  /* Editorial (illustration / coming-soon only — never chrome) */
+  --editorial-coral: #e8788a;
+  --editorial-mint: #7ec9a8;
+  --editorial-violet: #b8a8e8;
 
-  /* Foreground (light defaults) */
+  /* Surfaces (light) — warm cream canvas + soft white cards (30% structure) */
+  --bg: #f7f4ef;
+  --bg-elevated: #fffcf7;
+  --surface: #faf8f4;
+  --surface-strong: #eef2fa;
+
+  /* Foreground (light) */
   --fg: #0a0f2e;
-  --fg-muted: rgba(10, 15, 46, 0.62);
-  --fg-subtle: rgba(10, 15, 46, 0.42);
+  --fg-muted: #5c6578;
+  --fg-subtle: #7a8499;
 
-  /* Borders (light defaults) */
-  --border: rgba(10, 15, 46, 0.08);
-  --border-strong: rgba(10, 15, 46, 0.14);
+  /* Borders (light) — cool blue neutrals */
+  --border: #d4dce8;
+  --border-strong: #b8c5de;
 
-  /* Backwards-compatible aliases (keep older components working) */
+  /* Brand-tinted fills (chips/badges) */
+  --brand-tint: #e6eefc;
+  --brand-tint-border: #c5d4f5;
+
+  /* Backwards-compatible aliases */
   --text: var(--fg);
   --text-muted: var(--fg-muted);
   --text-on-dark: var(--fg);
   --text-muted-dark: var(--fg-muted);
   --surface-dark: var(--surface);
   --border-dark: var(--border);
-  --accent: var(--brand);
-  --accent-text: #ffffff;
+  --accent-text-legacy: var(--accent-text);
 
-  /* Effects (light) — soft brand-tinted */
-  --shadow: 0 8px 32px rgba(27, 85, 224, 0.08);
+  /* Effects (light) */
+  --shadow: 0 8px 32px rgba(10, 15, 46, 0.08);
   --shadow-lg: 0 24px 72px rgba(10, 15, 46, 0.12);
 
-  /* Card / hero gradients (theme-aware) */
+  /* Card / hero gradients */
   --hero-gradient:
-    linear-gradient(135deg, #f6f8fc 0%, #eef3fc 55%, #e1ebff 100%);
+    linear-gradient(135deg, #fffcf7 0%, #eef3fc 55%, #e1ebff 100%);
   --card-gradient:
-    linear-gradient(145deg, #ffffff, #f1f4fb);
+    linear-gradient(145deg, #faf8f4, #eef2fa);
 
-  /* Calculator simulator — INVARIANT, always dark "screen" */
+  /* Calculator simulator — INVARIANT */
   --sim-gradient:
     linear-gradient(145deg, #06112b, #122968);
 
-  /* Section ambient backgrounds (light) — clean Stripe/Linear-style.
-     Multiple very-low-opacity brand-blue radial washes over near-white. */
+  /* Page ambient (light) — blue wash, max 3 layers */
   --section-bg-landing:
-    radial-gradient(70% 50% at 80% 10%, rgba(27, 85, 224, 0.06) 0%, transparent 60%),
-    radial-gradient(60% 45% at 10% 90%, rgba(27, 85, 224, 0.05) 0%, transparent 60%),
-    linear-gradient(180deg, #f6f8fc 0%, #ffffff 50%, #f6f8fc 100%);
+    radial-gradient(ellipse 80% 50% at 75% 10%, rgba(27, 85, 224, 0.07) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 10% 90%, rgba(27, 85, 224, 0.04) 0%, transparent 50%),
+    linear-gradient(165deg, #fffcf7 0%, #f7f4ef 45%, #f2ede8 100%);
   --section-bg-hero:
-    radial-gradient(ellipse 85% 65% at 78% 12%, rgba(27, 85, 224, 0.10) 0%, transparent 55%),
-    radial-gradient(ellipse 55% 45% at 8% 88%, rgba(27, 85, 224, 0.06) 0%, transparent 50%),
-    linear-gradient(165deg, #ffffff 0%, #f6f8fc 50%, #eef3fc 100%);
+    radial-gradient(ellipse 80% 55% at 78% 12%, rgba(27, 85, 224, 0.08) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 8% 88%, rgba(27, 85, 224, 0.04) 0%, transparent 50%),
+    linear-gradient(165deg, #fffcf7 0%, #f7f4ef 55%, #eef2fa 100%);
   --section-bg-1:
-    radial-gradient(55% 45% at 15% 18%, rgba(27, 85, 224, 0.07) 0%, transparent 60%),
-    radial-gradient(45% 40% at 85% 82%, rgba(27, 85, 224, 0.05) 0%, transparent 60%),
-    linear-gradient(180deg, #f6f8fc 0%, #ffffff 50%, #f6f8fc 100%);
+    radial-gradient(55% 45% at 15% 18%, rgba(27, 85, 224, 0.05) 0%, transparent 60%),
+    linear-gradient(180deg, #f7f4ef 0%, #faf8f4 50%, #f7f4ef 100%);
   --section-bg-2:
-    radial-gradient(55% 45% at 85% 18%, rgba(27, 85, 224, 0.07) 0%, transparent 60%),
-    radial-gradient(45% 40% at 12% 82%, rgba(27, 85, 224, 0.05) 0%, transparent 60%),
-    linear-gradient(180deg, #ffffff 0%, #f6f8fc 50%, #ffffff 100%);
+    radial-gradient(55% 45% at 85% 18%, rgba(27, 85, 224, 0.04) 0%, transparent 60%),
+    linear-gradient(180deg, #faf8f4 0%, #f7f4ef 50%, #faf8f4 100%);
   --section-bg-glow:
-    radial-gradient(40% 60% at 50% 50%, rgba(27, 85, 224, 0.08) 0%, transparent 65%),
-    linear-gradient(180deg, #f6f8fc 0%, #ffffff 50%, #f6f8fc 100%);
+    radial-gradient(45% 55% at 50% 50%, rgba(27, 85, 224, 0.05) 0%, transparent 65%),
+    linear-gradient(180deg, #f7f4ef 0%, #faf8f4 50%, #f7f4ef 100%);
   --section-bg-footer:
-    radial-gradient(40% 35% at 50% 35%, rgba(27, 85, 224, 0.10) 0%, transparent 65%),
-    radial-gradient(50% 30% at 50% 8%, rgba(120, 70, 255, 0.05) 0%, transparent 60%),
-    linear-gradient(180deg, #ffffff 0%, #f1f5fc 60%, #ffffff 100%);
+    radial-gradient(45% 35% at 50% 20%, rgba(27, 85, 224, 0.06) 0%, transparent 65%),
+    linear-gradient(180deg, #faf8f4 0%, #eef2fa 60%, #faf8f4 100%);
   --section-bg-faq:
-    radial-gradient(45% 40% at 50% 0%, rgba(27, 85, 224, 0.08) 0%, transparent 60%),
-    radial-gradient(35% 30% at 12% 75%, rgba(27, 85, 224, 0.04) 0%, transparent 65%),
-    radial-gradient(35% 30% at 88% 25%, rgba(120, 70, 255, 0.04) 0%, transparent 65%),
-    linear-gradient(180deg, #f6f8fc 0%, #ffffff 50%, #f6f8fc 100%);
+    radial-gradient(45% 40% at 50% 0%, rgba(27, 85, 224, 0.05) 0%, transparent 60%),
+    linear-gradient(180deg, #f7f4ef 0%, #faf8f4 50%, #f7f4ef 100%);
   --section-bg-testimonials:
-    radial-gradient(40% 50% at 20% 20%, rgba(27, 85, 224, 0.07) 0%, transparent 65%),
-    radial-gradient(40% 50% at 80% 80%, rgba(120, 70, 255, 0.05) 0%, transparent 65%),
-    linear-gradient(180deg, #f6f8fc 0%, #ffffff 50%, #f6f8fc 100%);
+    radial-gradient(40% 50% at 25% 25%, rgba(27, 85, 224, 0.05) 0%, transparent 65%),
+    linear-gradient(180deg, #f7f4ef 0%, #faf8f4 50%, #f7f4ef 100%);
   --faq-grid-color: rgba(10, 15, 46, 0.05);
 
-  /* Nav scroll-progress colors (used per-frame by GSAP).
-     Exposed as RGB triples so the alpha can be interpolated by scroll progress
-     while the base color still flips with the theme. */
-  --nav-bg-rgb: 246, 248, 252;
+  --nav-bg-rgb: 247, 244, 239;
   --nav-tint-rgb: var(--brand-rgb);
   --nav-shadow-rgb: 10, 15, 46;
   --nav-inset-rgb: 10, 15, 46;
 
-  /* Legacy hero-landing-gradient kept for compatibility */
   --hero-landing-gradient: var(--section-bg-hero);
 }
 
 .dark {
-  /* Surfaces */
+  /* Canvas — brand navy blue (60%) */
   --bg: #0a0f2e;
-  --bg-elevated: #0f1638;
-  --surface: rgba(255, 255, 255, 0.05);
-  --surface-strong: rgba(255, 255, 255, 0.08);
+  --bg-elevated: #10182e;
+  --surface: #10182e;
+  --surface-strong: #1a2444;
 
-  /* Foreground */
-  --fg: #f0f4ff;
-  --fg-muted: rgba(240, 244, 255, 0.65);
-  --fg-subtle: rgba(240, 244, 255, 0.45);
+  --fg: #f4f6fb;
+  --fg-muted: #a8b0c4;
+  --fg-subtle: #7a8499;
 
-  /* Borders */
-  --border: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.14);
+  --border: #2a3558;
+  --border-strong: #3d4d6e;
 
-  /* Effects */
-  --shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
-  --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.45);
+  --brand: #6ba8ff;
+  --brand-hover: #8bbcff;
+  --brand-dim: #4d8ef5;
+  --brand-rgb: 107, 168, 255;
 
-  /* Card / hero gradients */
+  --accent: #f0b84c;
+  --accent-hover: #f5c25e;
+  --accent-rgb: 240, 184, 76;
+  --accent-text: #0a0f2e;
+
+  --brand-tint: #121e38;
+  --brand-tint-border: #243d6b;
+
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.42);
+  --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.52);
+
   --hero-gradient:
-    linear-gradient(180deg, #0a0f2e 0%, #0d1235 60%, #121a48 100%);
+    linear-gradient(180deg, #0a0f2e 0%, #0d1428 55%, #10182e 100%);
   --card-gradient:
-    linear-gradient(145deg, #141c42, #0f1638);
+    linear-gradient(145deg, #1a2444, #10182e);
 
-  /* Section backgrounds — the original deep-navy + brand-blue glow look */
-  --section-bg-landing: #040812;
+  --section-bg-landing:
+    radial-gradient(ellipse 80% 55% at 78% 12%, rgba(27, 85, 224, 0.12) 0%, transparent 52%),
+    radial-gradient(ellipse 50% 40% at 8% 88%, rgba(240, 184, 76, 0.05) 0%, transparent 48%),
+    linear-gradient(165deg, #0a0f2e 0%, #0c1226 50%, #0a0f2e 100%);
   --section-bg-hero:
-    radial-gradient(ellipse 85% 65% at 78% 12%, rgba(27, 85, 224, 0.42) 0%, transparent 52%),
-    radial-gradient(ellipse 55% 45% at 8% 88%, rgba(27, 85, 224, 0.18) 0%, transparent 48%),
-    linear-gradient(165deg, #0c1d52 0%, #0a1538 28%, #070f24 58%, #040812 100%);
+    radial-gradient(ellipse 80% 60% at 78% 12%, rgba(27, 85, 224, 0.14) 0%, transparent 52%),
+    radial-gradient(ellipse 50% 40% at 8% 88%, rgba(240, 184, 76, 0.06) 0%, transparent 48%),
+    linear-gradient(165deg, #0a0f2e 0%, #0d1428 55%, #10182e 100%);
   --section-bg-1:
-    radial-gradient(60% 50% at 15% 18%, rgba(27, 85, 224, 0.28) 0%, transparent 62%),
-    radial-gradient(45% 40% at 85% 82%, rgba(27, 85, 224, 0.18) 0%, transparent 62%),
-    linear-gradient(180deg, #040812 0%, #08122e 50%, #040812 100%);
+    radial-gradient(55% 45% at 15% 18%, rgba(27, 85, 224, 0.08) 0%, transparent 60%),
+    linear-gradient(180deg, #0a0f2e 0%, #10182e 50%, #0a0f2e 100%);
   --section-bg-2:
-    radial-gradient(50% 40% at 88% 18%, rgba(27, 85, 224, 0.20) 0%, transparent 60%),
-    radial-gradient(40% 35% at 12% 82%, rgba(27, 85, 224, 0.14) 0%, transparent 60%),
-    linear-gradient(180deg, #040812 0%, #06102a 50%, #040812 100%);
+    radial-gradient(55% 45% at 85% 18%, rgba(27, 85, 224, 0.06) 0%, transparent 60%),
+    linear-gradient(180deg, #10182e 0%, #0a0f2e 50%, #10182e 100%);
   --section-bg-glow:
-    radial-gradient(40% 60% at 50% 50%, rgba(27, 85, 224, 0.18) 0%, transparent 65%),
-    linear-gradient(180deg, #040812 0%, #06102a 50%, #040812 100%);
+    radial-gradient(45% 55% at 50% 50%, rgba(27, 85, 224, 0.08) 0%, transparent 65%),
+    linear-gradient(180deg, #0a0f2e 0%, #10182e 50%, #0a0f2e 100%);
   --section-bg-footer:
-    radial-gradient(40% 35% at 50% 35%, rgba(27, 85, 224, 0.30) 0%, transparent 65%),
-    radial-gradient(50% 30% at 50% 8%, rgba(120, 70, 255, 0.18) 0%, transparent 60%),
-    linear-gradient(180deg, #040812 0%, #08102a 38%, #040812 100%);
+    radial-gradient(45% 35% at 50% 25%, rgba(27, 85, 224, 0.10) 0%, transparent 65%),
+    linear-gradient(180deg, #10182e 0%, #0a0f2e 55%, #10182e 100%);
   --section-bg-faq:
-    radial-gradient(45% 40% at 50% 0%, rgba(27, 85, 224, 0.22) 0%, transparent 60%),
-    radial-gradient(35% 30% at 12% 75%, rgba(27, 85, 224, 0.10) 0%, transparent 65%),
-    radial-gradient(35% 30% at 88% 25%, rgba(120, 70, 255, 0.10) 0%, transparent 65%),
-    linear-gradient(180deg, #040812 0%, #06102a 50%, #040812 100%);
+    radial-gradient(45% 40% at 50% 0%, rgba(27, 85, 224, 0.08) 0%, transparent 60%),
+    linear-gradient(180deg, #0a0f2e 0%, #10182e 50%, #0a0f2e 100%);
   --section-bg-testimonials:
-    radial-gradient(40% 50% at 20% 20%, rgba(27, 85, 224, 0.18) 0%, transparent 65%),
-    radial-gradient(40% 50% at 80% 80%, rgba(120, 70, 255, 0.12) 0%, transparent 65%),
-    linear-gradient(180deg, #040812 0%, #06102a 50%, #040812 100%);
-  --faq-grid-color: rgba(120, 150, 255, 0.045);
+    radial-gradient(40% 50% at 25% 25%, rgba(27, 85, 224, 0.06) 0%, transparent 65%),
+    linear-gradient(180deg, #0a0f2e 0%, #10182e 50%, #0a0f2e 100%);
+  --faq-grid-color: rgba(255, 255, 255, 0.04);
 
-  /* Nav scroll-progress */
   --nav-bg-rgb: 10, 15, 46;
   --nav-tint-rgb: var(--brand-rgb);
-  --nav-shadow-rgb: 0, 0, 0;
+  --nav-shadow-rgb: 10, 15, 46;
   --nav-inset-rgb: 255, 255, 255;
 
-  /* Legacy alias */
   --hero-landing-gradient: var(--section-bg-hero);
 }
 
@@ -196,6 +207,7 @@
   --color-surface: var(--surface);
   --color-border: var(--border);
   --color-brand: var(--brand);
+  --color-accent: var(--accent);
   --font-sans: var(--font-lato);
 }
 
@@ -228,10 +240,52 @@ body {
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
+/* Screen-reader only — revealed on focus for skip link */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.sr-only.focus\:not-sr-only:focus,
+.sr-only:focus-visible {
+  position: fixed;
+  width: auto;
+  height: auto;
+  padding: 0.5rem 1rem;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* Global focus ring — accent (10% discipline) */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .landing-page {
-  background: var(--section-bg-landing);
+  position: relative;
+  isolation: isolate;
   color: var(--fg);
   overflow-x: clip;
+}
+
+/* Fixed viewport layer — one gradient for the whole page, no per-section seams. */
+.landing-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: var(--section-bg-landing);
+  pointer-events: none;
 }
 
 html,
@@ -239,25 +293,7 @@ body {
   overflow-x: clip;
 }
 
-.hero-section {
-  background: var(--section-bg-hero);
-}
-
-.product-showcase {
-  background: var(--section-bg-1);
-}
-
-.calculator-hub {
-  background: var(--section-bg-2);
-}
-
-.markets-section {
-  background: var(--section-bg-1);
-}
-
-.discover-more {
-  background: var(--section-bg-2);
-}
+/* Section hook classes — backgrounds live on .landing-page::before only. */
 
 .discover-sidebar-list {
   overscroll-behavior: contain;
@@ -274,21 +310,6 @@ body {
   border-radius: 999px;
 }
 
-.security-section {
-  background: var(--section-bg-1);
-}
-
-.social-proof-section {
-  background: var(--section-bg-glow);
-}
-
-.footer-globe-bg {
-  background: var(--section-bg-footer);
-}
-
-.faq-section {
-  background: var(--section-bg-faq);
-}
 .faq-grid {
   background-image:
     linear-gradient(var(--faq-grid-color) 1px, transparent 1px),
@@ -315,9 +336,6 @@ body {
   }
 }
 
-.testimonials-section {
-  background: var(--section-bg-testimonials);
-}
 @keyframes testimonial-progress {
   from {
     transform: scaleX(0);
@@ -453,8 +471,8 @@ html.lenis body {
   font-size: 0.9375rem;
   line-height: 1.15;
   white-space: nowrap;
-  background: var(--brand);
-  color: #fff;
+  background: var(--accent);
+  color: var(--accent-text);
   transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
 }
 @media (min-width: 640px) {
@@ -464,8 +482,29 @@ html.lenis body {
 }
 .btn-primary:hover {
   transform: translateY(-1px);
-  background: var(--brand-hover);
-  box-shadow: 0 8px 24px rgba(var(--brand-rgb), 0.4);
+  background: var(--accent-hover);
+  box-shadow: 0 8px 24px rgba(var(--accent-rgb), 0.4);
+}
+.btn-primary:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+/* Product showcase — Learn more CTA at +40% vs .btn-primary */
+.product-showcase .learn-cta.btn-primary {
+  gap: 0.7rem;
+  min-height: 3.85rem;
+  padding: 0.875rem 1.75rem;
+  font-size: 1.3125rem;
+}
+@media (min-width: 640px) {
+  .product-showcase .learn-cta.btn-primary {
+    padding: 1.05rem 2.1rem;
+  }
+}
+.product-showcase .learn-cta-arrow {
+  font-size: 1.575rem;
+  line-height: 1;
 }
 
 .btn-hero-primary {
@@ -480,8 +519,8 @@ html.lenis body {
   font-size: 1rem;
   line-height: 1.15;
   letter-spacing: -0.01em;
-  background: var(--brand);
-  color: #fff;
+  background: var(--accent);
+  color: var(--accent-text);
   transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
 }
 
@@ -506,8 +545,12 @@ html.lenis body {
 
 .btn-hero-primary:hover {
   transform: translateY(-2px);
-  background: var(--brand-hover);
-  box-shadow: 0 14px 40px rgba(var(--brand-rgb), 0.45);
+  background: var(--accent-hover);
+  box-shadow: 0 14px 40px rgba(var(--accent-rgb), 0.45);
+}
+.btn-hero-primary:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
 }
 
 .btn-outline {
@@ -533,6 +576,10 @@ html.lenis body {
 }
 .btn-outline:hover {
   border-color: var(--brand);
+}
+.btn-outline:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
 }
 
 @keyframes ticker {
@@ -632,12 +679,21 @@ html.lenis body {
    Semantic tokens are redefined inside the scope so descendant chrome reads
    correct on-dark alphas regardless of website theme. */
 .on-dark-surface {
-  --fg: #f0f4ff;
-  --fg-muted: rgba(240, 244, 255, 0.65);
-  --fg-subtle: rgba(240, 244, 255, 0.45);
-  --surface: rgba(255, 255, 255, 0.05);
-  --surface-strong: rgba(255, 255, 255, 0.10);
-  --border: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.14);
-  --bg-elevated: rgba(255, 255, 255, 0.05);
+  --fg: #ffffff;
+  --fg-muted: #b3b3b3;
+  --fg-subtle: #808080;
+  --surface: #10182e;
+  --surface-strong: #1a2444;
+  --border: #2a3558;
+  --border-strong: #3d4d6e;
+  --bg-elevated: #10182e;
+  --brand: #6ba8ff;
+  --brand-hover: #8bbcff;
+  --brand-rgb: 107, 168, 255;
+  --brand-tint: #121e38;
+  --brand-tint-border: #243d6b;
+  --accent: #f0b84c;
+  --accent-hover: #f5c25e;
+  --accent-rgb: 240, 184, 76;
+  --accent-text: #0a0f2e;
 }

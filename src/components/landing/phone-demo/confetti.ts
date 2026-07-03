@@ -1,6 +1,6 @@
 export function spawnConfetti(wrap: HTMLElement | null) {
   if (!wrap) return;
-  wrap.innerHTML = "";
+  wrap.replaceChildren();
   const cols = ["#fff", "#a8f0c6", "#38f9d7", "rgba(255,255,255,0.7)"];
   for (let i = 0; i < 24; i++) {
     const d = document.createElement("div");

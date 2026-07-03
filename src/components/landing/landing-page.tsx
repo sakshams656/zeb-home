@@ -1,50 +1,37 @@
-"use client";
-
+import dynamic from "next/dynamic";
 import { OrganizationJsonLd } from "@/components/seo/json-ld";
-import type { HomeScreenBodySection } from "@/lib/home-screen-layout";
-import { Nav } from "./nav";
+import { SiteShell } from "@/components/layout/site-shell";
 import { Hero } from "./hero";
 import { PriceTicker } from "./price-ticker";
-import { ProductShowcase } from "./product-showcase";
-import { CalculatorHub } from "./calculator-hub";
-import { Markets } from "./markets";
-import { SocialProof } from "./social-proof";
 import { Security } from "./security";
-import { Announcements } from "./announcements";
-import { DiscoverMore } from "./discover-more";
-import { Testimonials } from "./testimonials";
 import { Faq } from "./faq";
-import { Footer } from "./footer";
 
-type LandingPageProps = {
-  discoverMoreSection?: HomeScreenBodySection | null;
-  announcementsSection?: HomeScreenBodySection | null;
-};
+const ProductShowcase = dynamic(
+  () => import("./product-showcase").then((m) => ({ default: m.ProductShowcase }))
+);
 
-export function LandingPage({
-  discoverMoreSection = null,
-  announcementsSection = null
-}: LandingPageProps) {
+const SocialProof = dynamic(
+  () => import("./social-proof").then((m) => ({ default: m.SocialProof }))
+);
+
+const HniInstitutionalSection = dynamic(
+  () =>
+    import("./hni-institutional-section").then((m) => ({
+      default: m.HniInstitutionalSection
+    }))
+);
+
+export function LandingPage() {
   return (
-    <div className="landing-page">
+    <SiteShell>
       <OrganizationJsonLd />
-      <Nav />
-      <main>
-        <Hero />
-        <PriceTicker />
-        <ProductShowcase />
-        <CalculatorHub />
-        <Markets />
-        <Announcements section={announcementsSection ?? null} />
-        <DiscoverMore section={discoverMoreSection ?? null} />
-        <SocialProof />
-        <Security />
-        <Testimonials />
-        {/* <AppDownload /> */}
-        {/* <Comparison /> */}
-        <Faq />
-      </main>
-      <Footer />
-    </div>
+      <Hero />
+      <PriceTicker />
+      <ProductShowcase />
+      <SocialProof />
+      <HniInstitutionalSection />
+      <Security />
+      <Faq />
+    </SiteShell>
   );
 }

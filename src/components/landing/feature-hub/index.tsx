@@ -141,7 +141,7 @@ function EarnPanel() {
   const r = earnApyCalc({ principal: amt, apyPercent: apy, months: dur });
   return (
     <CalcShell label="APY calculator" title="Projected earnings">
-      <select value={apy} onChange={(e) => setApy(parseFloat(e.target.value))} className="mb-3 w-full rounded-lg border border-white/15 bg-[var(--surface-strong)] px-3 py-2 text-sm">
+      <select value={apy} onChange={(e) => setApy(parseFloat(e.target.value))} className="mb-3 w-full rounded-lg border border-[var(--border)] bg-[var(--surface-strong)] px-3 py-2 text-sm">
         <option value={8.5}>USDT — 8.5% APY</option>
         <option value={6}>BTC — 6% APY</option>
         <option value={5}>ETH — 5% APY</option>
@@ -225,7 +225,7 @@ function ExpertPanel() {
               <span>{e.name}</span>
               <span className="text-[var(--success)]">{e.wr} win rate</span>
             </div>
-            <div className="mt-1 text-[var(--text-muted)]">
+            <div className="mt-1 text-[var(--fg-muted)]">
               {e.side} {e.pair} · {e.entry}
             </div>
           </div>
@@ -266,7 +266,7 @@ function ApiPanel() {
           </button>
         ))}
       </div>
-      <pre className="overflow-x-auto rounded-lg bg-black/30 p-3 text-[11px] leading-relaxed">{CODE[lang]}</pre>
+      <pre className="overflow-x-auto rounded-lg border border-[var(--border)] bg-[var(--surface-strong)] p-3 text-[11px] leading-relaxed text-[var(--fg-muted)]">{CODE[lang]}</pre>
       <ResultBox>
         <ResultRow label="Rate limit" value="120 req/min" />
         <ResultRow label="Avg latency" value="&lt; 50ms" />
@@ -431,7 +431,7 @@ export function FeatureHub() {
                   aria-selected={tab === t.id}
                   onClick={() => switchTab(t.id)}
                   className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap border-b-2 px-4 py-4 text-sm font-semibold transition ${
-                    tab === t.id ? "border-[var(--cyan)] text-[var(--text)]" : "border-transparent text-[var(--text-muted)]"
+                    tab === t.id ? "border-[var(--cyan)] text-[var(--fg)]" : "border-transparent text-[var(--fg-muted)]"
                   }`}
                 >
                   {t.label}
@@ -442,7 +442,7 @@ export function FeatureHub() {
                           ? "bg-[var(--cyan)] text-[var(--navy)]"
                           : t.tagStyle === "soon"
                             ? "bg-[var(--gold)] text-[var(--navy)]"
-                            : "bg-[var(--danger)]/20 text-[var(--danger)]"
+                            : "border border-[var(--danger)] bg-[var(--surface-strong)] text-[var(--danger)]"
                       }`}
                     >
                       {t.tag}
@@ -453,10 +453,10 @@ export function FeatureHub() {
             </div>
             <div className="grid gap-8 p-4 sm:p-6 lg:grid-cols-2 lg:p-8">
               <div>
-                <h3 className="text-[clamp(1.125rem,4vw,1.5rem)] font-black text-[var(--text)]">{copy.title}</h3>
+                <h3 className="text-[clamp(1.125rem,4vw,1.5rem)] font-black text-[var(--fg)]">{copy.title}</h3>
                 <ul className="mt-4 space-y-2">
                   {copy.bullets.map((b) => (
-                    <li key={b} className="flex items-start gap-2 text-sm text-[var(--text-muted)]">
+                    <li key={b} className="flex items-start gap-2 text-sm text-[var(--fg-muted)]">
                       <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[var(--cyan)] text-[10px] font-extrabold text-[var(--navy)]">✓</span>
                       {b}
                     </li>

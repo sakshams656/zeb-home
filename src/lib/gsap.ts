@@ -1,15 +1,13 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { SplitText } from "gsap/SplitText";
-import { Draggable } from "gsap/Draggable";
 import { CustomEase } from "gsap/CustomEase";
 
 if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger, SplitText, Draggable, CustomEase);
+  gsap.registerPlugin(ScrollTrigger, CustomEase);
   CustomEase.create("zeb", "0.16, 1, 0.3, 1");
 }
 
-export { gsap, ScrollTrigger, SplitText, Draggable };
+export { gsap, ScrollTrigger };
 export const ZEB_EASE = "zeb";
 
 export function prefersReducedMotion(): boolean {
