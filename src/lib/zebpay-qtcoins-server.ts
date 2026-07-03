@@ -42,19 +42,41 @@ function pairToCoin(pair: QtTradePair): QtCoin {
 }
 
 async function fetchTradePairs(): Promise<QtTradePair[]> {
-  const res = await fetch(QTCOINS_API_URL, {
-    headers: { Accept: "application/json" },
-    next: { revalidate: 3600 }
-  });
-  if (!res.ok) {
-    const body = await res.text().catch(() => "");
-    throw new Error(`ZebPay qtcoins ${res.status}: ${body.slice(0, 200)}`);
+  try {
+    const res = await fetch(QTCOINS_API_URL, {
+      headers: {
+        Accept: "application/json",
+        "User-Agent": "Mozilla/5.0 (compatible; ZebPay/1.0)"
+      },
+      next: { revalidate: 3600 }
+    });
+    if (!res.ok) {
+      console.warn(`ZebPay qtcoins API returned ${res.status}, using fallback coins`);
+      return [];
+    }
+    const json = (await res.json()) as { data?: { tradePairs?: QtTradePair[] } };
+    return json.data?.tradePairs ?? [];
+  } catch (error) {
+    console.warn(`Failed to fetch ZebPay qtcoins, using fallback coins:`, error);
+    return [];
   }
-  const json = (await res.json()) as { data?: { tradePairs?: QtTradePair[] } };
-  return json.data?.tradePairs ?? [];
 }
 
 let coinsCache: QtCoin[] | null = null;
+
+// Fallback coins for when API is unavailable
+function getFallbackCoins(): QtCoin[] {
+  return POPULAR_SYMBOLS.map((symbol) => ({
+    symbol,
+    name: symbol, // Fallback to symbol as name
+    slug: symbol.toLowerCase(),
+    coinIcon: "",
+    minimumTradeAmount: 100,
+    isSipEnabled: true,
+    categories: [],
+    pairName: `${symbol}/INR`
+  }));
+}
 
 export async function getInrCoins(): Promise<QtCoin[]> {
   if (coinsCache) return coinsCache;
@@ -70,7 +92,14 @@ export async function getInrCoins(): Promise<QtCoin[]> {
     }
   }
 
-  coinsCache = [...bySymbol.values()].sort((a, b) => a.name.localeCompare(b.name));
+  // If API returned no pairs, use fallback
+  if (bySymbol.size === 0) {
+    coinsCache = getFallbackCoins();
+    console.warn("Using fallback coins list");
+  } else {
+    coinsCache = [...bySymbol.values()].sort((a, b) => a.name.localeCompare(b.name));
+  }
+  
   return coinsCache;
 }
 
