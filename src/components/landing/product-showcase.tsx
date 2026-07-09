@@ -209,7 +209,9 @@ export function ProductShowcase() {
   useGSAP(
     () => {
       if (prefersReducedMotion()) return;
-      gsap.to(".demo-pointer", { y: -6, duration: 0.6, yoyo: true, repeat: -1, ease: "sine.inOut" });
+      const pointer = sectionRef.current?.querySelector(".demo-pointer");
+      if (!pointer) return;
+      gsap.to(pointer, { y: -6, duration: 0.6, yoyo: true, repeat: -1, ease: "sine.inOut" });
     },
     { scope: sectionRef }
   );

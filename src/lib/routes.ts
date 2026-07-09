@@ -12,6 +12,10 @@ export const ROUTES = {
   expertTrades: "/pro/expert-trades",
   howToBuy: "/how-to-buy",
   howToBuyCoin: (sym: string) => `/how-to-buy/${sym.toLowerCase()}`,
+  blog: "/blog",
+  blogPost: (slug: string) => `/blog/${slug}`,
+  blogCategory: (id: string) => `/blog#${id}`,
+  blogCategoryViewAll: (id: string) => `/blog?category=${id}&view=all`,
   features: {
     quickTrade: "/features/quick-trade",
     futures: "/features/futures",

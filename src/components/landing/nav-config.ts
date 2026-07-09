@@ -1,5 +1,5 @@
-import { LINKS } from "@/lib/links";
 import { ROUTES } from "@/lib/routes";
+import { LINKS } from "@/lib/links";
 
 export type NavItem = { label: string; href: string };
 
@@ -86,9 +86,10 @@ export const NAV_MORE: NavGroup = {
     {
       title: "Blogs",
       items: [
-        { label: "Market Analysis", href: LINKS.blogMarketAnalysis },
-        { label: "Crypto Assets", href: LINKS.blogCryptoAssets },
-        { label: "Crypto News", href: LINKS.blogCryptoNews }
+        { label: "The Z Blog", href: ROUTES.blog },
+        { label: "Market Analysis", href: ROUTES.blogCategory("market-analysis") },
+        { label: "Crypto Assets", href: ROUTES.blogCategory("crypto") },
+        { label: "Crypto News", href: ROUTES.blogCategory("crypto-news") }
       ]
     }
   ]

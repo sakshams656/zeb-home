@@ -3,7 +3,7 @@ import Link from "next/link";
 import { SiteShell } from "@/components/layout/site-shell";
 import { PageHeader } from "@/components/layout/page-header";
 import { Section } from "@/components/ui/section";
-import { LINKS } from "@/lib/links";
+import { ROUTES } from "@/lib/routes";
 
 export const metadata: Metadata = {
   title: "Events & Meet ups",
@@ -24,9 +24,9 @@ export default function EventsPage() {
           announcements, or get started on the app while we publish new dates.
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
-          <a href={LINKS.blog} className="btn-primary">
+          <Link href={ROUTES.blog} className="btn-primary">
             Visit the blog
-          </a>
+          </Link>
           <Link href="/" className="btn-outline">
             Back to home
           </Link>

@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import Script from "next/script";
 import { Lato } from "next/font/google";
 import { Providers } from "@/components/providers";
 import { themeInitScript } from "@/lib/theme-storage";
@@ -66,11 +65,13 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://apps.apple.com" />
         <link rel="dns-prefetch" href="https://play.google.com" />
+        <script
+          id="zeb-theme-init"
+          dangerouslySetInnerHTML={{ __html: themeInitScript() }}
+          suppressHydrationWarning
+        />
       </head>
       <body className="min-h-screen bg-[var(--bg)] antialiased font-sans text-[var(--fg)]">
-        <Script id="zeb-theme-init" strategy="beforeInteractive">
-          {themeInitScript()}
-        </Script>
         <Providers>{children}</Providers>
       </body>
     </html>

@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { getAllBlogSlugs } from "@/lib/blog";
 import { getAllPageSlugs, isWordPressConfigured } from "@/lib/wordpress";
 import { ROUTES } from "@/lib/routes";
 import { getInrCoins } from "@/lib/zebpay-qtcoins-server";
@@ -14,6 +15,7 @@ const APP_PATHS = [
   ROUTES.events,
   ROUTES.expertTrades,
   ROUTES.howToBuy,
+  ROUTES.blog,
   ...Object.values(ROUTES.features),
   ROUTES.business.hni,
   ROUTES.business.otc,
@@ -48,7 +50,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const withHowToBuy = [...staticRoutes, ...howToBuyRoutes];
 
-  if (!isWordPressConfigured()) return withHowToBuy;
+  let blogRoutes: MetadataRoute.Sitemap = [];
+  try {
+    const slugs = await getAllBlogSlugs();
+    blogRoutes = slugs.map((slug) => ({
+      url: `${base}${ROUTES.blogPost(slug)}`,
+      lastModified: new Date(),
+      changeFrequency: "weekly" as const,
+      priority: 0.7
+    }));
+  } catch {
+    // RSS unavailable at build time
+  }
+
+  const withBlog = [...withHowToBuy, ...blogRoutes];
+
+  if (!isWordPressConfigured()) return withBlog;
 
   const slugs = await getAllPageSlugs();
   const cmsRoutes = slugs
@@ -60,5 +77,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7
     }));
 
-  return [...withHowToBuy, ...cmsRoutes];
+  return [...withBlog, ...cmsRoutes];
 }

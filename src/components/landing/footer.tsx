@@ -38,7 +38,7 @@ const COLS = [
     title: "Company",
     links: [
       { label: "About", href: LINKS.about },
-      { label: "Blog", href: LINKS.blog },
+      { label: "Blog", href: ROUTES.blog },
       { label: "Events", href: ROUTES.events },
       { label: "Careers", href: LINKS.careers },
       { label: "Mission & vision", href: LINKS.missionVision }
@@ -142,12 +142,16 @@ export function Footer() {
       ScrollTrigger.create({
         start: "top -300",
         onEnter: () => {
-          gsap.to(".back-to-top", { opacity: 1, y: 0, duration: 0.3 });
-          backTopRef.current?.setAttribute("tabindex", "0");
+          const btn = backTopRef.current;
+          if (!btn) return;
+          gsap.to(btn, { opacity: 1, y: 0, duration: 0.3 });
+          btn.setAttribute("tabindex", "0");
         },
         onLeaveBack: () => {
-          gsap.to(".back-to-top", { opacity: 0, y: 20, duration: 0.3 });
-          backTopRef.current?.setAttribute("tabindex", "-1");
+          const btn = backTopRef.current;
+          if (!btn) return;
+          gsap.to(btn, { opacity: 0, y: 20, duration: 0.3 });
+          btn.setAttribute("tabindex", "-1");
         }
       });
     },

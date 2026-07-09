@@ -20,6 +20,16 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "zebpaylogstest.blob.core.windows.net",
         pathname: "/multicoins/**"
+      },
+      {
+        protocol: "https",
+        hostname: "zebpay.com",
+        pathname: "/in/wp-content/uploads/**"
+      },
+      {
+        protocol: "https",
+        hostname: "zebpay.com",
+        pathname: "/wp-content/uploads/**"
       }
     ]
   }
